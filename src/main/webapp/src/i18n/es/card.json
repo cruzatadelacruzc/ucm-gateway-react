@@ -1,0 +1,16 @@
+{
+  "ID": "CI",
+  "name": "Nombre",
+  "name_plural": "Nombres",
+  "lastName": "Apellido",
+  "lastName_plural": "Apellidos",
+  "gender": "Sexo",
+  "race": "Tez de Piel",
+  "specialty": "Especialidad",
+  "birthdate": "Fecha de nacimiento",
+  "district": "Localidad",
+  "username": "Usuario",
+  "students": "Estudiante",
+  "employees": "Trabajador",
+  "date_format": "DD [de] MMM [de] YYYY"
+}

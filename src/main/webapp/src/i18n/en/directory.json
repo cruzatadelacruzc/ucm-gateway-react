@@ -1,0 +1,9 @@
+{
+  "result_announce": "{{count}} result in ({{second}} seconds)  with quality {{quality}}",
+  "result_announce_plural": "{{count}} results in ({{second}} seconds)  with quality {{quality}}",
+  "tab": {
+    "people": "People",
+    "workplaces": "Workplaces",
+    "phones": "Phones"
+  }
+}
