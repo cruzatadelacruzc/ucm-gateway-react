@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect, useContext } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { Avatar, Menu, MenuItem, IconButton, Typography, Link } from '@material-ui/core';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import MeetingRoomOutlinedIcon from '@material-ui/icons/MeetingRoomOutlined';
@@ -6,14 +6,13 @@ import { headerStyles } from './style';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { REDIRECT_URL, getLoginUrl } from '../../shared/util/url-util';
-import { AppContext } from '../../../config/context';
 import { NavLink as RouterLink } from 'react-router-dom';
+import {useSelector} from "react-redux";
+import {IRootState} from "../../shared/reducer";
 
 
 export default function HeaderAccount() {
-  const {
-    states: { authentication },
-  } = useContext(AppContext);
+  const { isAuthenticated, account } = useSelector((states: IRootState) => states.auth);
   const [profileMenu, setProfileMenu] = useState<(EventTarget & HTMLButtonElement) | null>(null);
   const { t } = useTranslation(['common']);
   const classes = headerStyles();
@@ -43,7 +42,7 @@ export default function HeaderAccount() {
         return(
             <MenuItem className={classNames(classes.profileMenuItem, classes.headerMenuItem)}>
                 <MeetingRoomOutlinedIcon className={classes.profileMenuIcon} />
-                {authentication.isAuthenticated ?
+                {isAuthenticated ?
                     <Link component={RouterLink} to={"/logout"} >{t('common:log_out')}</Link>:
                     <Link href={getLoginUrl()}>{t('common:log_in')}</Link>
                 }
@@ -67,11 +66,10 @@ export default function HeaderAccount() {
       >
         <div className={classes.profileMenuUser}>
           <Typography variant='overline' display='block'>
-            {authentication.account.login ? authentication.account.login : t('common:anonymous')}
+            {account.login ? account.login : t('common:anonymous')}
           </Typography>
         </div>
-        {/*{authentication.isAuthenticated && <PrivateMenu/>}*/}
-          <PrivateMenu/>
+        {isAuthenticated && <PrivateMenu/>}
        <LogInOut/>
       </Menu>
     </Fragment>

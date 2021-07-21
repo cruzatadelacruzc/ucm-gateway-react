@@ -5,11 +5,21 @@ import App from './App';
 import '@fontsource/roboto';
 import reportWebVitals from './reportWebVitals';
 import ErrorBoundary from './components/shared/error/error-boudary';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { blue, indigo, grey } from '@material-ui/core/colors';
-import { AppProvider } from './config/context';
+import { Provider } from 'react-redux'
+import configureStore from "./config/store";
+import {bindActionCreators} from "redux";
+import {clearAuthentication} from "./components/shared/reducer/authenticate";
+import setupAxiosInterceptors from "./config/api-config";
+import { SnackbarProvider } from "notistack"
+import {SnackbarUtilsConfigurator} from "./components/shared/notification-snackbar.util";
 
-const theme = createMuiTheme({
+const store = configureStore();
+const action = bindActionCreators({ clearAuthentication }, store.dispatch);
+setupAxiosInterceptors(() => action.clearAuthentication('login.error.unauthorized'));
+
+const theme = createTheme({
   palette: {
     background: {
       default: grey['100'],
@@ -42,9 +52,16 @@ const theme = createMuiTheme({
 ReactDOM.render(
   <ErrorBoundary>
     <ThemeProvider theme={theme}>
-      <AppProvider>
+      <Provider store={store}>
+        <SnackbarProvider maxSnack={3}
+                          preventDuplicate={true}
+                          autoHideDuration={6000}
+                          anchorOrigin={{ vertical: 'bottom', horizontal: 'right'}}
+        >
+          <SnackbarUtilsConfigurator />
         <App />
-      </AppProvider>
+        </SnackbarProvider>
+      </Provider>
     </ThemeProvider>
   </ErrorBoundary>,
   document.getElementById('root')

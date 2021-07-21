@@ -1,12 +1,14 @@
-import React, {useContext, useLayoutEffect} from "react";
-import {AppContext} from "../../../config/context";
+import React, {useLayoutEffect} from "react";
 import {logout} from "../../shared/reducer/authenticate";
+import {useDispatch, useSelector} from "react-redux";
+import {IRootState} from "../../shared/reducer";
 
 export const Logout = () => {
-    const { states: {authentication}, dispatch } = useContext(AppContext);
+    const { logoutUrl } = useSelector((states: IRootState) => states.auth);
+    const dispatch = useDispatch();
+
     useLayoutEffect(() => {
-        logout()(dispatch);
-        const logoutUrl = authentication.logoutUrl;
+        dispatch(logout());
         if(logoutUrl) {
             window.location.href = logoutUrl+ '?redirect_uri=' + window.location.origin
         }

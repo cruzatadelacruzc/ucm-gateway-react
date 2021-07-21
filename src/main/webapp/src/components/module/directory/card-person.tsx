@@ -11,7 +11,7 @@ export default function CardPerson(props: ISearchPersonDetails) {
   return (
     <div className={classes.root}>
       <Paper elevation={3} className={classes.content}>
-        <Grid container direction='row' justify='space-evenly'>
+        <Grid container direction='row' justifyContent='space-evenly'>
           <Grid md={3} lg={3} item>
             {props._type ? (
               <StyledBadge badgeContent={t(`card:${props._type}`)} color='secondary'>
@@ -21,7 +21,7 @@ export default function CardPerson(props: ISearchPersonDetails) {
               <img alt='user' src='./user.svg' className={classes.cover} />
             )}
           </Grid>
-          <Grid item md={3} lg={3} container justify='center' direction='row'>
+          <Grid item md={3} lg={3} container justifyContent='center' direction='row'>
             <Grid item>
               <TextField disabled label={t('card:ID')} value={props._source.ci} />
             </Grid>
@@ -36,7 +36,7 @@ export default function CardPerson(props: ISearchPersonDetails) {
               />
             </Grid>
           </Grid>
-          <Grid item md={3} lg={3} container justify='center' direction='row'>
+          <Grid item md={3} lg={3} container justifyContent='center' direction='row'>
             <Grid item>
               <TextField disabled label={t('card:gender')} value={props._source.gender} />
             </Grid>
@@ -47,7 +47,7 @@ export default function CardPerson(props: ISearchPersonDetails) {
               <TextField disabled label={t('card:specialty')} value={props._source.specialty} />
             </Grid>
           </Grid>
-          <Grid item md={3} lg={3} container justify='center' direction='row'>
+          <Grid item md={3} lg={3} container justifyContent='center' direction='row'>
             <Grid item>
               <TextField disabled label={t('card:username')} value={props._source.email} />
             </Grid>

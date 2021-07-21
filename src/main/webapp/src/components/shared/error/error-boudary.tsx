@@ -35,7 +35,7 @@ export default class ErrorBoundary extends Component<IErrorBoundaryProps,IErrorB
         ) : undefined;
       return (
         <React.Fragment>
-          <h1 className="error">Hey you agly developer</h1>
+          <h1 className="error">Hey, awful developer</h1>
           <h2 className="error">An unexpected error has occurred.</h2>
           {errorDetails}
         </React.Fragment>

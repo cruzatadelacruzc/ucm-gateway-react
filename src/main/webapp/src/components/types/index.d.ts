@@ -1,8 +1,5 @@
 import React from 'react';
 import { AxiosPromise } from 'axios';
-import {SearchActions} from "../module/directory/search-result.reducer";
-import {AuthActions} from "../shared/reducer/authenticate";
-import {GlobalsStateType} from "../shared/reducer";
 
 export interface IDirectoryProps {
   searchValue: string;
@@ -33,11 +30,5 @@ export declare type ICrudSearchAction<T> = (
   size?: number
 ) => AxiosPromise<IPayload<T>>;
 
-export type RootActionsType = SearchActions | AuthActions | GlobalsStateType;
-
-export interface ILogout{
-    idToken: string;
-    logoutUrl: string
-}
 
 export interface IErrorMessage{ message: string }

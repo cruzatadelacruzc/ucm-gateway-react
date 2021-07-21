@@ -1,21 +1,18 @@
+import React from 'react';
 import ErrorBoundary from '../error/error-boudary';
 import { Route, Redirect } from 'react-router-dom';
 import { RouteProps } from 'react-router-dom';
 import { Typography } from '@material-ui/core';
-import { AppContext } from '../../../config/context';
-import React, { useContext } from 'react';
 import {CONFIG} from "../../../config/constants";
+import {useSelector} from "react-redux";
+import {IRootState} from "../reducer";
 
 interface IPrivateRouteProps extends RouteProps {
   hasAnyAuthorities?: string[];
 }
 
 const PrivateRoute = ({ component: Component, hasAnyAuthorities = [], ...rest }: IPrivateRouteProps) => {
-  const {
-    states: {
-      authentication: { isAuthenticated, sessionHasBeenFetched, account },
-    },
-  } = useContext(AppContext);
+  const {isAuthenticated, sessionHasBeenFetched, account } = useSelector((states: IRootState) => states.auth);
 
   if (!Component) throw new Error(`A component needs to be specified for private route for path ${(rest as any).path}`);
 

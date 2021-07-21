@@ -1,17 +1,18 @@
 import AppRouter from './routes';
-import React, {useEffect, useContext} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {CssBaseline} from '@material-ui/core';
 import {BrowserRouter} from 'react-router-dom';
 import ErrorBoundary from './components/shared/error/error-boudary';
 import './config/i18n';
-import {AppContext} from './config/context';
 import {getSession} from "./components/shared/reducer/authenticate";
+import {useDispatch} from "react-redux";
 
 export default function App() {
-    const {dispatch} = useContext(AppContext);
+    const dispatch = useDispatch();
+    const fetchSession = useCallback(() => dispatch(getSession()), [dispatch]);
     useEffect(() => {
-        dispatch(getSession())
-    }, []);
+        fetchSession()
+    }, [fetchSession]);
 
     return (
         <BrowserRouter>

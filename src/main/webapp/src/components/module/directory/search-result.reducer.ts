@@ -1,4 +1,4 @@
-import {ActionMap, ICrudSearchAction, RootActionsType} from '../../types';
+import {ActionMap, ICrudSearchAction} from '../../types';
 import { ISearchResultPerson, defaultValue as personDefaultValue } from '../../shared/models/search-result-person.model';
 import { ISearchResultWorkPlace, defaultValue as workplaceDefaultValue } from '../../shared/models/search-result-workplace.model';
 import { ISearchResultPhone, defaultValue as phoneDefaultValue } from '../../shared/models/search-result-phone.model';
@@ -17,7 +17,7 @@ export const initialState = {
   resultPhone: phoneDefaultValue,
 };
 
-export type SearchType = Readonly<typeof initialState>;
+export type SearchStateType = Readonly<typeof initialState>;
 
 type SearchPayloadType = {
   [ACTION_TYPES.SEARCH_PERSON]: ISearchResultPerson;
@@ -28,7 +28,7 @@ type SearchPayloadType = {
 export type SearchActions = ActionMap<SearchPayloadType>[keyof ActionMap<SearchPayloadType>];
 
 // Reducer
-const searchReducer = function (state: SearchType = initialState, action: RootActionsType): SearchType {
+const searchReducer = (state: SearchStateType = initialState, action: SearchActions): SearchStateType => {
   switch (action.type) {
     case ACTION_TYPES.SEARCH_PERSON:
       return {

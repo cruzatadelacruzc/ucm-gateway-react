@@ -1,20 +1,21 @@
-import {ActionMap, IErrorMessage, ILogout, RootActionsType} from '../../types';
 import axios from 'axios';
 import {IUser} from "../models/user.model";
+import {FAILURE, REQUEST, SUCCESS} from "./action-type.util";
+import {AnyAction} from "redux";
 
-
-
-export enum ACTION_TYPES {
-  GET_SESSION = 'authentication/GET_SESSION',
-  LOGOUT = 'authentication/LOGOUT',
-  CLEAR_AUTH = 'authentication/CLEAR_AUTH',
-  ERROR_MESSAGE = 'authentication/ERROR_MESSAGE',
-  REQUEST = "authentication/GET_SESSION_PENDING",
-  SUCCESS = "authentication/GET_SESSION_FULFILLED",
-  FAILURE = "authentication/GET_SESSION_REJECTED",
+export interface ILogout{
+  idToken: string;
+  logoutUrl: string
 }
 
-export const initialState = {
+export const ACTION_TYPES = {
+  GET_SESSION: 'authentication/GET_SESSION',
+  LOGOUT: 'authentication/LOGOUT',
+  CLEAR_AUTH: 'authentication/CLEAR_AUTH',
+  ERROR_MESSAGE: 'authentication/ERROR_MESSAGE',
+};
+
+const initialState = {
   loading: false,
   isAuthenticated: false,
   account: {} as any,
@@ -25,21 +26,17 @@ export const initialState = {
   logoutUrl: null as unknown as string,
 };
 
-export type AuthType = Readonly<typeof initialState>;
-
-type AuthenticatePayloadType = {
-  [ACTION_TYPES.GET_SESSION]: IUser;
-  [ACTION_TYPES.LOGOUT]: ILogout;
-  [ACTION_TYPES.CLEAR_AUTH];
-  [ACTION_TYPES.ERROR_MESSAGE]: IErrorMessage;
-};
-
-export type AuthActions = ActionMap<AuthenticatePayloadType>[keyof ActionMap<AuthenticatePayloadType>];
+export type AuthStateType = Readonly<typeof initialState>;
 
 // Reducer
-const authReducer = function (state: AuthType = initialState, action: RootActionsType): AuthType {
+const authReducer = function (state: AuthStateType = initialState, action: AnyAction): AuthStateType {
   switch (action.type) {
-    case ACTION_TYPES.FAILURE:
+    case REQUEST(ACTION_TYPES.GET_SESSION):
+      return {
+        ...state,
+        loading: true,
+      };
+    case FAILURE(ACTION_TYPES.GET_SESSION):
       return {
         ...state,
         loading: false,
@@ -47,26 +44,26 @@ const authReducer = function (state: AuthType = initialState, action: RootAction
         sessionHasBeenFetched: true,
         errorMessage: action.payload,
       };
-    case ACTION_TYPES.GET_SESSION: {
-      const isAuthenticated = action.payload && action.payload.activated;
+    case SUCCESS(ACTION_TYPES.GET_SESSION): {
+      const isAuthenticated = action.payload && action.payload.data && action.payload.data.activated;
       return {
         ...state,
         isAuthenticated,
         loading: false,
         sessionHasBeenFetched: true,
-        account: action.payload
+        account: action.payload.data
       };
     }
-    case ACTION_TYPES.LOGOUT:
+    case SUCCESS(ACTION_TYPES.LOGOUT):
       return {
         ...initialState,
-        idToken: action.payload.idToken,
-        logoutUrl: action.payload.logoutUrl,
+        idToken: action.payload.data.idToken,
+        logoutUrl: action.payload.data.logoutUrl,
       };
     case ACTION_TYPES.ERROR_MESSAGE:
       return {
         ...state,
-        redirectMessage: action.payload,
+        redirectMessage: action.message,
       };
     case ACTION_TYPES.CLEAR_AUTH:
       return {
@@ -75,15 +72,14 @@ const authReducer = function (state: AuthType = initialState, action: RootAction
         isAuthenticated: false,
       };
     default:
-      return initialState;
+      return state;
   }
 };
 
-export const getSession = () => async (dispatch, getState) => {
-   const { data } = await axios.get<IUser>('api/account');
-  dispatch({
+export const getSession: () => void = () => async (dispatch, getState) => {
+  await dispatch({
     type: ACTION_TYPES.GET_SESSION,
-    payload: data
+    payload: axios.get<IUser>('api/account')
   });
 
   /* const { account } = getState().authentication;
@@ -93,17 +89,16 @@ export const getSession = () => async (dispatch, getState) => {
   } */
 };
 
-export const logout = () => async dispatch => {
-  const {data} = await axios.post<ILogout>('api/logout', {})
-   dispatch({
+export const logout: () => void = () => async dispatch => {
+  await dispatch({
     type: ACTION_TYPES.LOGOUT,
-    payload: data,
+    payload: axios.post<ILogout>('api/logout', {}),
   });
 }
 
 export const displayAuthError = message => ({ type: ACTION_TYPES.ERROR_MESSAGE, payload: message });
 
-export const clearAuthentication = (messageKey: string, dispatch) => {
+export const clearAuthentication = (messageKey: string) => dispatch => {
   dispatch(displayAuthError(messageKey));
   dispatch({
     type: ACTION_TYPES.CLEAR_AUTH,

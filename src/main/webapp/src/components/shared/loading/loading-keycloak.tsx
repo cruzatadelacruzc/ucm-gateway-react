@@ -1,5 +1,6 @@
 import { Backdrop, CircularProgress } from '@material-ui/core';
 import { KCLoadingStyles } from './style';
+import React from "react";
 
 export const LoadingKeycloak = (open: boolean) => {
   const classes = KCLoadingStyles();

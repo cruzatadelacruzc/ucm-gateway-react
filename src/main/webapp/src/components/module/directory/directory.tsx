@@ -1,4 +1,4 @@
-import React, { useState, Fragment, ChangeEvent, FormEvent, useContext } from 'react';
+import React, { useState, Fragment, ChangeEvent, FormEvent } from 'react';
 import Header from './header';
 import { Tabs, Tab, Grid, Container, Typography } from '@material-ui/core';
 import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
@@ -7,17 +7,16 @@ import PersonIcon from '@material-ui/icons/Person';
 import CardPerson from './card-person';
 import { IDirectoryProps } from '../../types';
 import { getSearchPerson, getSearchPhone, getSearchWorkPlace } from './search-result.reducer';
-import { AppContext } from '../../../config/context';
 import { useTranslation } from 'react-i18next';
+import {useDispatch, useSelector} from "react-redux";
+import {IRootState} from "../../shared/reducer";
 
 export default function Directory() {
   const { t } = useTranslation(['directory']);
   const [tabValue, setTabValue] = useState<number>(0);
   const [searchValue, setSearchValue] = useState<string>('Cesar');
-  const {
-    states: { searchResult },
-    dispatch,
-  } = useContext(AppContext);
+  const { search } = useSelector((states: IRootState) => states);
+  const dispatch = useDispatch();
 
   const handleTabChange = (event: ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue);
@@ -59,19 +58,19 @@ export default function Directory() {
               <Tab label={t('directory:tab.workplaces')} icon={<HomeWorkIcon />} />
             </Tabs>
           </Grid>
-          {searchResult.resultPerson.total > 0 ? (
+          {search.resultPerson.total > 0 ? (
             <Grid xs={12} container spacing={3} item>
               <Grid item xs={12}>
                 <Typography variant='subtitle2' display='inline' gutterBottom>
                   {t('directory:result_announce', {
-                    count: searchResult.resultPerson.total,
-                    second: searchResult.resultPerson.took / 1000,
-                    quality: searchResult.resultPerson.max_score,
+                    count: search.resultPerson.total,
+                    second: search.resultPerson.took / 1000,
+                    quality: search.resultPerson.max_score,
                   })}
                 </Typography>
               </Grid>
-              {searchResult.resultPerson.total > 0 ? (
-                searchResult.resultPerson.hits.map((card, index) => (
+              {search.resultPerson.total > 0 ? (
+                search.resultPerson.hits.map((card, index) => (
                   <Grid key={index} item xs={12}>
                     <CardPerson {...card} />
                   </Grid>
