@@ -1,0 +1,7 @@
+{
+  "notify.admin": "Notify administrator",
+  "server.not.reachable": "Server not reachable",
+  "unknown": "Unknown error",
+  "url.not.found": "Not found",
+  "no.response": "No server response"
+}

@@ -1,0 +1,7 @@
+{
+  "notify.admin": "Avisar al administrador",
+  "server.not.reachable": "Servidor inaccesible",
+  "unknown": "Error desconocido",
+  "url.not.found": "No existe",
+  "no.response": "Sin respuesta del servidor"
+}
