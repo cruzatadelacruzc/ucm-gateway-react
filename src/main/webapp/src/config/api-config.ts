@@ -1,5 +1,7 @@
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
 import {CONFIG} from './constants';
+import toast from '../components/shared/notification-snackbar.util'
+import i18n from './i18n';
 
 const TIMEOUT = 60 * 1000;
 
@@ -11,6 +13,26 @@ export const httpES = axios.create({
         password: CONFIG.ES_PASSWORD || 'elastic',
     },
 });
+
+httpES.interceptors.response.use(config => config, (error: AxiosError) => {
+    const fullResponse: (msg: string) => string = (msg: string) => `${msg} [${i18n.t("error:notify.admin")}]`
+    if (error.response) {
+        toast.error(fullResponse(error.response.data));
+        /* eslint-disable no-console */
+        console.error(`Status code: ${error.response.status}`)
+        console.error(`Headers ${error.response.headers}`)
+    } else if (error.request) {
+        toast.error(fullResponse(`Something was wrong: ${error.message}`))
+        /* eslint-disable no-console */
+        console.error(`Something was wrong: ${error.message}`)
+    } else {
+        toast.error(fullResponse(i18n.t("error:no.response")))
+        /* eslint-disable no-console */
+        console.error(`Request: ${error.request}`)
+    }
+    return Promise.reject(error);
+})
+
 
 axios.defaults.timeout = TIMEOUT;
 // The root URL for API calls, ending with a '/' - for example: `"https://www.ucm.sld.cu:8081/myservice/"`.
