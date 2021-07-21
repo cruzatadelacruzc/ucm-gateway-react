@@ -3,8 +3,8 @@
   "version": "0.0.1-SNAPSHOT",
   "description": "Description for Gateway",
   "scripts": {
-    "start": "cd src/main/app && npm start",
-    "test": "cd src/main/app && npm test"
+    "start": "cd src/main/webapp && npm start",
+    "test": "cd src/main/webapp && npm test"
   },
   "author": "Cesar Manuel Cruzata De la Cruz",
   "license": "UNLICENSED"
