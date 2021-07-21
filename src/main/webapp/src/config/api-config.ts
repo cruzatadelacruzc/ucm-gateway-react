@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {CONFIG} from './constants';
-import {clearAuthentication} from "../components/shared/reducer/authenticate";
 
 const TIMEOUT = 60 * 1000;
 
@@ -14,10 +13,14 @@ export const httpES = axios.create({
 });
 
 axios.defaults.timeout = TIMEOUT;
+// The root URL for API calls, ending with a '/' - for example: `"https://www.ucm.sld.cu:8081/myservice/"`.
+// If this URL is left empty (""), then it will be relative to the current context.
+// If you use an API server, in `prod` mode, you will need to enable CORS
+// (see the `application.cors` common property in the `application-*.yml` configurations)
 axios.defaults.baseURL = CONFIG.SERVER_API_URL;
 
 
-const setupAxiosInterceptors = dispatch => {
+const setupAxiosInterceptors = onUnauthenticated => {
     const onRequestSuccess = config => {
         return config;
     };
@@ -27,7 +30,7 @@ const setupAxiosInterceptors = dispatch => {
     const onResponseError = err => {
         const status = err.status || (err.response ? err.response.status : 0);
         if (status === 403 || status === 401) {
-            clearAuthentication("login.error.unauthorized", dispatch);
+            onUnauthenticated();
         }
         return Promise.reject(err);
     };
