@@ -62,13 +62,13 @@ const authReducer = function (state: AuthStateType = initialState, action: AnyAc
       };
     case ACTION_TYPES.ERROR_MESSAGE:
       return {
-        ...state,
+        ...initialState,
         redirectMessage: action.message,
       };
     case ACTION_TYPES.CLEAR_AUTH:
       return {
         ...state,
-        loading: true,
+        loading: false,
         isAuthenticated: false,
       };
     default:
