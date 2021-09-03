@@ -1,27 +1,37 @@
+import './config/i18n';
 import AppRouter from './routes';
-import React, {useCallback, useEffect} from 'react';
+import defaultTheme from "./theme";
+import {useDispatch} from "react-redux";
+import {SnackbarProvider} from "notistack";
 import {CssBaseline} from '@material-ui/core';
 import {BrowserRouter} from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {ThemeProvider} from "@material-ui/core/styles";
 import ErrorBoundary from './components/shared/error/error-boudary';
-import './config/i18n';
 import {getSession} from "./components/shared/reducer/authenticate";
-import {useDispatch} from "react-redux";
+import {SnackbarUtilsConfigurator} from "./components/shared/notification-snackbar.util";
 
 export default function App() {
     const dispatch = useDispatch();
-    const fetchSession = useCallback(() => dispatch(getSession()), [dispatch]);
     useEffect(() => {
-        fetchSession()
-    }, [fetchSession]);
+        dispatch(getSession())
+    }, [dispatch]);
 
     return (
         <BrowserRouter>
-            <CssBaseline/>
-            <div style={{flexGrow: 1}}>
-                <ErrorBoundary>
-                    <AppRouter/>
-                </ErrorBoundary>
-            </div>
+            <ThemeProvider theme={defaultTheme}>
+                <SnackbarProvider preventDuplicate={true} autoHideDuration={8000}
+                                  anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+                >
+                    <SnackbarUtilsConfigurator/>
+                    <CssBaseline/>
+                    <div style={{flexGrow: 1}}>
+                        <ErrorBoundary>
+                            <AppRouter/>
+                        </ErrorBoundary>
+                    </div>
+                </SnackbarProvider>
+            </ThemeProvider>
         </BrowserRouter>
     );
 }
