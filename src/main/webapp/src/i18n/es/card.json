@@ -12,5 +12,7 @@
   "username": "Usuario",
   "students": "Estudiante",
   "employees": "Trabajador",
-  "date_format": "DD [de] MMM [de] YYYY"
+  "date_format": "D [de] MMM [de] YYYY",
+  "description": "Descripción",
+  "email": "Correo"
 }

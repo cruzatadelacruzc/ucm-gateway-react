@@ -12,5 +12,7 @@
   "username": "Username",
   "students": "Student",
   "employees": "Employee",
-  "date_format": "MMM D, YYYY"
+  "date_format": "MMM D, YYYY",
+  "description": "Description",
+  "email": "Email"
 }
