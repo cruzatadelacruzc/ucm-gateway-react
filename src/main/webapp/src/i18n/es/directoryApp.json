@@ -1,0 +1,27 @@
+{
+  "Nomenclature": {
+    "created": "Un nuevo Nomenclador ha sido creado identificado con: {{ param }}",
+    "updated": "Un Nomenclador ha sido actualizado identificado con: {{ param }}",
+    "deleted": "Un Nomenclador ha sido eliminado identificado con: {{ param }}"
+  },
+  "Employee": {
+    "created": "Un nuevo Trabajador ha sido creado identificado con: {{ param }}",
+    "updated": "Un Trabajador ha sido actualizado identificado con: {{ param }}",
+    "deleted": "Un Trabajador ha sido eliminado identificado con: {{ param }}"
+  },
+  "Phone": {
+    "created": "Un nuevo Número Teléfonico ha sido creado identificado con: {{ param }}",
+    "updated": "Un Número Teléfonico ha sido actualizado identificado con: {{ param }}",
+    "deleted": "Un Número Teléfonico ha sido eliminado identificado con: {{ param }}"
+  },
+  "Student": {
+    "created": "Un nuevo Estudiante ha sido creado identificado con: {{ param }}",
+    "updated": "Un Estudiante ha sido actualizado identificado con: {{ param }}",
+    "deleted": "Un Estudiante ha sido eliminado identificado con: {{ param }}"
+  },
+  "WorkPlace": {
+    "created": "Una nueva Área de Trabajo ha sido creado identificado con: {{ param }}",
+    "updated": "Una Área de Trabajo ha sido actualizado identificado con: {{ param }}",
+    "deleted": "Una Área de Trabajo ha sido eliminado identificado con: {{ param }}"
+  }
+}
