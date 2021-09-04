@@ -2,6 +2,39 @@
   "notify.admin": "Notify administrator",
   "server.not.reachable": "Server not reachable",
   "unknown": "Unknown error",
-  "url.not.found": "Not found",
-  "no.response": "No server response"
+  "url.not.found": "Resource [{{ path }}] not found",
+  "no.response": "No server response",
+  "login": {
+    "unauthorized": "You are not authorized"
+  },
+  "title": "Error page!",
+  "http": {
+    "400": "Bad request.",
+    "403": "You are not authorized to access this page.",
+    "404": "The page does not exist.",
+    "405": "The HTTP verb you used is not supported for this URL.",
+    "500": "Internal server error.",
+    "503": "Unable service. Notify administrator!"
+  },
+  "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
+  "validation": "Validation error on the server.",
+  "idexists": "A new {{ name }} cannot already have an ID",
+  "nomenclatureexists": "Nomenclature {{ name }} already exists!",
+  "NotBlank": "Field {{ name }} cannot be blank!",
+  "Size": "Field {{ name }} does not meet min/max size requirements!",
+  "NotNull": "Field {{ fieldName }} cannot be empty!",
+  "form": {
+    "required": "This field is required type something.",
+    "minlength": "This field is required to be at least {{ min }} characters.",
+    "maxlength": "This field cannot be longer than {{ max }} characters.",
+    "pattern": "This field should follow pattern for {{ pattern }}.",
+    "number": "This field should be a number.",
+    "min": "This field should be at least {{ min }}.",
+    "max": "This field cannot be more than {{ max }}.",
+    "email": "Your email is invalid."
+  },
+  "Pattern": "Field {{ name }} provided is malformed",
+  "Email": "Field {{ name }} is invalid.",
+  "badoperatorjoin": "Wrong Logical operator {{ param }}",
+  "enddategt": "End Date {{param}} cannot be greater than Start Date"
 }

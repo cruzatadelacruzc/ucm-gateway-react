@@ -2,6 +2,39 @@
   "notify.admin": "Avisar al administrador",
   "server.not.reachable": "Servidor inaccesible",
   "unknown": "Error desconocido",
-  "url.not.found": "No existe",
-  "no.response": "Sin respuesta del servidor"
+  "url.not.found": "Recurso [{{ path }}] no existe",
+  "no.response": "Sin respuesta del servidor",
+  "login": {
+    "unauthorized": "No estás authorizado"
+  },
+  "title": "¡Página de error!",
+  "http": {
+    "400": "Solicitud incorrecta.",
+    "403": "No tiene permisos para acceder a la página.",
+    "404": "La página no existe.",
+    "405": "El verbo HTTP utilizado no tiene soporte para este URL.",
+    "500": "Error interno del servidor.",
+    "503": "Servicio no disponible. Avisar al administrador!"
+  },
+  "concurrencyFailure": "Otro usuario ha modificado estos datos al mismo tiempo que tú. Tus cambios fueron rechazados.",
+  "validation": "Error de validación en el servidor.",
+  "idexists": "Un(a) nuevo(a) {{ name }} no puede tener ID",
+  "nomenclatureexists": "¡El nomenclador {{ name }} ya existe!",
+  "NotBlank": "¡El campo {{name}} no puede estar en blanco!",
+  "Size": "¡El campo {{name}} no cumple con los requisitos de tamaño mínimo/máximo!",
+  "NotNull": "El campo {{ fieldName }} no puede ser vacío!",
+  "form": {
+    "required": "Este campo es obligatorio escribir algo.",
+    "minlength": "Este campo requiere al menos {{min}} caracteres.",
+    "maxlength": "Este campo no puede superar más de {{max}} caracteres.",
+    "pattern": "Este campo debe seguir el patrón {{pattern}}.",
+    "number": "Este campo debe ser un número.",
+    "min": "Este campo debe ser mayor que {{min}}.",
+    "max": "Este campo no puede ser mayor que {{max}}.",
+    "email": "Su correo electrónico no es válido."
+  },
+  "Pattern": "El campo {{ name }} posee un formato incorrecto.",
+  "Email": "El campo {{ name }} es inválido.",
+  "badoperatorjoin": "Operador logico de union {{ param }} incorrecto.",
+  "enddategt": "Fecha final {{ param }} no puede ser mayor que Fecha final"
 }
