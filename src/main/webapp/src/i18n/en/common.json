@@ -3,5 +3,30 @@
   "accept": "Accept",
   "log_out": "Log out",
   "log_in": "Log in",
-  "anonymous": "Anonymous"
+  "options": "Options",
+  "show": "Show",
+  "anonymous": "Anonymous",
+  "dashboard": "Dashboard",
+  "directory": "Directory",
+  "entities": {
+    "directoryEmployee": "Employee",
+    "directoryNomenclature": "Nomenclature",
+    "directoryPhone": "Phone",
+    "directoryStudent": "Student",
+    "directoryWorkPlace": "WorkPlace"
+  },
+  "add": "Add",
+  "edit": "Edit",
+  "copy": "Copy",
+  "delete": "Delete",
+  "print": "Print",
+  "cancel": "Cancel",
+  "date_format": "MMM D, YYYY",
+  "submit": "Submit",
+  "select": "--Select--",
+  "logout_ok": "Logged out successfully!",
+  "unauthorized_page": "You are not authorized to access this page.",
+  "notfound_page": "Page Not Found",
+  "notfound_exp_page": "Sorry, but the page you were trying to view does not exist.",
+  "empty": "Empty"
 }

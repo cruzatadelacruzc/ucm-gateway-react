@@ -3,5 +3,30 @@
   "accept": "Aceptar",
   "log_out": "Salir",
   "log_in": "Entrar",
-  "anonymous": "Anónimo"
+  "options": "Opciones",
+  "show": "Mostrar",
+  "anonymous": "Anónimo",
+  "dashboard": "Tablero",
+  "directory": "Directorio",
+  "entities": {
+    "directoryEmployee": "Trabajador",
+    "directoryNomenclature": "Nomenclador",
+    "directoryPhone": "Teléfono",
+    "directoryStudent": "Estudiante",
+    "directoryWorkPlace": "Áreas laborales"
+  },
+  "add": "Adicionar",
+  "edit": "Editar",
+  "copy": "Copiar",
+  "delete": "Eliminar",
+  "print": "Imprimir",
+  "cancel": "Cancelar",
+  "date_format": "D MMM YYYY",
+  "submit": "Enviar",
+  "select": "--Selecionar--",
+  "logout_ok": "Seccion cerrada exitosamente!",
+  "unauthorized_page": "Usted no está authorizado a acceder a esta pagina",
+  "notfound_page": "Pagína no encontrada",
+  "notfound_exp_page": "Lo sentimos, pero la página que intentaste ver no existe.",
+  "empty": "Vacío"
 }
