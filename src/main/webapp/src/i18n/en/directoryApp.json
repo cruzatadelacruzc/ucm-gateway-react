@@ -1,8 +1,8 @@
 {
   "Nomenclature": {
     "created": "A new Nomenclature identified with {{ param }} has been created",
-    "updated": "A Nomenclature has been create identified with {{ param }}",
-    "deleted": "A Nomenclature has been create identified with {{ param }}"
+    "updated": "A Nomenclature  identified with {{ param }} has been updated",
+    "deleted": "A Nomenclature identified with {{ param }} has been deleted"
   },
   "Employee": {
     "created": "A new Employee identified with {{ param }} has been created",
