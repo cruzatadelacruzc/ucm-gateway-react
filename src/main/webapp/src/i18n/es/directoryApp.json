@@ -1,27 +1,27 @@
 {
   "Nomenclature": {
-    "created": "Un nuevo Nomenclador ha sido creado identificado con: {{ param }}",
-    "updated": "Un Nomenclador ha sido actualizado identificado con: {{ param }}",
-    "deleted": "Un Nomenclador ha sido eliminado identificado con: {{ param }}"
+    "created": "Un nuevo Nomenclador identificado con: {{ param }} ha sido creado",
+    "updated": "Un Nomenclador identificado con: {{ param }} ha sido actualizado",
+    "deleted": "Un Nomenclador identificado con: {{ param }} ha sido eliminado"
   },
   "Employee": {
-    "created": "Un nuevo Trabajador ha sido creado identificado con: {{ param }}",
-    "updated": "Un Trabajador ha sido actualizado identificado con: {{ param }}",
-    "deleted": "Un Trabajador ha sido eliminado identificado con: {{ param }}"
+    "created": "Un nuevo Trabajador identificado con: {{ param }} ha sido creado",
+    "updated": "Un Trabajador identificado con: {{ param }} ha sido actualizado",
+    "deleted": "Un Trabajador identificado con: {{ param }} ha sido eliminado"
   },
   "Phone": {
-    "created": "Un nuevo Número Teléfonico ha sido creado identificado con: {{ param }}",
-    "updated": "Un Número Teléfonico ha sido actualizado identificado con: {{ param }}",
-    "deleted": "Un Número Teléfonico ha sido eliminado identificado con: {{ param }}"
+    "created": "Un nuevo Número Teléfonico identificado con: {{ param }} ha sido creado",
+    "updated": "Un Número Teléfonico identificado con: {{ param }} ha sido actualizado",
+    "deleted": "Un Número Teléfonico identificado con: {{ param }} ha sido eliminado"
   },
   "Student": {
-    "created": "Un nuevo Estudiante ha sido creado identificado con: {{ param }}",
-    "updated": "Un Estudiante ha sido actualizado identificado con: {{ param }}",
-    "deleted": "Un Estudiante ha sido eliminado identificado con: {{ param }}"
+    "created": "Un nuevo Estudiante identificado con: {{ param }} ha sido creado",
+    "updated": "Un Estudiante identificado con: {{ param }} ha sido actualizado",
+    "deleted": "Un Estudiante identificado con: {{ param }} ha sido eliminado"
   },
   "WorkPlace": {
-    "created": "Una nueva Área de Trabajo ha sido creado identificado con: {{ param }}",
-    "updated": "Una Área de Trabajo ha sido actualizado identificado con: {{ param }}",
-    "deleted": "Una Área de Trabajo ha sido eliminado identificado con: {{ param }}"
+    "created": "Una nueva Área de Trabajo identificado con: {{ param }} ha sido creado",
+    "updated": "Una Área de Trabajo identificado con: {{ param }} ha sido actualizado",
+    "deleted": "Una Área de Trabajo identificado con: {{ param }} ha sido eliminado"
   }
 }

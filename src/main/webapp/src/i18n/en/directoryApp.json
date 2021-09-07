@@ -1,27 +1,27 @@
 {
   "Nomenclature": {
-    "created": "A new Nomenclature has been create identified with {{ param }}",
+    "created": "A new Nomenclature identified with {{ param }} has been created",
     "updated": "A Nomenclature has been create identified with {{ param }}",
     "deleted": "A Nomenclature has been create identified with {{ param }}"
   },
   "Employee": {
-    "created": "A new Employee has been create identified with {{ param }}",
-    "updated": "A Employee has been update identified with {{ param }}",
-    "deleted": "A Employee has been delete identified with {{ param }}"
+    "created": "A new Employee identified with {{ param }} has been created",
+    "updated": "A Employee identified with {{ param }} has been updated",
+    "deleted": "A Employee identified with {{ param }} has been deleted"
   },
   "Phone": {
-    "created": "A new Phone Number has been create identified with {{ param }}",
-    "updated": "A Phone Number has been update identified with {{ param }}",
-    "deleted": "A Phone Number has been delete identified with {{ param }}"
+    "created": "A new Phone Number identified with {{ param }} has been created",
+    "updated": "A Phone Number identified with {{ param }} has been updated",
+    "deleted": "A Phone Number identified with {{ param }} has been deleted"
   },
   "Student": {
-    "created": "A new Student has been create identified with {{ param }}",
-    "updated": "A Student has been update identified with {{ param }}",
-    "deleted": "A Student has been delete identified with {{ param }}"
+    "created": "A new Student identified with {{ param }} has been created",
+    "updated": "A Student identified with {{ param }} has been updated",
+    "deleted": "A Student identified with {{ param }} has been deleted"
   },
   "WorkPlace": {
-    "created": "A new WorkPlace has been create identified with {{ param }}",
-    "updated": "A WorkPlace has been update identified with {{ param }}",
-    "deleted": "A WorkPlace has been delete identified with {{ param }}"
+    "created": "A new WorkPlace identified with {{ param }} has been created",
+    "updated": "A WorkPlace identified with {{ param }} has been updated",
+    "deleted": "A WorkPlace identified with {{ param }} has been deleted"
   }
 }
