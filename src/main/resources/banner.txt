@@ -1,0 +1,8 @@
+${AnsiColor.RED}  ____       _
+${AnsiColor.RED} / ___| __ _| |_ _____      ____ _ _   _
+${AnsiColor.RED}| |  _ / _` | __/ _ \ \ /\ / / _` | | | |
+${AnsiColor.RED}| |_| | (_| | ||  __/\ V  V / (_| | |_| |
+${AnsiColor.RED} \____|\__,_|\__\___| \_/\_/ \__,_|\__, |
+${AnsiColor.RED}                                   |___/
+${AnsiColor.WHITE}=======================================
+${AnsiStyle.BOLD}${AnsiColor.BRIGHT_GREEN}:: Running Spring Boot ${spring-boot.version}
