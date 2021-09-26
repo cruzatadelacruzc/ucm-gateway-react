@@ -3,13 +3,10 @@ package sld.ucm.gateway.config;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.oauth2.client.InMemoryReactiveOAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.InMemoryReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
@@ -25,13 +22,12 @@ import static org.mockito.Mockito.mock;
 @TestConfiguration
 public class TestSecurityConfiguration {
 
-    private final ClientRegistration clientRegistration;
-
-    public TestSecurityConfiguration() {
-        this.clientRegistration = clientRegistration().build();
+    @Bean
+    ClientRegistration clientRegistration() {
+        return clientRegistrationBuilder().build();
     }
 
-    private ClientRegistration.Builder clientRegistration() {
+    private ClientRegistration.Builder clientRegistrationBuilder() {
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("end_session_endpoint", "https://ucm.infomed.sld.cu/logout");
 
@@ -53,7 +49,7 @@ public class TestSecurityConfiguration {
     }
 
     @Bean
-    ReactiveClientRegistrationRepository clientRegistrationRepository() {
+    ReactiveClientRegistrationRepository clientRegistrationRepository(ClientRegistration clientRegistration) {
         return new InMemoryReactiveClientRegistrationRepository(clientRegistration);
     }
 
@@ -67,12 +63,5 @@ public class TestSecurityConfiguration {
             ReactiveClientRegistrationRepository clientRegistrationRepository
     ) {
         return new InMemoryReactiveOAuth2AuthorizedClientService(clientRegistrationRepository);
-    }
-
-    @Bean
-    public OAuth2AuthorizedClientRepository authorizedClientRepository(
-            OAuth2AuthorizedClientService authorizedClientService
-    ) {
-        return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(authorizedClientService);
     }
 }
