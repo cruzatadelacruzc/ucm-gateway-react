@@ -5,22 +5,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.http.MediaType;
-import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import sld.ucm.gateway.IntegrationTest;
 import sld.ucm.gateway.security.AuthoritiesConstants;
-import sld.ucm.gateway.web.web.AccountResource;
 
-import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf;
-import static sld.ucm.gateway.web.rest.TestUtil.ID_TOKEN;
-
-import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf;
 import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.mockAuthentication;
+import static sld.ucm.gateway.web.rest.TestUtil.authenticationToken;
+import static sld.ucm.gateway.web.rest.TestUtil.registerAuthenticationToken;
 
 /**
  * Integration tests for the {@link AccountResource} REST controller.
@@ -31,24 +30,31 @@ import static org.springframework.security.test.web.reactive.server.SecurityMock
 @IntegrationTest
 public class AccountResourceIT {
 
-    private OidcIdToken idToken;
+    @Autowired
+    private ClientRegistration clientRegistration;
+
+    @Autowired
+    private ReactiveOAuth2AuthorizedClientService authorizedClientService;
+
+    private Map<String, Object> claims;
 
     @Autowired
     private WebTestClient webTestClient;
 
     @BeforeEach
     public void setup() {
-        Map<String, Object> claims = new HashMap<>();
+        claims = new HashMap<>();
         claims.put("groups", Collections.singletonList(AuthoritiesConstants.ADMIN));
         claims.put("sub", "lucas");
         claims.put("email", "lucas.cruzata@infomed.sld.cu");
-        this.idToken = new OidcIdToken(ID_TOKEN, Instant.now(), Instant.now().plusSeconds(60), claims);
     }
 
     @Test
     void testGetExistingAccount() {
         webTestClient
-                .mutateWith(mockAuthentication(TestUtil.authenticationToken(idToken)))
+                .mutateWith(
+                        mockAuthentication(registerAuthenticationToken(authorizedClientService, clientRegistration, authenticationToken(claims)))
+                )
                 .mutateWith(csrf())
                 .get()
                 .uri("/api/account")
@@ -59,12 +65,9 @@ public class AccountResourceIT {
                 .expectHeader()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .expectBody()
-                .jsonPath("$.login")
-                .isEqualTo("lucas")
-                .jsonPath("$.email")
-                .isEqualTo("lucas.cruzata@infomed.sld.cu")
-                .jsonPath("$.authorities")
-                .isEqualTo(AuthoritiesConstants.ADMIN);
+                .jsonPath("$.login").isEqualTo("lucas")
+                .jsonPath("$.email").isEqualTo("lucas.cruzata@infomed.sld.cu")
+                .jsonPath("$.authorities").isEqualTo(AuthoritiesConstants.ADMIN);
     }
 
     @Test
