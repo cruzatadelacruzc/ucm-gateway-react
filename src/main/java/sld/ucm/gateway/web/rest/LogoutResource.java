@@ -1,7 +1,5 @@
-package sld.ucm.gateway.web.web;
+package sld.ucm.gateway.web.rest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -21,7 +19,6 @@ import java.util.Map;
 @RestController
 public class LogoutResource {
     private final Mono<ClientRegistration> registration;
-    private static final Logger log = LoggerFactory.getLogger(LogoutResource.class);
 
     public LogoutResource(ReactiveClientRegistrationRepository registrations) {
         this.registration = registrations.findByRegistrationId("login-client");
