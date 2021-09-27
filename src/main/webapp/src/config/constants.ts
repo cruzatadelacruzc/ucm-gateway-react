@@ -20,3 +20,5 @@ export const AUTHORITIES = {
   ADMIN: 'ROLE_ADMIN',
   USER: 'ROLE_USER',
 };
+
+export const ITEMS_PER_PAGE = 20
