@@ -28,5 +28,6 @@
   "unauthorized_page": "Usted no está authorizado a acceder a esta pagina",
   "notfound_page": "Pagína no encontrada",
   "notfound_exp_page": "Lo sentimos, pero la página que intentaste ver no existe.",
-  "empty": "Vacío"
+  "empty": "Vacío",
+  "loading": "Cargando..."
 }
