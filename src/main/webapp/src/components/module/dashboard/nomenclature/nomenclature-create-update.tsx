@@ -53,7 +53,7 @@ const NomenclatureManage = (props: INomenclatureManageProps) => {
 
     React.useEffect(() => {
         if (open){
-            dispatch(getDistricts(DISCRIMINATOR.DISTRICT))
+            dispatch(getDistricts())
         }
     }, [open,dispatch])
 

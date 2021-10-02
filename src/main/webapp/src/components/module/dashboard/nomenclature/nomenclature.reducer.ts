@@ -1,14 +1,7 @@
 import axios from "axios";
 import {AnyAction} from "redux";
 import {cleanEntity} from "../../../shared/util/entity-util";
-import {
-    ICrudDeleteAction,
-    ICrudGetAction,
-    ICrudGetAllAction,
-    ICrudGetAllByParamAction,
-    ICrudPutAction,
-    ICrudSearchAction
-} from "../../../types";
+import {ICrudDeleteAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudSearchAction} from "../../../types";
 import {FAILURE, REQUEST, SUCCESS} from "../../../shared/reducer/action-type.util";
 import {defaultValue, DISCRIMINATOR, INomenclature} from "../../../shared/models/nomenclature.model";
 import {ITEMS_PER_PAGE} from "../../../../config/constants";
@@ -207,7 +200,7 @@ export const getNomenclature: ICrudGetAction<INomenclature> = id => async dispat
     })
 }
 
-export const getDistricts: ICrudGetAllByParamAction<INomenclature> = (param, page, size, sort) => async dispatch =>  {
+export const getDistricts: ICrudGetAllAction<INomenclature> = (page, size, sort) => async dispatch =>  {
     return await dispatch( {
         type: ACTION_TYPES.FETCH_NOMENCLATURE_DISTRICTS,
         payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.DISTRICT}${sort ? `&page=${page}&size=${size}&sort=${sort}` : '?unpaged=true'}`)
