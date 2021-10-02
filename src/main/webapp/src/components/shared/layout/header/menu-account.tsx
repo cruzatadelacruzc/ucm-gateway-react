@@ -1,39 +1,39 @@
-import React, { useState, Fragment, useEffect } from 'react';
-import { Avatar, Menu, MenuItem, IconButton, Typography, Link } from '@material-ui/core';
+import React from 'react';
+import {Link, Menu, MenuItem, Typography} from '@material-ui/core';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import MeetingRoomOutlinedIcon from '@material-ui/icons/MeetingRoomOutlined';
-import { headerStyles } from './style';
+import {headerStyles} from './style';
 import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
-import { REDIRECT_URL, getLoginUrl } from '../../shared/util/url-util';
-import { NavLink as RouterLink } from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
+import {NavLink as RouterLink} from 'react-router-dom';
 import {useSelector} from "react-redux";
-import {IRootState} from "../../shared/reducer";
+import {IRootState} from "../../reducer";
+import {getLoginUrl} from "../../util/url-util";
 
+export interface IHeaderMenuAccount {
+    anchorEl: HTMLElement | null,
+    menuId: string,
+    isMenuOpen: boolean,
+    handleMenuClose: () => void
+}
 
-export default function HeaderAccount() {
+export default function HeaderAccount(props: IHeaderMenuAccount) {
   const { isAuthenticated, account } = useSelector((states: IRootState) => states.auth);
-  const [profileMenu, setProfileMenu] = useState<(EventTarget & HTMLButtonElement) | null>(null);
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation();
   const classes = headerStyles();
-
-    useEffect(() => {
-        const redirectURL = localStorage.getItem(REDIRECT_URL);
-        if (redirectURL) {
-            window.localStorage.removeItem(REDIRECT_URL);
-            window.location.href = `${window.location.origin}${redirectURL}`;
-        }
-    });
 
     const PrivateMenu = function () {
         return(
             <div>
+                <MenuItem component={RouterLink} to={"/"} className={classNames(classes.profileMenuItem, classes.headerMenuItem)}>
+                    {t('common:directory')}
+                </MenuItem>
                 <MenuItem component={RouterLink} to={"/profile"} className={classNames(classes.profileMenuItem, classes.headerMenuItem)}>
                     <AccountCircleOutlinedIcon className={classes.profileMenuIcon} />
                     {t('common:profile')}
                 </MenuItem>
-                <MenuItem component={RouterLink} to={"/dashboard"} className={classNames(classes.profileMenuItem, classes.headerMenuItem)}>
-                    Dashboard
+                <MenuItem component={RouterLink} to={"/home"} className={classNames(classes.profileMenuItem, classes.headerMenuItem)}>
+                    {t('common:dashboard')}
                 </MenuItem>
             </div>
         )
@@ -51,15 +51,12 @@ export default function HeaderAccount() {
     }
 
   return (
-    <Fragment>
-      <IconButton aria-haspopup='true' aria-controls='profile-menu' onClick={e => setProfileMenu(e.currentTarget)}>
-        <Avatar alt='Cesar Manuel' src='/broken-image.jpg' className={classes.avatar} />
-      </IconButton>
+    <>
       <Menu
-        id='profile-menu'
-        open={Boolean(profileMenu)}
-        anchorEl={profileMenu}
-        onClose={() => setProfileMenu(null)}
+        id={props.menuId}
+        open={props.isMenuOpen}
+        anchorEl={props.anchorEl}
+        onClose={props.handleMenuClose}
         className={classes.headerMenu}
         classes={{ paper: classes.profileMenu }}
         disableAutoFocusItem
@@ -72,6 +69,6 @@ export default function HeaderAccount() {
         {isAuthenticated && <PrivateMenu/>}
        <LogInOut/>
       </Menu>
-    </Fragment>
+    </>
   );
 }
