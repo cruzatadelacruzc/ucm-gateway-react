@@ -1,34 +1,87 @@
-import React from 'react';
-import { AxiosPromise } from 'axios';
-
-export interface IDirectoryProps {
-  searchValue: string;
-  handleSearchValue: (e: React.ChangeEvent<{}>) => void;
-  startSearching: (event: React.FormEvent<HTMLFormElement>) => void;
-}
+import {AxiosPromise} from "axios";
 
 export type ActionMap<M extends { [index: string]: any }> = {
-  [Key in keyof M]: M[Key] extends undefined
-    ? {
-        type: Key;
-      }
-    : {
-        type: Key;
-        payload: M[Key];
-      };
+    [Key in keyof M]: M[Key] extends undefined
+        ? {
+            type: Key;
+        }
+        : {
+            type: Key;
+            payload: M[Key];
+        };
 };
 
 export interface IPayload<T> {
-  type: string;
-  payload: T;
+    type: string;
+    payload: AxiosPromise<T> | T;
+    meta?: any;
 }
 
+export type IPayloadResult<T> = ((
+     dispatch: any,
+     getState?: any
+    ) => IPayload<T> | Promise<IPayload<T>>);
+
 export declare type ICrudSearchAction<T> = (
-  search: string,
-  dispatch: Dispatch<any>,
-  from?: number,
-  size?: number
-) => AxiosPromise<IPayload<T>>;
+    search: string,
+    page?: number,
+    size?: number,
+    sort?: string
+) => IPayload<T> | ((dispatch: any) => AxiosPromise<IPayload<T>>)
 
+export declare type ICrudGetAllAction<T> = (
+    page?: number,
+    size?: number,
+    sort?: string
+) => IPayload<T> | ((dispatch: any) =>  AxiosPromise<IPayload<T>>);
 
-export interface IErrorMessage{ message: string }
+export declare type ICrudGetAllByParamAction<T> = (
+    param: string,
+    page?: number,
+    size?: number,
+    sort?: string
+) => IPayload<T> | ((dispatch: any) =>  AxiosPromise<IPayload<T>>);
+
+export declare type ICrudGetAction<T> = (
+    id: string | number,
+) => IPayload<T> | ((dispatch: any) =>  AxiosPromise<IPayload<T>>);
+
+export declare type ICrudPutAction<T> = (
+    data?: T
+) => IPayload<T> | IPayloadResult<T>;
+
+export declare type ICrudDeleteAction<T> = (
+    id?: string | number
+) => IPayload<T> | IPayloadResult<T> | null;
+
+export interface ICustomToolbarSelectProps {
+    components: { TableToolbarSelect: (props) => void }
+    displayData: [{ data: Array<any>, dataIndex: number }],
+    onRowsDelete: () => void,
+    options: {}
+    selectRowUpdate: (e, i) => void
+    selectedRows: { lookup: { dataIndex: boolean }, data: Array<{ index: number, dataIndex: number }> }
+}
+
+export interface ITableState {
+    activeColumn: null | string
+    announceText: null | string
+    columnOrder: Array<number>
+    columns: Array<{ name: string, label?: string, options?: {} }>
+    count: number
+    data: Array<any>
+    displayData: Array<any>
+    expandedRows: { lookup: { dataIndex: boolean }, data: Array<{ index: number, dataIndex: number }> }
+    filterData: Array<Array<any>>
+    filterList: Array<Array<any>>
+    page: number
+    previousSelectedRow: null| string
+    rowsPerPage: number
+    rowsPerPageOptions: Array<number>
+    searchProps: {}
+    searchText: null | string
+    selectedRows: { lookup: { dataIndex: boolean }, data: Array<{ index: number, dataIndex: number }> }
+    showResponsive: boolean
+    sortOrder: { name: string, direction: string }
+}
+
