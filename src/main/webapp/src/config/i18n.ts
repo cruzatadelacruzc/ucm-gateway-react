@@ -11,19 +11,41 @@ import common_en from '../i18n/en/common.json';
 import common_es from '../i18n/es/common.json';
 import error_en from '../i18n/en/error.json';
 import error_es from '../i18n/es/error.json';
+import nomenclature_en from '../i18n/en/nomenclature.json'
+import nomenclature_es from '../i18n/es/nomenclature.json'
+import datatable_es from '../i18n/es/datatable.json'
+import datatable_en from '../i18n/en/datatable.json'
 
 i18n
-  .use(initReactI18next)
-  .use(LanguageDetector)
-  .init({
-    debug: process.env.NODE_ENV === 'development',
-    fallbackLng: 'es',
-    defaultNS: 'directory',
-    ns: ['card', 'directory', 'header', 'common', 'error'],
-    resources: {
-      en: { card: card_en, directory: directory_en, header: header_en, common: common_en, error: error_en },
-      es: { card: card_es, directory: directory_es, header: header_es, common: common_es, error: error_es },
-    },
-  });
+    .use(initReactI18next)
+    .use(LanguageDetector)
+    .init({
+        debug: process.env.NODE_ENV === 'development',
+        fallbackLng: 'es',
+        defaultNS: 'directory',
+        ns: ['card', 'directory', 'header', 'common', 'error', "nomenclature", "directoryApp", "datatable"],
+        resources: {
+            en: {
+                card: card_en,
+                error: error_en,
+                header: header_en,
+                common: common_en,
+                datatable: datatable_en,
+                directory: directory_en,
+                nomenclature: nomenclature_en,
+
+            },
+            es: {
+                card: card_es,
+                error: error_es,
+                header: header_es,
+                common: common_es,
+                datatable: datatable_es,
+                directory: directory_es,
+                nomenclature: nomenclature_es,
+
+            },
+        },
+    });
 
 export default i18n;

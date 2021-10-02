@@ -1,0 +1,26 @@
+{
+  "title": {
+    "manage":  "Manage nomenclature",
+    "list": "Nomenclatures list"
+  },
+  "parentDistrict": "Parent district",
+  "description": "Description",
+  "name": "Name",
+  "discriminator": "Discriminator",
+  "charge" : "CHARGE",
+  "category": "CATEGORY",
+  "teaching_category" : "TEACHING_CATEGORY",
+  "study_center" :"STUDY_CENTER",
+  "district" : "DISTRICT",
+  "specialty": "SPECIALTY",
+  "scientific_degree":  "SCIENTIFIC_DEGREE",
+  "profession": "PROFESSION",
+  "kind": "KIND",
+  "delete": {
+    "title": "Delete nomenclature",
+    "question": "Are you sure you want to delete Nomenclature {{ param }}?"
+  },
+  "detail": {
+    "title": "Nomenclature details"
+  }
+}

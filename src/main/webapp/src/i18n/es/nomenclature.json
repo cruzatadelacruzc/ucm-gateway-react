@@ -1,0 +1,26 @@
+{
+  "title": {
+    "manage":  "Gestionar nomenclador",
+    "list": "Listado de nomencladores"
+  },
+  "parentDistrict": "Distrito padre",
+  "description": "Descripción",
+  "name": "Nombre",
+  "discriminator": "Discriminador",
+  "charge" : "CARGO",
+  "category": "CATEGORIA",
+  "teaching_category" : "CATEGORIA DOCENTE",
+  "study_center" :"CENTRO ESTUDIO",
+  "district" : "DISTRITO",
+  "specialty": "ESPECIALIDAD",
+  "scientific_degree":  "GRADO CIENTIFICO",
+  "profession": "PROFESION",
+  "kind": "TIPO",
+  "delete": {
+    "title": "Eliminar nomenclature",
+    "question": "¿Estás segura qué quieres eliminar el Nomenclador {{ param }}?"
+  },
+  "detail": {
+    "title": "Detalles del nomenclador"
+  }
+}

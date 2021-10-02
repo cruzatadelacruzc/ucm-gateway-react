@@ -1,0 +1,35 @@
+{
+  "textLabels": {
+    "body": {
+      "noMatch": "Lo sentimos, no se encontraron registros coincidentes para la página {{ numberPage }}",
+      "toolTip": "Ordenar"
+    },
+    "pagination": {
+      "next": "Próxima página",
+      "previous": "Página anterior",
+      "rowsPerPage": "Filas por páginas:",
+      "displayRows": "de"
+    },
+    "toolbar": {
+      "search": "Buscar",
+      "downloadCsv": "Descargar CSV",
+      "print": "Imprimir",
+      "viewColumns": "Ver Columnas",
+      "filterTable": "Tablas de filtros"
+    },
+    "filter": {
+      "all": "Todos",
+      "title": "FILTROS",
+      "reset": "REINICIAR"
+    },
+    "viewColumns": {
+      "title": "Mostrar Columnas",
+      "titleAria": "Mostrar/Ocultar Columnas de la Tabla"
+    },
+    "selectedRows": {
+      "text": "fila(s) seleccionadas",
+      "delete": "Eliminar",
+      "deleteAria": "Eliminar filas seleccionadas"
+    }
+  }
+}
