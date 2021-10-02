@@ -23,7 +23,6 @@ import {dataTableStyles, managerSectionStyles} from "../style";
 import {Add, Close as CloseIcon, Search as SearchIcon} from "@material-ui/icons";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import {deleteNomenclature, getNomenclatures, getSearchNomenclatures} from "./nomenclature.reducer";
 import MUIDataTable from "mui-datatables";
 import {ITEMS_PER_PAGE} from "../../../../config/constants";
@@ -84,18 +83,6 @@ const Nomenclature = () => {
                             className={dataTableClasses.iconButton}
                         >
                             <EditIcon/>
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title={t("common:show") || "Mostrar"} aria-label={t("common:show")} arrow>
-                        <IconButton
-                            component={Link}
-                            to={`${match.url}/show/${id}`}
-                            aria-label={t("common:show")}
-                            color="primary"
-                            size="small"
-                            className={dataTableClasses.iconButton}
-                        >
-                            <VisibilityIcon/>
                         </IconButton>
                     </Tooltip>
                     <Tooltip title={t("common:delete") || "Eliminar"} aria-label={t("common:delete")} arrow>
@@ -232,21 +219,6 @@ const Nomenclature = () => {
                             TableToolbarSelect: CustomToolbar
                         }}
                     />
-                    {/*<UCMDataBase*/}
-                    {/*    data={nomenclature.entities}*/}
-                    {/*    options={options}*/}
-                    {/*    columns={columns}*/}
-                    {/*    modalDelete={{*/}
-                    {/*        keyDeleteText: "nomenclature:delete.question",*/}
-                    {/*        keyDeleteTextTitle: "nomenclature:delete.title",*/}
-                    {/*        columnIndex: 1*/}
-                    {/*    }}*/}
-                    {/*    pageState={page}*/}
-                    {/*    sizeState={size}*/}
-                    {/*    sortOrderState={sortOrder}*/}
-                    {/*    handleSearchItems={getSearchNomenclatures}*/}
-                    {/*    handleGetAllItems={getNomenclatures}*/}
-                    {/*/>*/}
                 </div>
             </div>
         </Widget>

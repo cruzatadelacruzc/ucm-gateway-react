@@ -2,7 +2,6 @@ import React from "react";
 import * as yup from 'yup';
 import {formUpdateStyles, MenuProps} from "../style";
 import {TextField} from 'formik-material-ui'
-// import { Autocomplete } from 'formik-material-ui-lab';
 import {Field, Form, Formik} from "formik";
 import {useTranslation} from "react-i18next";
 import {IRootState} from "../../../shared/reducer";
@@ -77,7 +76,7 @@ const NomenclatureManage = (props: INomenclatureManageProps) => {
                 })}
             >
                 {({
-                      submitForm, handleChange, values}) => (
+                      submitForm, handleChange}) => (
                     <Form>
                         <Box className={classes.form_group}>
                             <Box className={classes.input}>
@@ -115,32 +114,6 @@ const NomenclatureManage = (props: INomenclatureManageProps) => {
                                 </Field>
                             </Box>
                             <Box className={classes.input} style={{display: visibleParentDistrict ? '' : 'none'}}>
-                                {/*<Autocomplete*/}
-                                {/*    id="parentDistrictId"*/}
-                                {/*    fullWidth*/}
-                                {/*    autoHighlight*/}
-                                {/*    clearOnEscape*/}
-                                {/*    loadingText={t("common:loading")}*/}
-                                {/*    loading={loading}*/}
-                                {/*    options={districts.map(option => option)}*/}
-                                {/*    onChange={(event, newValue) => {*/}
-                                {/*        setFieldValue("parentDistrictId", newValue?.name || null)*/}
-                                {/*    }}*/}
-                                {/*    onOpen={() => setOpen(true)}*/}
-                                {/*    getOptionLabel={(option) => option.name || ""}*/}
-                                {/*    disabled={!visibleParentDistrict}*/}
-                                {/*    renderInput={(params) => (*/}
-                                {/*        <MuiTextField*/}
-                                {/*            {...params}*/}
-                                {/*            InputLabelProps={{shrink: true}}*/}
-                                {/*            helperText={(touched['parentDistrictId'] && errors['parentDistrictId']) || ""}*/}
-                                {/*            error={!!(touched['parentDistrictId'] && errors['parentDistrictId'])}*/}
-                                {/*            label={t('parentDistrict')}*/}
-                                {/*            variant="outlined"*/}
-                                {/*        />*/}
-                                {/*    )}*/}
-                                {/*/>*/}
-
                                 <Field
                                     select
                                     fullWidth
