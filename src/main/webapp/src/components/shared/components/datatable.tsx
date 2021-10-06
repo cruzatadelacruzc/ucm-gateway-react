@@ -1,0 +1,254 @@
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    IconButton,
+    InputBase,
+    LinearProgress,
+    Paper,
+    Tooltip
+} from "@material-ui/core";
+import {Link, useRouteMatch} from "react-router-dom";
+import EditIcon from "@material-ui/icons/Edit";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import DeleteIcon from "@material-ui/icons/Delete";
+import {Add, Close as CloseIcon, Search as SearchIcon} from "@material-ui/icons";
+import React from "react";
+import {dataTableStyles, managerSectionStyles} from "./style";
+import {useTranslation} from "react-i18next";
+import MUIDataTable from "mui-datatables";
+import {ITEMS_PER_PAGE} from "../../../config/constants";
+import axios from "axios";
+
+export interface IUCMDataBase {
+    editRoute?: string,
+    showRoute?: string,
+    addRoute?: string,
+    customOptions?: {},
+    columns: Array<{ name: string, label?: string, options?: {} }>,
+    resourceURL: string,
+    downloadFilename?: string,
+    modalDelete: {
+        keyDeleteText: string,
+        keyDeleteTextTitle: string,
+        columnIndex: number
+    },
+    sortOrderState: { name: string, direction: string },
+}
+
+export interface ICustomToolbarSelectProps {
+    components: { TableToolbarSelect: (props) => void }
+    displayData: [{ data: Array<any>, dataIndex: number }],
+    onRowsDelete: () => void,
+    options: {}
+    selectRowUpdate: (e, i) => void
+    selectedRows: { lookup: { dataIndex: boolean }, data: Array<{ index: number, dataIndex: number }> }
+}
+
+export default function UCMDataBase(
+    {
+        columns,
+        addRoute,
+        editRoute,
+        showRoute,
+        modalDelete,
+        resourceURL,
+        customOptions,
+        sortOrderState,
+        downloadFilename
+    }: IUCMDataBase
+) {
+    const {t} = useTranslation();
+    const classes = managerSectionStyles();
+    const dataTableClasses = dataTableStyles();
+    let match = useRouteMatch<{ url: string }>();
+    const [items, setItems] = React.useState([]);
+    const [search, setSearch] = React.useState('');
+    const [update, setUpdate] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
+    const [totalItems, setTotalItems] = React.useState(0);
+    const [modalOpen, setModalOpen] = React.useState(false);
+    const [currentPage, setCurrentPage] = React.useState(0);
+    const [numberOfRows, setNumberOfRows] = React.useState(ITEMS_PER_PAGE);
+    const [sortOrder, setSortOrder] = React.useState<{ name: string, direction: string }>(sortOrderState)
+
+    React.useEffect(() => {
+        setLoading(true);
+        let searchURl = resourceURL;
+        if (search) {
+            for (let i = 1; i < columns.length; i++) {
+                searchURl+=`${columns[i].name}.contains=${search}&`
+            }
+        }
+        axios.get(`${searchURl}page=${currentPage}&size=${numberOfRows}&sort=${sortOrder.name},${sortOrder.direction}`)
+            .then(response => {
+                setLoading(false);
+                setItems(response.data)
+                setTotalItems(parseInt(response.data.headers['x-total-count'],10))
+                setCurrentPage(parseInt(response.data.headers['x-page'],10))
+                setNumberOfRows(parseInt(response.data.headers['x-size'], 10))
+            })
+            .catch( error => {
+                setLoading(false);
+            })
+    }, [search, currentPage, numberOfRows, sortOrder.name, sortOrder.direction, update, resourceURL, columns])
+
+    const handleClickOpen = () => {
+        setModalOpen(true);
+    };
+
+    const handleClose = () => {
+        setModalOpen(false);
+    };
+
+    const removeItem = (id: string) => {
+        axios.delete(`${resourceURL}/${id}`)
+            .then( response => {
+                setModalOpen(false)
+                setUpdate(true)
+            })
+            .catch( error => setUpdate(true))
+    }
+
+    const options = {
+        page: currentPage,
+        filter: false,
+        search: false,
+        serverSide: true,
+        count: totalItems,
+        rowsPerPage: numberOfRows,
+        responsive: 'standard',
+        tableBodyHeight: '400px',
+        selectableRows: 'single',
+        rowsPerPageOptions: [20, 50, 100],
+        draggableColumns: {enabled: true},
+        downloadOptions: {filename: `${downloadFilename || 'download'}.csv`},
+        onChangePage: (currentPage: number) => setCurrentPage(currentPage),
+        onChangeRowsPerPage: (numberOfRows: number) => setNumberOfRows(numberOfRows),
+        textLabels: t("datatable:textLabels", {returnObjects: true, numberPage: currentPage}),
+        onColumnSortChange: (name: string, direction: string) => setSortOrder({...sortOrder, name, direction})
+    };
+
+    const CustomToolbar = ({displayData, selectedRows}: ICustomToolbarSelectProps) => {
+        const id = displayData[parseInt(Object.keys(selectedRows.lookup)[0], 10)].data[0] || ''
+        const param = displayData[parseInt(Object.keys(selectedRows.lookup)[0], 10)].data[modalDelete.columnIndex] || ''
+        return (
+            <>
+                <Paper elevation={1} className={dataTableClasses.paper}>
+                    <Tooltip title={t("common:edit") || "Editar"} aria-label={t("common:edit")} arrow>
+                        <IconButton
+                            component={Link}
+                            to={`${match.url}${editRoute || '/edit'}/${id}`}
+                            aria-label={t("common:edit")}
+                            color="primary"
+                            size="small"
+                            className={dataTableClasses.iconButton}
+                        >
+                            <EditIcon/>
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title={t("common:show") || "Mostrar"} aria-label={t("common:show")} arrow>
+                        <IconButton
+                            component={Link}
+                            to={`${match.url}${showRoute || '/show'}/${id}`}
+                            aria-label={t("common:show")}
+                            color="primary"
+                            size="small"
+                            className={dataTableClasses.iconButton}
+                        >
+                            <VisibilityIcon/>
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title={t("common:delete") || "Eliminar"} aria-label={t("common:delete")} arrow>
+                        <IconButton
+                            onClick={handleClickOpen}
+                            aria-label={t("common:delete")}
+                            color="primary"
+                            size="small"
+                            className={dataTableClasses.iconButton}
+                        >
+                            <DeleteIcon/>
+                        </IconButton>
+                    </Tooltip>
+                </Paper>
+                <Dialog
+                    open={modalOpen}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title"> {t(modalDelete.keyDeleteTextTitle)}</DialogTitle>
+                    <IconButton aria-label="close" className={dataTableClasses.closeButton} onClick={handleClose}>
+                        <CloseIcon/>
+                    </IconButton>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            {t(modalDelete.keyDeleteText, {param: param})}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            {t('common:cancel')}
+                        </Button>
+                        <Button onClick={() => removeItem(id)} color="primary" autoFocus>
+                            {t('common:accept')}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </>
+        )
+    }
+
+    return (
+        <>
+            <div className={classes.container}>
+                <Paper elevation={1} className={classes.paper}>
+                    <div className={classes.form}>
+                        <InputBase
+                            type='search'
+                            autoFocus
+                            className={classes.input}
+                            placeholder={t('header:placeholder')}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setSearch(event.target.value)}
+                            value={search}
+                            inputProps={{'aria-label': t('header:placeholder').toLowerCase()}}
+                        />
+                        <div className={classes.iconButton} aria-label='search'>
+                            <SearchIcon/>
+                        </div>
+                    </div>
+                </Paper>
+                <Button
+                    color="primary"
+                    variant="contained"
+                    className={classes.buttonAdd}
+                    component={Link}
+                    to={`${match.url}${addRoute || '/add'}`}
+                    endIcon={<Add/>}
+                >
+                    {t('common:add')}
+                </Button>
+            </div>
+            <div>
+                {loading ?
+                    <Box sx={{width: '100%'}}>
+                        <LinearProgress/>
+                    </Box>
+                    : ''}
+                <MUIDataTable
+                    title={loading ? t('common:loading') : ''}
+                    data={items}
+                    columns={columns}
+                    options={customOptions ? customOptions: options}
+                    components={{
+                        TableToolbarSelect: CustomToolbar
+                    }}
+                />
+            </div>
+        </>
+    );
+}
