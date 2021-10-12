@@ -23,14 +23,19 @@ import {useTranslation} from "react-i18next";
 import MUIDataTable from "mui-datatables";
 import {ITEMS_PER_PAGE} from "../../../config/constants";
 import axios from "axios";
+import {useDispatch} from "react-redux";
+import {FAILURE, REQUEST, SUCCESS} from "../reducer/action-type.util";
+import toast from "../notification-snackbar.util";
 
 export interface IUCMDataBase {
+    addRoute?: string,
     editRoute?: string,
     showRoute?: string,
-    addRoute?: string,
+    deleteRoute?: string,
     customOptions?: {},
     columns: Array<{ name: string, label?: string, options?: {} }>,
     resourceURL: string,
+    reduxAction?: string,
     downloadFilename?: string,
     modalDelete: {
         keyDeleteText: string,
@@ -55,14 +60,17 @@ export default function UCMDataBase(
         addRoute,
         editRoute,
         showRoute,
+        deleteRoute,
         modalDelete,
         resourceURL,
+        reduxAction,
         customOptions,
         sortOrderState,
         downloadFilename
     }: IUCMDataBase
 ) {
     const {t} = useTranslation();
+    const dispatch = useDispatch();
     const classes = managerSectionStyles();
     const dataTableClasses = dataTableStyles();
     let match = useRouteMatch<{ url: string }>();
@@ -77,25 +85,35 @@ export default function UCMDataBase(
     const [sortOrder, setSortOrder] = React.useState<{ name: string, direction: string }>(sortOrderState)
 
     React.useEffect(() => {
-        setLoading(true);
-        let searchURl = resourceURL;
+        let searchURl = `${resourceURL}/filtered/or?`;
         if (search) {
             for (let i = 1; i < columns.length; i++) {
-                searchURl+=`${columns[i].name}.contains=${search}&`
+                searchURl += `${columns[i].name}.contains=${search}&`
             }
+        }
+        setLoading(true);
+        if (reduxAction && reduxAction !== '') {
+            dispatch({type: REQUEST(reduxAction)})
         }
         axios.get(`${searchURl}page=${currentPage}&size=${numberOfRows}&sort=${sortOrder.name},${sortOrder.direction}`)
             .then(response => {
                 setLoading(false);
                 setItems(response.data)
-                setTotalItems(parseInt(response.data.headers['x-total-count'],10))
-                setCurrentPage(parseInt(response.data.headers['x-page'],10))
-                setNumberOfRows(parseInt(response.data.headers['x-size'], 10))
+                setTotalItems(parseInt(response.headers['x-total-count'], 10))
+                setCurrentPage(parseInt(response.headers['x-page'], 10))
+                setNumberOfRows(parseInt(response.headers['x-size'], 10))
+                if (reduxAction && reduxAction !== '') {
+                    dispatch({type: reduxAction, payload: SUCCESS(response)})
+                }
             })
-            .catch( error => {
+            .catch(error => {
                 setLoading(false);
+                if (reduxAction && reduxAction !== '') {
+                    dispatch({type: FAILURE(reduxAction), payload: {data: error.message}})
+                }
+                toast.error(t(error.message))
             })
-    }, [search, currentPage, numberOfRows, sortOrder.name, sortOrder.direction, update, resourceURL, columns])
+    }, [search, currentPage, numberOfRows, sortOrder.name, sortOrder.direction, update, resourceURL, columns, reduxAction]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleClickOpen = () => {
         setModalOpen(true);
@@ -106,12 +124,15 @@ export default function UCMDataBase(
     };
 
     const removeItem = (id: string) => {
-        axios.delete(`${resourceURL}/${id}`)
-            .then( response => {
+        axios.delete(`${deleteRoute ? deleteRoute : resourceURL}/${id}`)
+            .then(response => {
                 setModalOpen(false)
                 setUpdate(true)
             })
-            .catch( error => setUpdate(true))
+            .catch(error => {
+                setUpdate(false)
+                toast.error(t(error.message))
+            })
     }
 
     const options = {
@@ -243,7 +264,7 @@ export default function UCMDataBase(
                     title={loading ? t('common:loading') : ''}
                     data={items}
                     columns={columns}
-                    options={customOptions ? customOptions: options}
+                    options={customOptions ? customOptions : options}
                     components={{
                         TableToolbarSelect: CustomToolbar
                     }}
