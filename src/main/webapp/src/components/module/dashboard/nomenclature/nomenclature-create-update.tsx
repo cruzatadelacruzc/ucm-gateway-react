@@ -7,7 +7,7 @@ import {useTranslation} from "react-i18next";
 import {IRootState} from "../../../shared/reducer";
 import Widget from "../../../shared/layout/widget";
 import {useDispatch, useSelector} from "react-redux";
-import {Box, Button, MenuItem} from "@material-ui/core";
+import {Box, Button, CircularProgress, MenuItem} from "@material-ui/core";
 import {Link, RouteComponentProps} from 'react-router-dom'
 import {defaultValue, DISCRIMINATOR, INomenclature} from "../../../shared/models/nomenclature.model";
 import {createNomenclature, getDistricts, getNomenclature, updateNomenclature} from "./nomenclature.reducer";
@@ -75,9 +75,8 @@ const NomenclatureManage = (props: INomenclatureManageProps) => {
                     description: yup.string().max(255, t("error:form.maxlength", {max: 255}))
                 })}
             >
-                {({
-                      submitForm, handleChange}) => (
-                    <Form>
+                {({submitForm, handleChange}) => (
+                    <Form autoComplete="off" noValidate={true}>
                         <Box className={classes.form_group}>
                             <Box className={classes.input}>
                                 <Field
@@ -150,20 +149,21 @@ const NomenclatureManage = (props: INomenclatureManageProps) => {
                         <Box className={classes.buttons}>
                             <Button
                                 className={classes.button}
-                                color="primary"
-                                variant="contained"
-                                disabled={updating}
-                                onClick={submitForm}>
-                                {t('common:submit')}
-                            </Button>
-                            <Button
-                                className={classes.button}
                                 color="secondary"
                                 variant="contained"
                                 component={Link}
                                 to='/nomenclature'
                                 disabled={updating}>
                                 {t('common:cancel')}
+                            </Button>
+                            <Button
+                                className={classes.button}
+                                color="primary"
+                                variant="contained"
+                                disabled={updating}
+                                endIcon={updating ? <CircularProgress size="1rem" /> : null}
+                                onClick={submitForm}>
+                                {t('common:submit')}
                             </Button>
                         </Box>
                     </Form>
