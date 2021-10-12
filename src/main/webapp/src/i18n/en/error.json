@@ -24,8 +24,8 @@
   "Size": "Field {{ name }} does not meet min/max size requirements!",
   "NotNull": "Field {{ fieldName }} cannot be empty!",
   "form": {
-    "required": "This field is required type something.",
-    "minlength": "This field is required to be at least {{ min }} characters.",
+    "required": "This field required type something.",
+    "minlength": "This field required to be at least {{ min }} characters.",
     "maxlength": "This field cannot be longer than {{ max }} characters.",
     "pattern": "This field should follow pattern for {{ pattern }}.",
     "number": "This field should be a number.",

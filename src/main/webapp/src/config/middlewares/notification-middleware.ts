@@ -2,8 +2,8 @@ import {isPromise} from "../../components/shared/util/function-utils";
 import toast from '../../components/shared/notification-snackbar.util'
 import i18n from '../i18n'
 
-const addErrorAlert = (message, key?, data?) => {
-    const responseMsg = key ? i18n.t(key,data) : `${message} ${data}`;
+const addErrorAlert = (message, key?, interpolate?) => {
+    const responseMsg = key ? i18n.t(key, interpolate) : message;
     toast.error(responseMsg)
 };
 
@@ -33,8 +33,7 @@ const notificationMiddleware = () => next => action => {
                     }
                 })
                 if (alert) {
-                    // toast.success(translate(alert, { param: alertParams }));
-                    toast.success(alert)
+                    toast.success(i18n.t(alert, {param: alertParams}));
                 }
             }
             return Promise.resolve(response);
@@ -45,27 +44,15 @@ const notificationMiddleware = () => next => action => {
             } else if (error && error.response) {
                 const response = error.response;
                 const data = response.data;
-                if (!(response.status === 401 && (error.message === '' || (data && data.path && data.path.includes('/api/account'))))) {
+                if (!(response.status === 401 && (error.message === '' || (data && data.path &&
+                    (data.path.includes('/api/account') || data.path.includes('/api/logout')))))) {
                     switch (response.status) {
                         // connection refused, server not reachable
                         case 0:
                             toast.error(i18n.t('error:server.not.reachable'));
                             break;
                         case 400: {
-                            const headers = Object.entries<string>(response.headers);
-                            let errorHeader: string | null = null;
-                            let entityKey: string | null = null;
-                            headers.forEach(([key, value]) => {
-                                if (key.toLowerCase().endsWith('app-error')) {
-                                    errorHeader = value;
-                                } else if (key.toLowerCase().endsWith('app-params')) {
-                                    entityKey = key;
-                                }
-                            });
-                            if (errorHeader) {
-                                const entityName = 'global.menu.entities.' + entityKey;
-                                addErrorAlert(errorHeader, errorHeader, {entityName});
-                            } else if (data !== '' && data.fieldErrors) {
+                                if (data !== '' && data.fieldErrors) {
                                 const fieldErrors = data.fieldErrors;
                                 for (let i = 0; i < fieldErrors.length; i++) {
                                     const fieldError = fieldErrors[i];
@@ -74,21 +61,29 @@ const notificationMiddleware = () => next => action => {
                                     }
                                     // convert 'something[14].other[4].id' to 'something[].other[].id' so translations can be written to it
                                     const convertedField = fieldError.field.replace(/\[\d*\]/g, '[]');
-                                    const fieldName = `gatewayApp.${fieldError.objectName}.${convertedField}`;
-                                    addErrorAlert(`Error on field "${fieldName}"`, `error.${fieldError.message}`, {fieldName});
+                                    addErrorAlert(fieldError.message, `error:${fieldError.code}`, {name: convertedField.toUpperCase()});
                                 }
                             } else if (data !== '' && data.message) {
-                                addErrorAlert(data.message, data.message, data.params);
+                                addErrorAlert(data.message, data.message, {param: data.params});
                             } else {
                                 addErrorAlert(data);
                             }
                             break;
                         }
-                        case 404:
-                            addErrorAlert(i18n.t('error:url.not.found'));
+                        case 404: {
+                            const resourceURL = data.path?.split("/api/")
+                            let interpolateData = "";
+                            if (Array.isArray(resourceURL)){
+                                interpolateData = resourceURL.length > 1 ? resourceURL[1]: resourceURL[0];
+                            }
+                            addErrorAlert(i18n.t('error:url.not.found',{path: interpolateData.replaceAll("/","-")}));
                             break;
+                        }
                         default:
-                            if (data !== '' && data.message) {
+                            if (data !== '' && data.message && data.message.startsWith("error:")) {
+                                // pass error as key
+                                addErrorAlert(data.message,data.message);
+                            } else if (data !== '' && data.message){
                                 addErrorAlert(data.message);
                             } else {
                                 addErrorAlert(data);

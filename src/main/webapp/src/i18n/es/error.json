@@ -24,7 +24,7 @@
   "Size": "¡El campo {{name}} no cumple con los requisitos de tamaño mínimo/máximo!",
   "NotNull": "El campo {{ fieldName }} no puede ser vacío!",
   "form": {
-    "required": "Este campo es obligatorio escribir algo.",
+    "required": "Este campo requiere escribir algo.",
     "minlength": "Este campo requiere al menos {{min}} caracteres.",
     "maxlength": "Este campo no puede superar más de {{max}} caracteres.",
     "pattern": "Este campo debe seguir el patrón {{pattern}}.",
