@@ -84,36 +84,42 @@ export default function UCMDataBase(
     const [numberOfRows, setNumberOfRows] = React.useState(ITEMS_PER_PAGE);
     const [sortOrder, setSortOrder] = React.useState<{ name: string, direction: string }>(sortOrderState)
 
+
     React.useEffect(() => {
-        let searchURl = `${resourceURL}/filtered/or?`;
-        if (search) {
-            for (let i = 1; i < columns.length; i++) {
-                searchURl += `${columns[i].name}.contains=${search}&`
-            }
-        }
-        setLoading(true);
-        if (reduxAction && reduxAction !== '') {
-            dispatch({type: REQUEST(reduxAction)})
-        }
-        axios.get(`${searchURl}page=${currentPage}&size=${numberOfRows}&sort=${sortOrder.name},${sortOrder.direction}`)
-            .then(response => {
-                setLoading(false);
-                setItems(response.data)
+        const getItems = async () => {
+            try {
+                let searchURl = `${resourceURL}/filtered/or?`;
+                if (search) {
+                    for (let i = 1; i < columns.length; i++) {
+                        searchURl += `${columns[i].name}.contains=${search}&`
+                    }
+                }
+                setLoading(true);
+                if (reduxAction && reduxAction !== '') {
+                    dispatch({type: REQUEST(reduxAction)})
+                }
+                const response = await axios.get(`${searchURl}page=${currentPage}&size=${numberOfRows}&sort=${sortOrder.name},${sortOrder.direction}`);
+                const data = response.data
+                setLoading(false)
+                setItems(data)
                 setTotalItems(parseInt(response.headers['x-total-count'], 10))
                 setCurrentPage(parseInt(response.headers['x-page'], 10))
                 setNumberOfRows(parseInt(response.headers['x-size'], 10))
                 if (reduxAction && reduxAction !== '') {
                     dispatch({type: reduxAction, payload: SUCCESS(response)})
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 setLoading(false);
                 if (reduxAction && reduxAction !== '') {
                     dispatch({type: FAILURE(reduxAction), payload: {data: error.message}})
                 }
                 toast.error(t(error.message))
-            })
-    }, [search, currentPage, numberOfRows, sortOrder.name, sortOrder.direction, update, resourceURL, columns, reduxAction]) // eslint-disable-line react-hooks/exhaustive-deps
+            }
+        }
+        getItems()
+    },[search, currentPage, numberOfRows, sortOrder.name, sortOrder.direction, update, resourceURL, columns, reduxAction]) // eslint-disable-line react-hooks/exhaustive-deps
+
+
 
     const handleClickOpen = () => {
         setModalOpen(true);
