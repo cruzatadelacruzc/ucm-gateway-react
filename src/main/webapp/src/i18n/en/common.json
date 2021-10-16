@@ -29,5 +29,7 @@
   "notfound_page": "Page Not Found",
   "notfound_exp_page": "Sorry, but the page you were trying to view does not exist.",
   "empty": "Empty",
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "back": "Back",
+  "forward": "Forward"
 }

@@ -29,5 +29,7 @@
   "notfound_page": "Pagína no encontrada",
   "notfound_exp_page": "Lo sentimos, pero la página que intentaste ver no existe.",
   "empty": "Vacío",
-  "loading": "Cargando..."
+  "loading": "Cargando...",
+  "back": "Atrás",
+  "forward": "Adelante"
 }
