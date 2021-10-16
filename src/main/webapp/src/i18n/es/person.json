@@ -1,0 +1,19 @@
+{
+  "ci": "CI",
+  "name": "Nombre",
+  "email": "Correo",
+  "address": "Dirección",
+  "firstLastName": "Primer apellido",
+  "secondLastName": "Segundo apellido",
+  "gender": {
+    "label": "Género",
+    "female": "Femenino",
+    "male": "Masculino"
+  },
+  "age": "Edad",
+  "birthdate": "Cumpleños",
+  "race": "Raza",
+  "district": "Municipio",
+  "specialty": "Especialidad",
+  "step": "Datos personales"
+}

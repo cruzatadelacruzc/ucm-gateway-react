@@ -1,0 +1,19 @@
+{
+  "ci": "DNI",
+  "name": "Name",
+  "email": "E-mail",
+  "address": "Address",
+  "firstLastName": "First last name",
+  "secondLastName": "Second last name",
+  "gender": {
+    "label": "Gender",
+    "female": "Female",
+    "male": "Male"
+  },
+  "age": "Years old",
+  "birthdate": "Birthdate",
+  "race": "Race",
+  "district": "District",
+  "specialty": "Specialty",
+  "step": "Personal data"
+}
