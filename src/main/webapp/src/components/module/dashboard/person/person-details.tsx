@@ -35,7 +35,7 @@ export default function PersonDetails(_entity: IPerson) {
                     <Box className={classes.data_cell}>
                         <FormControl component="fieldset">
                             <FormLabel component="legend">{t("specialty")}</FormLabel>
-                            {_entity.specialtyId}
+                            {_entity.specialtyName}
                         </FormControl>
                     </Box>
                 </Box>
@@ -81,7 +81,7 @@ export default function PersonDetails(_entity: IPerson) {
                     <Box className={classes.data_cell}>
                         <FormControl component="fieldset">
                             <FormLabel component="legend">{t("district")}</FormLabel>
-                            {_entity.districtId}
+                            {_entity.districtName}
                         </FormControl>
                     </Box>
                 </Box>
