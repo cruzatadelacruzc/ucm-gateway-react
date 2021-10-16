@@ -13,6 +13,8 @@ import error_en from '../i18n/en/error.json';
 import error_es from '../i18n/es/error.json';
 import person_en from '../i18n/en/person.json'
 import person_es from '../i18n/es/person.json'
+import directoryApp_es from '../i18n/es/directoryApp.json'
+import directoryApp_en from '../i18n/en/directoryApp.json'
 import nomenclature_en from '../i18n/en/nomenclature.json'
 import nomenclature_es from '../i18n/es/nomenclature.json'
 import datatable_es from '../i18n/es/datatable.json'
@@ -35,7 +37,8 @@ i18n
                 person: person_en,
                 datatable: datatable_en,
                 directory: directory_en,
-                nomenclature: nomenclature_en
+                nomenclature: nomenclature_en,
+                directoryApp: directoryApp_en,
             },
             es: {
                 card: card_es,
@@ -45,7 +48,8 @@ i18n
                 person: person_es,
                 datatable: datatable_es,
                 directory: directory_es,
-                nomenclature: nomenclature_es
+                nomenclature: nomenclature_es,
+                directoryApp: directoryApp_es
             },
         },
     });
