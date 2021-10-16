@@ -9,7 +9,7 @@ export const SnackbarUtilsConfigurator: React.FC = () => {
 }
 
 // Export no-named default so consumer can name as desired/required
-export default {
+const notification = {
     success(msg: string, options: OptionsObject = {}): void {
         this.toast(msg, {...options, variant: "success"})
     },
@@ -27,3 +27,4 @@ export default {
     },
 }
 
+export default notification
