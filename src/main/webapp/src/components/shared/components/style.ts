@@ -1,4 +1,4 @@
-import {makeStyles, Theme} from "@material-ui/core/styles";
+import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 
 
 export const managerSectionStyles = makeStyles((theme: Theme) => ({
@@ -73,3 +73,24 @@ export const dataTableStyles = makeStyles((theme:Theme)=> ({
         color: theme.palette.grey[500],
     },
 }))
+
+export const formStepperStyles = makeStyles((theme: Theme) => createStyles({
+    buttons: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-start",
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(3),
+        [theme.breakpoints.down('xs')]: {
+            flexDirection: "column",
+        }
+    },
+    button: {
+        marginRight: theme.spacing(3),
+        [theme.breakpoints.down('xs')]: {
+            width: "100%",
+            marginRight: theme.spacing(0),
+            marginBottom: theme.spacing(1)
+        }
+    }
+}));
