@@ -64,8 +64,8 @@ export default function PersonDetails(_entity: IPerson) {
                 <Box className={classes.data_column}>
                     <Box className={classes.data_cell}>
                         <FormControl component="fieldset">
-                            <FormLabel component="legend">{t("gender.label")}</FormLabel>
-                            {_entity.gender}
+                            <FormLabel component="legend">{`${t("race")} & ${t("gender.label")}`}</FormLabel>
+                            {`${_entity.race} | ${_entity.gender}`}
                         </FormControl>
                     </Box>
                 </Box>
