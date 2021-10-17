@@ -1,11 +1,11 @@
 import Paper from '@material-ui/core/Paper';
 import dayjs from 'dayjs';
-import { TextField, Grid } from '@material-ui/core';
-import { ISearchPersonDetails } from '../../shared/models/search-result-person.model';
-import { StyledBadge, cardStyles } from './style';
-import { useTranslation } from 'react-i18next';
+import {Grid, TextField} from '@material-ui/core';
+import {ISearchResultPersonHit} from '../../shared/models/search-result-person.model';
+import {cardStyles, StyledBadge} from './style';
+import {useTranslation} from 'react-i18next';
 
-export default function CardPerson(props: ISearchPersonDetails) {
+export default function CardPerson(props: ISearchResultPersonHit) {
   const { t } = useTranslation(['card']);
   const classes = cardStyles();
   return (
@@ -15,10 +15,12 @@ export default function CardPerson(props: ISearchPersonDetails) {
           <Grid md={3} lg={3} item>
             {props._type ? (
               <StyledBadge badgeContent={t(`card:${props._type}`)} color='secondary'>
-                <img alt='user' src='./user.svg' className={classes.cover} />
+                <img alt={`${props._source.name} ${props._source.firstLastName} ${props._source.secondLastName}`}
+                     src='./user.svg' className={classes.cover} />
               </StyledBadge>
             ) : (
-              <img alt='user' src='./user.svg' className={classes.cover} />
+              <img alt={`${props._source.name} ${props._source.firstLastName} ${props._source.secondLastName}`}
+                   src='./user.svg' className={classes.cover} />
             )}
           </Grid>
           <Grid item md={3} lg={3} container justifyContent='center' direction='row'>

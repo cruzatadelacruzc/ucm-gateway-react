@@ -1,6 +1,6 @@
-import { Badge } from '@material-ui/core';
-import { Theme, withStyles, createStyles, makeStyles } from '@material-ui/core/styles';
-import { indigo } from '@material-ui/core/colors';
+import {Badge} from '@material-ui/core';
+import {createStyles, makeStyles, Theme, withStyles} from '@material-ui/core/styles';
+import {indigo} from '@material-ui/core/colors';
 // Card
 export const cardStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,10 +30,15 @@ export const StyledBadge = withStyles((theme: Theme) =>
 
 // Header
 export const headerStyles = makeStyles((theme: Theme) => ({
+  grow: {
+    flexGrow: 1,
+    marginRight: theme.spacing(5),
+    [theme.breakpoints.down('xs')]: {
+      marginRight: theme.spacing(0),
+    },
+  },
   appBar: {
     backgroundColor: '#fff',
-    display: 'flex',
-    justifyContent: 'flex-start',
   },
   paper: {
     padding: '2px 4px',
@@ -65,34 +70,26 @@ export const headerStyles = makeStyles((theme: Theme) => ({
     width: theme.spacing(7),
     height: theme.spacing(7),
   },
-  headerMenu: {
-    marginTop: theme.spacing(7),
-  },
-  profileMenu: {
-    minWidth: 256,
-    maxWidth: 280,
-  },
-  profileMenuItem: {
-    color: theme.palette.text.hint,
-  },
-  headerMenuItem: {
-    '&:hover, &:focus': {
-      backgroundColor: theme.palette.primary.light,
-      color: 'white',
-    },
-  },
-  profileMenuIcon: {
-    marginRight: theme.spacing(2),
-    color: theme.palette.text.hint,
-  },
   avatar: {
     color: theme.palette.getContrastText(indigo[500]),
     backgroundColor: indigo[500],
   },
-  profileMenuUser: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexDirection: 'column',
-    padding: theme.spacing(2),
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'flex',
+    },
   },
+  sectionMobile: {
+    display: 'flex',
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
+  },
+  logo: {
+    display: 'flex',
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
+  }
 }));
