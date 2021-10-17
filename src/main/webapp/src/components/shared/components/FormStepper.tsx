@@ -16,6 +16,7 @@ interface IFormStepProps extends Pick<FormikConfig<FormikValues>, 'children' | '
 export const FormStep = ({children}: IFormStepProps) => <>{children}</>
 
 interface IFormStepperProps extends FormikConfig<FormikValues> {
+    cancelRoute: string
 }
 
 const FormStepper = ({children, ...props}: IFormStepperProps) => {
@@ -63,7 +64,7 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
                 {currentChild}
 
                 <Box className={classes.buttons}>
-                    {<Button className={classes.button} component={Link} to='/employee'
+                    {<Button className={classes.button} component={Link} to={props.cancelRoute}
                              disabled={isSubmitting} color="default" variant="contained">
                         {t('cancel')}
                     </Button>}
