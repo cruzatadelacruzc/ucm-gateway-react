@@ -1,4 +1,5 @@
 import React from 'react';
+import Home from './home/home';
 import classnames from "classnames";
 import {dashboardStyles} from "./style";
 import {Switch} from 'react-router-dom';
@@ -25,6 +26,7 @@ const Dashboard = ({match}) => {
         >
             <div className={classes.fakeToolbar} />
             <Switch>
+                <ErrorBoundaryRoute path={`${match.url}home`} component={Home}/>
                 <ErrorBoundaryRoute path={`${match.url}employee`} component={Employees}/>
                 <ErrorBoundaryRoute path={`${match.url}nomenclature`} component={Nomenclature}/>
             </Switch>
