@@ -6,6 +6,7 @@ import Nomenclature from "./nomenclature";
 import Header from '../../shared/layout/header';
 import Sidebar from "../../shared/layout/sidebar";
 import ErrorBoundaryRoute from '../../shared/error/error-boundary-route';
+import Employees from "./person/employee";
 
 
 const Dashboard = ({match}) => {
@@ -24,6 +25,7 @@ const Dashboard = ({match}) => {
         >
             <div className={classes.fakeToolbar} />
             <Switch>
+                <ErrorBoundaryRoute path={`${match.url}employee`} component={Employees}/>
                 <ErrorBoundaryRoute path={`${match.url}nomenclature`} component={Nomenclature}/>
             </Switch>
         </div>

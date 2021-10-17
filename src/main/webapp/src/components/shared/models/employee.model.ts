@@ -1,19 +1,40 @@
-export interface IEmployee {
-  id?: string;
-  active: boolean;
-  description?: string;
-  email?: string;
-  employees?: Array<string>;
-  name: string;
-  phones?: Array<string>;
+import {defaultValue as personModel, IPerson} from "./person.model";
+
+export interface IEmployee extends IPerson {
+  startDate?: string | null
+  endDate?: string | null
+  graduateYears?: number
+  isGraduatedBySector?: boolean
+  serviceYears?: number
+  registerNumber?: string
+  bossWorkPlace?: boolean
+  professionalNumber?: string
+  workPlaceId?: string
+  categoryId?: string | null
+  scientificDegreeId?: string | null
+  teachingCategoryId?: string | null
+  chargeId?: string | null
+  professionId?: string | null
+  phones?: Array<string> | null,
+  workPlaceName?: string
+  categoryName?: string
+  scientificDegreeName?: string
+  teachingCategoryName?: string
+  chargeName?: string
+  professionName?: string
 }
 
 export const defaultValue: Readonly<IEmployee> = {
-  id: '',
-  name: '',
-  email: '',
-  active: true,
-  description: '',
-  employees: [],
-  phones: [],
+  ...personModel,
+  startDate: new Date().toISOString(),
+  endDate: null,
+  graduateYears: 0,
+  isGraduatedBySector: false,
+  bossWorkPlace: false,
+  workPlaceId: '',
+  categoryId: '',
+  scientificDegreeId: '',
+  teachingCategoryId: '',
+  chargeId: '',
+  professionId: ''
 };

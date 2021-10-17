@@ -1,0 +1,30 @@
+{
+  "title": {
+    "manage":  "Gestionar trabajador",
+    "list": "Lista de trabajadores",
+    "step": "Datos laborales"
+  },
+  "startDate": "Fecha de inicio",
+  "endDate": "Fecha fin",
+  "graduateYears": "Años de graduados",
+  "isGraduatedBySector": "¿Graduado por el Sector?",
+  "serviceYears": "Años de trabajo",
+  "registerNumber": "Número de registro",
+  "bossWorkPlace": "¿Jefe de área?",
+  "professionalNumber": "Número del profesional",
+  "workPlace": "Puesto de trabajo",
+  "category": "Categoría",
+  "scientificDegree": "Grado científico",
+  "teachingCategory": "Categoría docente",
+  "charge": "Cargo",
+  "profession": "Profesion",
+  "phones": "Teléfonos",
+  "delete": {
+    "title": "Eliminar trabajador",
+    "question": "¿Estás segura qué quieres eliminar el Trabajador {{ param }}?"
+  },
+  "detail": {
+    "title": "Detalles del trabajador"
+  },
+  "positive": "SI"
+}

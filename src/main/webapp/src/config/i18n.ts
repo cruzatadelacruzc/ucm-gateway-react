@@ -11,6 +11,8 @@ import common_en from '../i18n/en/common.json';
 import common_es from '../i18n/es/common.json';
 import error_en from '../i18n/en/error.json';
 import error_es from '../i18n/es/error.json';
+import employee_en from '../i18n/en/employee.json'
+import employee_es from '../i18n/es/employee.json'
 import person_en from '../i18n/en/person.json'
 import person_es from '../i18n/es/person.json'
 import directoryApp_es from '../i18n/es/directoryApp.json'
@@ -27,7 +29,7 @@ i18n
         debug: process.env.NODE_ENV === 'development',
         fallbackLng: 'es',
         defaultNS: 'directory',
-        ns: ['card', 'directory', 'header', 'common', 'error', "person", "nomenclature", "directoryApp", "datatable"],
+        ns: ['card', 'directory', 'header', 'common', 'error', "person", "employee", "nomenclature", "directoryApp", "datatable"],
         resources: {
             en: {
                 card: card_en,
@@ -35,6 +37,7 @@ i18n
                 header: header_en,
                 common: common_en,
                 person: person_en,
+                employee: employee_en,
                 datatable: datatable_en,
                 directory: directory_en,
                 nomenclature: nomenclature_en,
@@ -46,6 +49,7 @@ i18n
                 header: header_es,
                 common: common_es,
                 person: person_es,
+                employee: employee_es,
                 datatable: datatable_es,
                 directory: directory_es,
                 nomenclature: nomenclature_es,

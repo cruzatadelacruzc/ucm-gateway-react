@@ -1,0 +1,30 @@
+{
+  "title": {
+    "manage":  "Manage employee",
+    "list": "Employees list",
+    "step": "Labour data"
+  },
+  "startDate": "Start date",
+  "endDate": "End date",
+  "graduateYears": "Graduated years",
+  "isGraduatedBySector": "Graduated by sector?",
+  "serviceYears": "Services years",
+  "registerNumber": "Register number",
+  "professionalNumber": "Professional number",
+  "bossWorkPlace": "Workplace's boss?",
+  "workPlace": "Workplace",
+  "category": "Category",
+  "scientificDegree": "Scientific degree",
+  "teachingCategory": "Teaching category",
+  "charge": "Charge",
+  "profession": "Profession",
+  "phones": "Phones",
+  "delete": {
+    "title": "Delete employee",
+    "question": "Are you sure you want to delete Employee {{ param }}?"
+  },
+  "detail": {
+    "title": "Employee details"
+  },
+  "positive": "YES"
+}
