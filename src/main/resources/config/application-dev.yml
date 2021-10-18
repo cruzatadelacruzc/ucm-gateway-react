@@ -12,8 +12,15 @@ logging:
   level:
     sld.ucm.gateway: DEBUG
     org.springframework.security: DEBUG
-    org.springframework.cloud.gateway: DEBUG
-    org.springframework.web.reactive.function.client: TRACE
+#    org.springframework.cloud.gateway: DEBUG
+    org.springframework.security.oauth2: DEBUG
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://admin:${application.registry-config.password}@192.168.1.10:8761/eureka/
 
 
 spring:
@@ -35,16 +42,29 @@ spring:
             scope: openid,profile,email
         provider:
           keycloak:
-            issuer-uri: http://192.168.1.10:9080/auth/realms/jhipster
+            issuer-uri: http://keycloak:9080/auth/realms/jhipster
 
 server:
   port: 8080
 
 application:
+  registry-config:
+    password: admin
   cors:
     allowed-origins: 'http://localhost:3000'
     allowed-methods: '*'
     allowed-headers: '*'
-    exposed-headers: 'Authorization,Link,X-Total-Count'
+    exposed-headers: 'Authorization,Link,X-Total-Count,X-${application.clientApp.name}-alert,X-${application.clientApp.name}-error,X-${application.clientApp.name}-params'
     allow-credentials: true
     max-age: 1800
+  logging:
+    use-json-format: false # By default, logs are not in Json format
+    logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+      enabled: false
+      host: localhost
+      port: 5000
+      queue-size: 512
+  metrics:
+    logs: # Reports metrics in the logs
+      enabled: false
+      report-frequency: 60 # in seconds
