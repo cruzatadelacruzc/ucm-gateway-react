@@ -29,6 +29,7 @@ import org.springframework.security.web.server.util.matcher.NegatedServerWebExch
 import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
 import org.zalando.problem.spring.webflux.advice.security.SecurityProblemSupport;
 import reactor.core.publisher.Mono;
+import sld.ucm.gateway.security.AuthoritiesConstants;
 import sld.ucm.gateway.security.SecurityUtils;
 import sld.ucm.gateway.security.oauth2.AudienceValidator;
 import sld.ucm.gateway.security.oauth2.JwtGrantedAuthorityConverter;
@@ -60,9 +61,10 @@ public class SecurityConfiguration {
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         // @formatter:off
+        // TODO I have a doubt about add  "/management/**" to securityMatcher
         http
                 .securityMatcher(new NegatedServerWebExchangeMatcher(new OrServerWebExchangeMatcher(
-                        pathMatchers("/app/**","/manifest.json", "/*.png", "/static/**"),
+                        pathMatchers("/app/**","/manifest.json", "/*.png", "/static/**", "/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs", "/v3/api-docs"),
                         pathMatchers(HttpMethod.OPTIONS, "/**"))))
                 .csrf()
                     .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
@@ -86,8 +88,14 @@ public class SecurityConfiguration {
                 .authorizeExchange()
                 .pathMatchers( "/").permitAll()
                 .pathMatchers("/*.*").permitAll()
-                .pathMatchers("/api/**").authenticated();
-
+                .pathMatchers("/api/auth-info").permitAll()
+                .pathMatchers("/api/**").authenticated()
+                .pathMatchers("/services/**").authenticated()
+                .pathMatchers("/management/health").permitAll()
+                .pathMatchers("/management/health/**").permitAll()
+                .pathMatchers("/management/info").permitAll()
+                .pathMatchers("/management/prometheus").permitAll()
+                .pathMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
         http.oauth2Login()
                 .and()
                 .oauth2ResourceServer()
