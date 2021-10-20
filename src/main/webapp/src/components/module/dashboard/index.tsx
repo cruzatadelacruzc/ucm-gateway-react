@@ -8,6 +8,7 @@ import Header from '../../shared/layout/header';
 import Sidebar from "../../shared/layout/sidebar";
 import ErrorBoundaryRoute from '../../shared/error/error-boundary-route';
 import Employees from "./person/employee";
+import WorkPlaces from "./workplace";
 
 
 const Dashboard = ({match}) => {
@@ -28,6 +29,7 @@ const Dashboard = ({match}) => {
             <Switch>
                 <ErrorBoundaryRoute path={`${match.url}home`} component={Home}/>
                 <ErrorBoundaryRoute path={`${match.url}employee`} component={Employees}/>
+                <ErrorBoundaryRoute path={`${match.url}workplace`} component={WorkPlaces}/>
                 <ErrorBoundaryRoute path={`${match.url}nomenclature`} component={Nomenclature}/>
             </Switch>
         </div>

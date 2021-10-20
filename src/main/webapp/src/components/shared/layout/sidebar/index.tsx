@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import {sidebarStyles} from "./style";
 import SidebarMenu from "./sidebarMenu";
 import AddAlertIcon from "@material-ui/icons/AddAlert";
+import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import i18n from "../../../../config/i18n";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 
@@ -21,6 +22,11 @@ export const menuItems = [
         label: i18n.t("common:entities.directoryNomenclature"),
         link: "/nomenclature",
         icon: <AccountBoxIcon />,
+    },
+    {
+        label: i18n.t("common:entities.directoryWorkPlace"),
+        link: "/workplace",
+        icon: <HomeWorkIcon />,
     },
 ];
 
