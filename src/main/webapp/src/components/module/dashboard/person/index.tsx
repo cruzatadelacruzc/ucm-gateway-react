@@ -19,7 +19,7 @@ export const PERSON_GENDER = {
 }
 
 export const _validationSchema = yup.object().shape({
-    email: yup.string().email(),
+    email: yup.string().email(i18n.t("error:form.email")),
     ci: yup.string().required(i18n.t("error:form.required")),
     name: yup.string().required(i18n.t("error:form.required")),
     race: yup.string().required(i18n.t("error:form.required")),
