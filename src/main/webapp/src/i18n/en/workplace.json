@@ -1,0 +1,21 @@
+{
+  "title": {
+    "manage":  "Manage workplace",
+    "list": "WorkPlaces list",
+    "step": "Labour data"
+  },
+  "name": "Name",
+  "active": "Active",
+  "description": "Description",
+  "email": "Email",
+  "employees": "Employees",
+  "phones": "Phones",
+  "delete": {
+    "title": "Delete workplace",
+    "question": "Are you sure you want to delete WorkPlace {{ param }}?"
+  },
+  "detail": {
+    "title": "WorkPlace details"
+  },
+"positive": "YES"
+}

@@ -21,6 +21,8 @@ import nomenclature_en from '../i18n/en/nomenclature.json'
 import nomenclature_es from '../i18n/es/nomenclature.json'
 import datatable_es from '../i18n/es/datatable.json'
 import datatable_en from '../i18n/en/datatable.json'
+import workplace_es from '../i18n/es/workplace.json'
+import workplace_en from '../i18n/en/workplace.json'
 
 i18n
     .use(initReactI18next)
@@ -29,7 +31,19 @@ i18n
         debug: process.env.NODE_ENV === 'development',
         fallbackLng: 'es',
         defaultNS: 'directory',
-        ns: ['card', 'directory', 'header', 'common', 'error', "person", "employee", "nomenclature", "directoryApp", "datatable"],
+        ns: [
+            'card',
+            'directory',
+            'header',
+            'common',
+            'error',
+            "person",
+            "employee",
+            "nomenclature",
+            "directoryApp",
+            "datatable",
+            "workplace"
+        ],
         resources: {
             en: {
                 card: card_en,
@@ -40,8 +54,9 @@ i18n
                 employee: employee_en,
                 datatable: datatable_en,
                 directory: directory_en,
+                workplace: workplace_en,
                 nomenclature: nomenclature_en,
-                directoryApp: directoryApp_en,
+                directoryApp: directoryApp_en
             },
             es: {
                 card: card_es,
@@ -52,6 +67,7 @@ i18n
                 employee: employee_es,
                 datatable: datatable_es,
                 directory: directory_es,
+                workplace: workplace_es,
                 nomenclature: nomenclature_es,
                 directoryApp: directoryApp_es
             },

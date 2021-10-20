@@ -1,0 +1,20 @@
+{
+  "title": {
+    "manage":  "Gestionar Área de Trabajo",
+    "list": "Listado de Área de Trabajo"
+  },
+  "name": "Nombre",
+  "active": "Activo",
+  "description": "Descripción",
+  "email": "Correo",
+  "employees": "Trabajadores",
+  "phones": "Teléfonos",
+  "delete": {
+    "title": "Eliminar Área de Trabajo",
+    "question": "¿Estás segura qué quieres eliminar el Área de Trabajo {{ param }}?"
+  },
+  "detail": {
+    "title": "Detalles del Área de Trabajo"
+  },
+"positive": "SI"
+}
