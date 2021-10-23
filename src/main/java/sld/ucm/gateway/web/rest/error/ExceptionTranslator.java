@@ -1,7 +1,6 @@
-package sld.ucm.gateway.web.web.error;
+package sld.ucm.gateway.web.rest.error;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
