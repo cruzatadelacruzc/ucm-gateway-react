@@ -1,7 +1,7 @@
 import {FAILURE, REQUEST, SUCCESS} from "../../../../shared/reducer/action-type.util";
 import {defaultValue, IEmployee} from "../../../../shared/models/employee.model";
 import {AnyAction} from "redux";
-import {ICrudGetAction, ICrudPutAction} from "../../../../types";
+import {ICrudGetAction, ICrudPutAction, ICrudSearchAction} from "../../../../types";
 import axios from "axios";
 import {cleanEntity} from "../../../../shared/util/entity-util";
 import {ITEMS_PER_PAGE} from "../../../../../config/constants";
@@ -51,6 +51,7 @@ const employeeReducer = (state: EmployeeStateType = initialState, { type, payloa
                 updateSuccess: false,
                 updating: true
             }
+        case SUCCESS(ACTION_TYPES.FETCH_EMPLOYEE_FILTERED):
         case SUCCESS(ACTION_TYPES.FETCH_EMPLOYEE_LIST):
             return {
                 ...state,
@@ -120,10 +121,10 @@ export const getEmployee : ICrudGetAction<IEmployee> = id => async dispatch =>  
     })
 }
 
-export const getFilteredEmployee = (employees: Array<IEmployee>) => dispatch => {
-    dispatch({
+export const getSearchEmployees: ICrudSearchAction<IEmployee> = (search,page, size, sort) => async dispatch => {
+    return await dispatch({
         type: ACTION_TYPES.FETCH_EMPLOYEE_FILTERED,
-        payload: employees
+        payload: axios.get<Array<IEmployee>>(`${apiUrl}/filtered/and?${search}&${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
     })
 }
 

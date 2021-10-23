@@ -90,8 +90,8 @@ export interface IEmployeeManage extends RouteComponentProps<{ id: string }> {}
             <FormStep
                 label={t("title.step")}
                 validationSchema={yup.object().shape({
-                    graduateYears: yup.number().positive().integer(),
-                    serviceYears: yup.number().positive().integer(),
+                    graduateYears: yup.number().integer(i18n.t("error:number")).min(0, i18n.t("error:min", {min: 0})),
+                    serviceYears: yup.number().integer(i18n.t("error:number")).min(0, i18n.t("error:min", {min: 0})),
                     startDate: yup.string().required(i18n.t("error:form.required")),
                     registerNumber: yup.string().required(i18n.t("error:form.required")),
                 })}

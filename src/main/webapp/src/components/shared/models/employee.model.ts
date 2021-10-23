@@ -36,5 +36,8 @@ export const defaultValue: Readonly<IEmployee> = {
   scientificDegreeId: '',
   teachingCategoryId: '',
   chargeId: '',
-  professionId: ''
+  professionId: '',
+  registerNumber: '',
+  serviceYears: 0,
+  professionalNumber: ''
 };
