@@ -6,7 +6,7 @@ import {useTranslation} from "react-i18next";
 import i18n from "../../../../../config/i18n";
 import {Box, MenuItem} from "@material-ui/core";
 import Widget from "../../../../shared/layout/widget";
-import {useDispatch, useSelector} from "react-redux";
+import {batch, useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../../../shared/reducer";
 import {RouteComponentProps} from "react-router-dom";
 import PersonalStep, {_validationSchema} from '../index'
@@ -46,7 +46,7 @@ export interface IEmployeeManage extends RouteComponentProps<{ id: string }> {}
         if (!_isNew){
             dispatch(getEmployee(props.match.params.id))
         }
-    }, [dispatch, _isNew, props.match.params.id])
+    }, [_isNew, props.match.params.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
     React.useEffect(() => {
         if (isUpdateSuccess) {
@@ -55,13 +55,15 @@ export interface IEmployeeManage extends RouteComponentProps<{ id: string }> {}
     }, [isUpdateSuccess, props.history])
 
     useEffect(() => {
-        dispatch(getCharges())
-        dispatch(getWorkPlaces())
-        dispatch(getCategories())
-        dispatch(getProfessions())
-        dispatch(getTeachingCategories())
-        dispatch(getScientificDegrees())
-    }, [dispatch])
+        batch( () => {
+            dispatch(getCharges())
+            dispatch(getWorkPlaces())
+            dispatch(getCategories())
+            dispatch(getProfessions())
+            dispatch(getTeachingCategories())
+            dispatch(getScientificDegrees())
+        })
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     return <Widget title={t('title.manage')} disableWidgetMenu>
         <FormStepper
