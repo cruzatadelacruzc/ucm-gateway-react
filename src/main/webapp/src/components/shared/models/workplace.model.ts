@@ -1,4 +1,4 @@
-export interface IWorkplace {
+export interface IWorkPlace {
   id?: string;
   active: boolean;
   description?: string;
@@ -8,7 +8,7 @@ export interface IWorkplace {
   phones?: Array<string>;
 }
 
-export const defaultValue: Readonly<IWorkplace> = {
+export const defaultValue: Readonly<IWorkPlace> = {
   id: '',
   name: '',
   email: '',

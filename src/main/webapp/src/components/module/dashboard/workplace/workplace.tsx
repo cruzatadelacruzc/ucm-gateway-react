@@ -1,13 +1,35 @@
 import React from 'react';
 import {useTranslation} from "react-i18next";
 import UCMDataBase from "../../../shared/components/datatable";
-import {ACTION_TYPES} from "../person/employee/employee.reducer";
-import {Chip} from "@material-ui/core";
+import {ACTION_TYPES, apiUrl} from "./workplace.reducer";
+import {FormControlLabel, Switch} from "@material-ui/core";
+import axios from "axios";
+import toast from "../../../shared/notification-snackbar.util";
 
+type ChangeStatusType = {
+    id: string,
+    status: boolean
+}
 function WorkPlaces() {
     const {t} = useTranslation(['workplace']);
+    const [status, setStatus] = React.useState(false);
+    const [changeStatus, setChangeStatus] = React.useState<ChangeStatusType>({id:'',status: false});
 
-    const _columns = [
+    React.useEffect(() => {
+        (async (changeStatus: ChangeStatusType) => {
+            try {
+                if (changeStatus.id !== '') {
+                    const response = await axios.put(`${apiUrl}/status`, changeStatus)
+                    setStatus(prevState => response.data ? !prevState : prevState)
+                }
+            } catch (error) {
+                toast.error(t(error.message))
+            }
+        })(changeStatus)
+
+    }, [changeStatus]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    const _columns = React.useMemo(() => [
         {
             name: "id",
             options: {
@@ -34,8 +56,19 @@ function WorkPlaces() {
                 filter: false,
                 download: false,
                 searchable: false,
-                customBodyRender: (value) => {
-                    return <Chip variant="default" label={value ? t("positive"): "NO"}/>
+                customBodyRender: (value, tableMeta) => {
+                    const _id = tableMeta.currentTableData?.length > 0 && tableMeta.currentTableData[0].data[0]
+                    return (
+                        <FormControlLabel
+                            label={value ? t('positive') : 'NO'}
+                            control={
+                                <Switch color="primary" checked={value}
+                                        onChange={(event, checked) => {
+                                            setChangeStatus({id: _id, status: checked});
+                                        }}/>
+                            }
+                        />
+                    )
                 }
             }
         },
@@ -43,7 +76,7 @@ function WorkPlaces() {
             name: "description",
             label: t("description")
         },
-    ];
+    ], [status]);  // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <>
@@ -57,7 +90,7 @@ function WorkPlaces() {
                 }}
                 sortOrderState={{name: 'name', direction: 'asc'}}
                 downloadFilename={t("title.list")}
-                reduxAction={ACTION_TYPES.FETCH_EMPLOYEE_FILTERED}
+                reduxAction={ACTION_TYPES.FETCH_WORKPLACE_FILTERED}
             />
         </>
     )
