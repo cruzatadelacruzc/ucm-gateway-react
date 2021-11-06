@@ -1,7 +1,7 @@
 import {FAILURE, REQUEST, SUCCESS} from "../../../../shared/reducer/action-type.util";
 import {defaultValue, IEmployee} from "../../../../shared/models/employee.model";
 import {AnyAction} from "redux";
-import {ICrudGetAction, ICrudPutAction, ICrudSearchAction} from "../../../../types";
+import {ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudSearchAction} from "../../../../types";
 import axios from "axios";
 import {cleanEntity} from "../../../../shared/util/entity-util";
 import {ITEMS_PER_PAGE} from "../../../../../config/constants";
@@ -121,7 +121,14 @@ export const getEmployee : ICrudGetAction<IEmployee> = id => async dispatch =>  
     })
 }
 
-export const getSearchEmployees: ICrudSearchAction<IEmployee> = (search,page, size, sort) => async dispatch => {
+export const geEmployees: ICrudGetAllAction<IEmployee> = (page, size, sort) => async dispatch => {
+    return await dispatch({
+        type: ACTION_TYPES.FETCH_EMPLOYEE_LIST,
+        payload: axios.get<Array<IEmployee>>(`${apiUrl}?${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
+    })
+}
+
+export const getFilterEmployees: ICrudSearchAction<IEmployee> = (search,page, size, sort) => async dispatch => {
     return await dispatch({
         type: ACTION_TYPES.FETCH_EMPLOYEE_FILTERED,
         payload: axios.get<Array<IEmployee>>(`${apiUrl}/filtered/and?${search}&${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
