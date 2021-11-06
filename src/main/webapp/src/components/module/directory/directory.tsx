@@ -89,7 +89,7 @@ export default function Directory() {
                                     <Grid key={index} item xs={12}>
                                         {(result._type === INDICES.EMPLOYEES || result._type === INDICES.STUDENTS) &&
                                         <CardPerson {...result} />}
-                                        {result._type === INDICES.WORKPLACES && <CardWorkPlace {...result._source}/>}
+                                        {result._type === INDICES.WORKPLACES && <CardWorkPlace {...result}/>}
                                     </Grid>
                                 ))
                             ) : (

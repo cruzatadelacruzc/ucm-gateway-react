@@ -3,10 +3,9 @@ import {Grid, List, ListItem, ListItemText, TextField, Typography} from '@materi
 import {cardStyles} from './style';
 import {useTranslation} from 'react-i18next';
 import React from "react";
-import {ISearchResultWorkPlaceDetails,} from "../../shared/models/search-result-workplace.model";
-import ApartmentIcon from '@material-ui/icons/Apartment';
+import {ISearchResultWorkPlaceHit} from "../../shared/models/search-result-workplace.model";
 
-export default function CardWorkPlace(props: ISearchResultWorkPlaceDetails) {
+export default function CardWorkPlace(props: ISearchResultWorkPlaceHit) {
   const { t } = useTranslation(['card']);
   const classes = cardStyles();
   return (
@@ -14,18 +13,18 @@ export default function CardWorkPlace(props: ISearchResultWorkPlaceDetails) {
       <Paper elevation={3} className={classes.content}>
         <Grid container direction='row' justifyContent='space-evenly'>
           <Grid md={3} lg={3} item>
-            <ApartmentIcon fontSize={"large"}  />
+            <img alt={props._source.name} src={props._source.avatarUrl || './workplace.jpg'} className={classes.cover} />
           </Grid>
           <Grid item md={3} lg={3} container justifyContent='center' direction='row'>
             <Grid item>
-              <TextField disabled label={t('card:name', { count: props.name.split(' ').length })} value={props.name} />
+              <TextField disabled label={t('card:name', { count: props._source.name.split(' ').length })} value={props._source.name} />
             </Grid>
             <Grid item>
-              <TextField disabled label={t('card:email')} value={props.email} />
+              <TextField disabled label={t('card:email')} value={props._source.email} />
             </Grid>
             <Grid item >
               <List>
-                {props.phones?.map((phone, index) => (
+                {props._source.phones?.map((phone, index) => (
                   <ListItem key={index}>
                     <ListItemText primary={phone.number}/>
                   </ListItem>
@@ -37,7 +36,7 @@ export default function CardWorkPlace(props: ISearchResultWorkPlaceDetails) {
           <Grid item md={3} lg={3} container justifyContent='center' direction='row'>
             <Grid item>
               <Typography variant="body2" gutterBottom>
-                {props.description}
+                {props._source.description}
               </Typography>
             </Grid>
           </Grid>
@@ -45,7 +44,7 @@ export default function CardWorkPlace(props: ISearchResultWorkPlaceDetails) {
           <Grid item md={3} lg={3} container justifyContent='center' direction='row'>
             <Grid item>
               <List>
-                {props.employees?.map((employee, index) => (
+                {props._source.employees?.map((employee, index) => (
                     <ListItem key={index}>
                       <ListItemText primary={`${employee.name} ${employee.firstLastName} ${employee.secondLastName}`}/>
                     </ListItem>
