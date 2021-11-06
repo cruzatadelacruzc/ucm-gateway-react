@@ -35,6 +35,7 @@
   },
   "Pattern": "Field {{ name }} provided is malformed",
   "Email": "Field {{ name }} is invalid.",
+  "Min": "This field should be at least {{ name }}.",
   "badoperatorjoin": "Wrong Logical operator {{ param }}",
   "enddategt": "End Date {{param}} cannot be greater than Start Date"
 }

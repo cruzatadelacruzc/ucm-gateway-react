@@ -35,6 +35,7 @@
   },
   "Pattern": "El campo {{ name }} posee un formato incorrecto.",
   "Email": "El campo {{ name }} es inválido.",
+  "Min": "Este campo debe ser mayor que {{ name }}.",
   "badoperatorjoin": "Operador logico de union {{ param }} incorrecto.",
   "enddategt": "Fecha final {{ param }} no puede ser mayor que Fecha final"
 }
