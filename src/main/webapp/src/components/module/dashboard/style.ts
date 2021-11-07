@@ -180,6 +180,7 @@ export const detailsStyles = makeStyles((theme: Theme) => ({
     data_row: {
         display: "flex",
         flexDirection: "row",
+        marginBottom: theme.spacing(3),
         [theme.breakpoints.down('xs')]: {
             flexDirection: "column",
         }
