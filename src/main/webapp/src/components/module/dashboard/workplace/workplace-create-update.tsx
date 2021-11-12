@@ -27,10 +27,10 @@ const WorkPlaceManage = () => {
     const updating = useSelector((states: IRootState) => states.workPlace.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.workPlace.updateSuccess);
     const selector = createDeepEqualSelector(
-        (states) =>  states.employee.entities,
-        (states) =>  states.workPlace.entity.employees,
-        (entities: Array<IEmployee>, employees) => entities
-            .filter( emp => emp.id && (employees?.includes(emp.id) || !emp.workPlaceId))
+        (states: IRootState) =>  states.employee.entities,
+        (states: IRootState) =>  states.workPlace.entity.employeeIds,
+        (entities: ReadonlyArray<IEmployee>, employeeIds) => entities
+            .filter( emp => emp.id && (employeeIds?.includes(emp.id) || !emp.workPlaceId))
     );
     const employeesToUpdate = useSelector((states: IRootState) => selector(states));
 
@@ -56,9 +56,7 @@ const WorkPlaceManage = () => {
             <Formik
                 initialValues={isNew ? defaultValue : entity}
                 enableReinitialize={!isNew}
-                onSubmit={(values :IWorkPlace, {setSubmitting}) => {
-                    // alert(JSON.stringify(values,null,2))
-                    // setSubmitting(false)
+                onSubmit={(values :IWorkPlace) => {
                     if (isNew) {
                         dispatch(createWorkPlace(values))
                     } else {
@@ -119,11 +117,11 @@ const WorkPlaceManage = () => {
                         </Box>
                            <Box className={classes.form_group}>
                                <Box className={classes.input}>
-                                   <InputLabel shrink={true} htmlFor="employees">{t('employees')}</InputLabel>
+                                   <InputLabel shrink={true} htmlFor="employeeIds">{t('employees')}</InputLabel>
                                 <Field
                                     fullWidth
                                     multiple
-                                    name="employees"
+                                    name="employeeIds"
                                     variant="outlined"
                                     component={Select}
                                     MenuProps={{...MenuProps.MenuProps}}

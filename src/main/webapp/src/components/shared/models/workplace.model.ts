@@ -8,6 +8,7 @@ export interface IWorkPlace {
   description?: string;
   email?: string;
   employeeIds?: Array<string>;
+  phoneIds?: Array<string>;
   employees?: Array<IEmployee>;
   name: string;
   phones?: Array<IPhone>;
@@ -19,6 +20,8 @@ export const defaultValue: Readonly<IWorkPlace> = {
   email: '',
   active: true,
   description: '',
+  phoneIds: [],
+  employeeIds: [],
   employees: [],
   phones: [],
 };

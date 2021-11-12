@@ -7,7 +7,6 @@ import {cleanEntity} from "../../../shared/util/entity-util";
 
 export const ACTION_TYPES = {
     FETCH_WORKPLACE_FILTERED: "employee/FETCH_WORKPLACE_FILTERED",
-    // UPDATE_WORKPLACE_STATUS: 'workplace/UPDATE_WORKPLACE_STATUS',
     FETCH_WORKPLACE_LIST: 'workplace/FETCH_WORKPLACE_LIST',
     FETCH_WORKPLACE: 'workplace/FETCH_WORKPLACE',
     CREATE_WORKPLACE: 'workplace/CREATE_WORKPLACE',
