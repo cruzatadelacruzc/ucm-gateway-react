@@ -57,7 +57,7 @@ function WorkPlaces() {
                 download: false,
                 searchable: false,
                 customBodyRender: (value, tableMeta) => {
-                    const _id = tableMeta.currentTableData?.length > 0 && tableMeta.currentTableData[0].data[0]
+                    const _id = tableMeta.rowData?.length > 0 && tableMeta.rowData[0]
                     return (
                         <FormControlLabel
                             label={value ? t('positive') : 'NO'}
