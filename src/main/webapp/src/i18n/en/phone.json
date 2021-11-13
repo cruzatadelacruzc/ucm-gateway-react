@@ -1,0 +1,18 @@
+{
+  "title": {
+    "manage":  "Manage phone",
+    "list": "Phones list"
+  },
+  "active": "Active",
+  "number": "Number",
+  "description": "Description",
+  "workPlace": "WorkPlace",
+  "employee": "Employee",
+  "delete": {
+  "title": "Delete phone",
+  "question": "Are you sure you want to delete Phone {{ param }}?"
+},
+  "detail": {
+    "title": "Phone details"
+  }
+}

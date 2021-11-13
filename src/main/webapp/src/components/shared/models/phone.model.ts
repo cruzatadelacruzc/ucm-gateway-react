@@ -1,19 +1,21 @@
+import {IWorkPlace} from "./workplace.model";
+import {IEmployee} from "./employee.model";
+
 export interface IPhone {
   id?: string;
+  number: number;
   active: boolean;
   description?: string;
-  email?: string;
-  employees?: Array<string>;
-  name: string;
-  phones?: Array<string>;
+  workPlaceId?: string;
+  employeeId?: string;
+  employee?: IEmployee
+  workPlace?: IWorkPlace,
 }
 
 export const defaultValue: Readonly<IPhone> = {
-  id: '',
-  name: '',
-  email: '',
+  number: 0,
   active: true,
   description: '',
-  employees: [],
-  phones: [],
+  employeeId: '',
+  workPlaceId: '',
 };

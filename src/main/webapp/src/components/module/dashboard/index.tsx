@@ -9,6 +9,7 @@ import Sidebar from "../../shared/layout/sidebar";
 import ErrorBoundaryRoute from '../../shared/error/error-boundary-route';
 import Employees from "./person/employee";
 import WorkPlaces from "./workplace";
+import Phones from "./phone";
 
 
 const Dashboard = ({match}) => {
@@ -28,6 +29,7 @@ const Dashboard = ({match}) => {
             <div className={classes.fakeToolbar} />
             <Switch>
                 <ErrorBoundaryRoute path={`${match.url}home`} component={Home}/>
+                <ErrorBoundaryRoute path={`${match.url}phone`} component={Phones}/>
                 <ErrorBoundaryRoute path={`${match.url}employee`} component={Employees}/>
                 <ErrorBoundaryRoute path={`${match.url}workplace`} component={WorkPlaces}/>
                 <ErrorBoundaryRoute path={`${match.url}nomenclature`} component={Nomenclature}/>
