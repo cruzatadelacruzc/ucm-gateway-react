@@ -10,7 +10,8 @@ import {
     InputBase,
     LinearProgress,
     Paper,
-    Tooltip
+    Tooltip,
+    useMediaQuery
 } from "@material-ui/core";
 import {Link, useRouteMatch} from "react-router-dom";
 import EditIcon from "@material-ui/icons/Edit";
@@ -26,6 +27,7 @@ import axios from "axios";
 import {useDispatch} from "react-redux";
 import {FAILURE, REQUEST, SUCCESS} from "../reducer/action-type.util";
 import toast from "../notification-snackbar.util";
+import theme from "../../../theme";
 
 export interface IUCMDataBase {
     addRoute?: string,
@@ -131,12 +133,13 @@ export default function UCMDataBase(
 
     const removeItem = (id: string) => {
         axios.delete(`${deleteRoute ? deleteRoute : resourceURL}/${id}`)
-            .then(response => {
+            .then(() => {
                 setModalOpen(false)
                 setUpdate(true)
             })
             .catch(error => {
                 setUpdate(false)
+                setModalOpen(false)
                 toast.error(t(error.message))
             })
     }
@@ -161,8 +164,9 @@ export default function UCMDataBase(
     };
 
     const CustomToolbar = ({displayData, selectedRows}: ICustomToolbarSelectProps) => {
-        const id = displayData[parseInt(Object.keys(selectedRows.lookup)[0], 10)].data[0] || ''
-        const param = displayData[parseInt(Object.keys(selectedRows.lookup)[0], 10)].data[modalDelete.columnIndex] || ''
+        const isFullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+        const id = displayData[parseInt(Object.keys(selectedRows.lookup)[0], 10)]?.data[0] || ''
+        const param = displayData[parseInt(Object.keys(selectedRows.lookup)[0], 10)]?.data[modalDelete.columnIndex] || ''
         return (
             <>
                 <Paper elevation={1} className={dataTableClasses.paper}>
@@ -205,6 +209,7 @@ export default function UCMDataBase(
                 <Dialog
                     open={modalOpen}
                     onClose={handleClose}
+                    fullScreen={isFullScreen}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
