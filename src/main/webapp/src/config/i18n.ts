@@ -23,6 +23,8 @@ import datatable_es from '../i18n/es/datatable.json'
 import datatable_en from '../i18n/en/datatable.json'
 import workplace_es from '../i18n/es/workplace.json'
 import workplace_en from '../i18n/en/workplace.json'
+import phone_es from '../i18n/es/phone.json'
+import phone_en from '../i18n/en/phone.json'
 
 i18n
     .use(initReactI18next)
@@ -48,6 +50,7 @@ i18n
             en: {
                 card: card_en,
                 error: error_en,
+                phone: phone_en,
                 header: header_en,
                 common: common_en,
                 person: person_en,
@@ -61,6 +64,7 @@ i18n
             es: {
                 card: card_es,
                 error: error_es,
+                phone: phone_es,
                 header: header_es,
                 common: common_es,
                 person: person_es,
