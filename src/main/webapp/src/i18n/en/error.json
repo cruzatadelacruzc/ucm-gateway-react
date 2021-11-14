@@ -7,22 +7,22 @@
   "login": {
     "unauthorized": "You are not authorized"
   },
-  "title": "Error page!",
+  "title": "Error page",
   "http": {
-    "400": "Bad request.",
+    "400": "Bad request. Notify administrator",
     "403": "You are not authorized to access this page.",
     "404": "The page does not exist.",
     "405": "The HTTP verb you used is not supported for this URL.",
-    "500": "Internal server error.",
-    "503": "Unable service. Notify administrator!"
+    "500": "Internal server error. Notify administrator",
+    "503": "Unable service. Notify administrator"
   },
   "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
   "validation": "Validation error on the server.",
   "idexists": "A new {{ name }} cannot already have an ID",
-  "nomenclatureexists": "Nomenclature {{ name }} already exists!",
-  "NotBlank": "Field {{ name }} cannot be blank!",
-  "Size": "Field {{ name }} does not meet min/max size requirements!",
-  "NotNull": "Field {{ fieldName }} cannot be empty!",
+  "nomenclatureexists": "Nomenclature {{ name }} already exists",
+  "NotBlank": "Field {{ name }} cannot be blank",
+  "Size": "Field {{ name }} does not meet min/max size requirements",
+  "NotNull": "Field {{ fieldName }} cannot be empty",
   "form": {
     "required": "This field required type something.",
     "minlength": "This field required to be at least {{ min }} characters.",
@@ -37,5 +37,6 @@
   "Email": "Field {{ name }} is invalid.",
   "Min": "This field should be at least {{ name }}.",
   "badoperatorjoin": "Wrong Logical operator {{ param }}",
-  "enddategt": "End Date {{param}} cannot be greater than Start Date"
+  "enddategt": "End Date {{param}} cannot be greater than Start Date",
+  "relationshipnull": "{{ param }} must be related"
 }

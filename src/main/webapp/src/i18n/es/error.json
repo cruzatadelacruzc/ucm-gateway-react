@@ -7,22 +7,22 @@
   "login": {
     "unauthorized": "No estás authorizado"
   },
-  "title": "¡Página de error!",
+  "title": "Página de error",
   "http": {
-    "400": "Solicitud incorrecta.",
+    "400": "Solicitud incorrecta. Avisar al administrador",
     "403": "No tiene permisos para acceder a la página.",
     "404": "La página no existe.",
     "405": "El verbo HTTP utilizado no tiene soporte para este URL.",
-    "500": "Error interno del servidor.",
-    "503": "Servicio no disponible. Avisar al administrador!"
+    "500": "Error interno del servidor. Avisar al administrador",
+    "503": "Servicio no disponible. Avisar al administrador"
   },
   "concurrencyFailure": "Otro usuario ha modificado estos datos al mismo tiempo que tú. Tus cambios fueron rechazados.",
   "validation": "Error de validación en el servidor.",
   "idexists": "Un(a) nuevo(a) {{ name }} no puede tener ID",
-  "nomenclatureexists": "¡El nomenclador {{ name }} ya existe!",
-  "NotBlank": "¡El campo {{name}} no puede estar en blanco!",
-  "Size": "¡El campo {{name}} no cumple con los requisitos de tamaño mínimo/máximo!",
-  "NotNull": "El campo {{ fieldName }} no puede ser vacío!",
+  "nomenclatureexists": "El nomenclador {{ name }} ya existe",
+  "NotBlank": "El campo {{name}} no puede estar en blanco",
+  "Size": "El campo {{name}} no cumple con los requisitos de tamaño mínimo/máximo",
+  "NotNull": "El campo {{ fieldName }} no puede ser vacío",
   "form": {
     "required": "Este campo requiere escribir algo.",
     "minlength": "Este campo requiere al menos {{min}} caracteres.",
@@ -37,5 +37,6 @@
   "Email": "El campo {{ name }} es inválido.",
   "Min": "Este campo debe ser mayor que {{ name }}.",
   "badoperatorjoin": "Operador logico de union {{ param }} incorrecto.",
-  "enddategt": "Fecha final {{ param }} no puede ser mayor que Fecha final"
+  "enddategt": "Fecha final {{ param }} no puede ser mayor que Fecha final",
+  "relationshipnull": "{{ param }} debe estár relacionado"
 }
