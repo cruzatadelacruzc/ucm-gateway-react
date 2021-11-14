@@ -1,8 +1,9 @@
 import axios from "axios";
 import {AnyAction} from "redux";
-import {ICrudSearchAction} from "../../../types";
+import {ICrudGetAction, ICrudPutAction, ICrudSearchAction} from "../../../types";
 import {defaultValue, IPhone} from "../../../shared/models/phone.model";
 import {FAILURE, REQUEST, SUCCESS} from "../../../shared/reducer/action-type.util";
+import {cleanEntity} from "../../../shared/util/entity-util";
 
 export const ACTION_TYPES = {
     FETCH_PHONE_FILTERED: "employee/FETCH_PHONE_FILTERED",
@@ -27,7 +28,7 @@ export const initialState = {
 export type PhoneStateType = Readonly<typeof initialState>;
 
 // Reducer
-const workPlaceReducer = (state: PhoneStateType = initialState, {type, payload}: AnyAction): PhoneStateType => {
+const phoneReducer = (state: PhoneStateType = initialState, {type, payload}: AnyAction): PhoneStateType => {
     switch (type) {
         case REQUEST(ACTION_TYPES.FETCH_PHONE_FILTERED):
         case REQUEST(ACTION_TYPES.FETCH_PHONE_LIST):
@@ -105,4 +106,25 @@ export const getSearchPhones: ICrudSearchAction<IPhone> = (search,page, size, so
     })
 }
 
-export default workPlaceReducer;
+export const createPhone: ICrudPutAction<IPhone> = entity => async dispatch => {
+    return await dispatch({
+        type: ACTION_TYPES.CREATE_PHONE,
+        payload: axios.post<IPhone>(apiUrl, cleanEntity(entity))
+    })
+}
+
+export const updatePhone: ICrudPutAction<IPhone> = entity => async dispatch => {
+    return await dispatch({
+        type: ACTION_TYPES.UPDATE_PHONE,
+        payload: axios.put<IPhone>(apiUrl, cleanEntity(entity))
+    })
+}
+
+export const getPhone: ICrudGetAction<IPhone> = id => async dispatch => {
+    return await dispatch({
+        type: ACTION_TYPES.FETCH_PHONE,
+        payload: axios.get<IPhone>(`${apiUrl}/${id}`)
+    })
+}
+
+export default phoneReducer;
