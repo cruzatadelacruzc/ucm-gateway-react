@@ -14,5 +14,6 @@
 },
   "detail": {
     "title": "Phone details"
-  }
+  },
+  "positive": "YES"
 }
