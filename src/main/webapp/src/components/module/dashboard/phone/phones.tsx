@@ -1,10 +1,11 @@
 import React from 'react';
 import {ACTION_TYPES, apiUrl} from "./phone.reducer";
 import {useTranslation} from "react-i18next";
-import {FormControlLabel, Switch} from "@material-ui/core";
+import {Button, FormControlLabel, Switch} from "@material-ui/core";
 import UCMDataBase from "../../../shared/components/datatable";
 import axios from "axios";
 import toast from "../../../shared/notification-snackbar.util";
+import {Link} from "react-router-dom";
 
 const Phones = () => {
     const {t} = useTranslation(['phone']);
@@ -50,9 +51,8 @@ const Phones = () => {
                 download: false,
                 searchable: false,
                 customBodyRender: (value, tableMeta) => {
-                    const _id = tableMeta.currentTableData?.length > 0 && tableMeta.currentTableData[0].data[0]
-                    return (
-                        <FormControlLabel
+                    const _id = tableMeta.rowData?.length > 0 && tableMeta.rowData[0]
+                    return <FormControlLabel
                             label={value ? t('positive') : 'NO'}
                             control={
                                 <Switch color="primary" checked={value}
@@ -61,21 +61,56 @@ const Phones = () => {
                                         }}/>
                             }
                         />
-                    )
                 }
             }
         },
         {
-            name: "employee.name",
-            label: t("employee")
+            name: "employeeName",
+            label: t("employee"),
+            options: {
+                customBodyRender: (value, tableMeta) => {
+                    const _employeeId = tableMeta.rowData?.length > 0 && tableMeta.rowData[6]
+                    return _employeeId ?
+                        <Button variant="text" component={Link} to={`/employee/show/${_employeeId}`}>{value}</Button> :
+                        ''
+                }
+            }
         },
         {
-            name: "workPlace.name",
-            label: t("workPlace")
+            name: "workPlaceName",
+            label: t("workPlace"),
+            options: {
+                customBodyRender: (value, tableMeta) => {
+                    const _workplaceId = tableMeta.rowData?.length > 0 && tableMeta.rowData[7]
+                    return _workplaceId ?
+                        <Button variant="text" component={Link} to={`/workplace/show/${_workplaceId}`}>{value}</Button> :
+                        ''
+                }
+            }
         },
         {
             name: "description",
             label: t("description")
+        },
+        {
+            name: "employeeId",
+            options: {
+                display: 'excluded',
+                print: false,
+                filter: false,
+                download: false,
+                searchable: false
+            }
+        },
+        {
+            name: "workPlaceId",
+            options: {
+                display: 'excluded',
+                print: false,
+                filter: false,
+                download: false,
+                searchable: false
+            }
         },
     ], [status]);  // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -88,7 +123,7 @@ const Phones = () => {
                 keyDeleteTextTitle: "phone:delete.title",
                 columnIndex: 1
             }}
-            sortOrderState={{name: 'number', direction: 'asc'}}
+            sortOrderState={{name: 'createdDate', direction: 'desc'}}
             downloadFilename={t("title.list")}
             reduxAction={ACTION_TYPES.FETCH_PHONE_FILTERED}
         />
