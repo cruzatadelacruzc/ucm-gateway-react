@@ -27,6 +27,19 @@ const PhoneManage = () => {
     const workPlaces = useSelector((states: IRootState) => states.workPlace.entities);
     const isUpdateSuccess = useSelector((states: IRootState) => states.phone.updateSuccess);
 
+    const handleSelect = React.useCallback((handleChange, setFieldValue, name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.value !== "") {
+            if (name === "employeeId") {
+                setFieldValue("employeeId", event.target.value);
+                setFieldValue("workPlaceId","");
+            } else {
+                setFieldValue("workPlaceId", event.target.value);
+                setFieldValue("employeeId","");
+            }
+        }
+        handleChange(event);
+    }, [])
+
     React.useEffect(() => {
         batch( () => {
             dispatch(geEmployees())
@@ -66,7 +79,7 @@ const PhoneManage = () => {
                     description: yup.string().max(255, t("error:form.maxlength", {max: 255}))
                 })}
             >
-                {({submitForm}) => (
+                {({submitForm, handleChange, setFieldValue}) => (
                     <Form autoComplete="off" noValidate={true}>
                         <Box className={classes.form_group}>
                             <Box className={classes.input}>
@@ -99,6 +112,8 @@ const PhoneManage = () => {
                                     SelectProps={MenuProps}
                                     label={t('employee')}
                                     InputLabelProps={{shrink: true}}
+                                    onChange={handleSelect(handleChange, setFieldValue, "employeeId")}
+                                    onBlur={handleSelect(handleChange,setFieldValue,  "employeeId")}
                                 >
                                     <MenuItem value=""><em>-- {t('common:empty')} --</em></MenuItem>
                                     {employees.map((option, index) => (
@@ -116,6 +131,8 @@ const PhoneManage = () => {
                                     SelectProps={MenuProps}
                                     label={t('workplace')}
                                     InputLabelProps={{shrink: true}}
+                                    onChange={handleSelect(handleChange,setFieldValue, "workplaceId")}
+                                    onBlur={handleSelect(handleChange, setFieldValue,"workplaceId")}
                                 >
                                     <MenuItem value=""><em>-- {t('common:empty')} --</em></MenuItem>
                                     {workPlaces.map((option, index) => (
