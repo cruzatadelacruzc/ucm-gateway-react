@@ -90,7 +90,7 @@ const Employees = () => {
                     keyDeleteTextTitle: "employee:delete.title",
                     columnIndex: 4
                 }}
-                sortOrderState={{name: 'name', direction: 'asc'}}
+                sortOrderState={{name: 'createdDate', direction: 'desc'}}
                 downloadFilename={t("title.list")}
                 reduxAction={ACTION_TYPES.FETCH_EMPLOYEE_FILTERED}
             />

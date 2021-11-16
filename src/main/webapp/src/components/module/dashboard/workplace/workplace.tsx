@@ -88,7 +88,7 @@ function WorkPlaces() {
                     keyDeleteTextTitle: "workplace:delete.title",
                     columnIndex: 1
                 }}
-                sortOrderState={{name: 'name', direction: 'asc'}}
+                sortOrderState={{name: 'createdDate', direction: 'desc'}}
                 downloadFilename={t("title.list")}
                 reduxAction={ACTION_TYPES.FETCH_WORKPLACE_FILTERED}
             />
