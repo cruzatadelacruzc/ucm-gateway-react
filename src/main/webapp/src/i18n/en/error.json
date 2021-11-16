@@ -38,5 +38,6 @@
   "Min": "This field should be at least {{ name }}.",
   "badoperatorjoin": "Wrong Logical operator {{ param }}",
   "enddategt": "End Date {{param}} cannot be greater than Start Date",
-  "relationshipnull": "{{ param }} must be related"
+  "relationshipnull": "{{ param }} must be related",
+  "UniqueValue": "The value of {{ name }} must be unique"
 }

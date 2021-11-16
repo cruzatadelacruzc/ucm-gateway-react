@@ -38,5 +38,6 @@
   "Min": "Este campo debe ser mayor que {{ name }}.",
   "badoperatorjoin": "Operador logico de union {{ param }} incorrecto.",
   "enddategt": "Fecha final {{ param }} no puede ser mayor que Fecha final",
-  "relationshipnull": "{{ param }} debe estár relacionado"
+  "relationshipnull": "{{ param }} debe estár relacionado",
+  "UniqueValue": "El valor de {{ name }} debe ser único"
 }
