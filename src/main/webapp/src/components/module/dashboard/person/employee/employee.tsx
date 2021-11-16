@@ -88,7 +88,7 @@ const Employees = () => {
                 modalDelete={{
                     keyDeleteText: "employee:delete.question",
                     keyDeleteTextTitle: "employee:delete.title",
-                    columnIndex: 3
+                    columnIndex: 4
                 }}
                 sortOrderState={{name: 'name', direction: 'asc'}}
                 downloadFilename={t("title.list")}
