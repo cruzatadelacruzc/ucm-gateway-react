@@ -2,25 +2,34 @@ import React from 'react';
 import Widget from "../../../shared/layout/widget";
 import {useDispatch, useSelector} from "react-redux";
 import {detailsStyles} from "../style";
-import {getPhone} from "./phone.reducer";
-import {Link, useParams} from "react-router-dom";
+import {deletePhone, getPhone} from "./phone.reducer";
+import {Link, useHistory, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import PersonIcon from '@material-ui/icons/Person';
 import {IRootState} from "../../../shared/reducer";
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
-import {Box, Button, Chip, Divider, Typography, useTheme} from "@material-ui/core";
+import {Box, Button, Chip, CircularProgress, Divider, Typography, useTheme} from "@material-ui/core";
 
 const PhoneDetails = () => {
     const theme = useTheme();
+    let history = useHistory();
     const dispatch = useDispatch();
     const classes = detailsStyles();
     let {id} = useParams<{ id: string }>();
     const {t} = useTranslation(['phone']);
     const _entity = useSelector((states: IRootState) => states.phone.entity);
+    const updating = useSelector((states: IRootState) => states.phone.updating);
+    const isUpdateSuccess = useSelector((states: IRootState) => states.phone.updateSuccess);
 
     React.useEffect(() => {
         dispatch(getPhone(id))
     }, [id])// eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (isUpdateSuccess) {
+            history.push('/phone');
+        }
+    }, [isUpdateSuccess, history])
 
     return <Widget disableWidgetMenu>
         <Box className={classes.root}>
@@ -67,13 +76,34 @@ const PhoneDetails = () => {
                 </Box>
                 : ''
             }
-            <Button
-                color="default"
-                variant="contained"
-                component={Link}
-                to={'/phone'}>
-                {t('common:cancel')}
-            </Button>
+            <Box className={classes.buttons}>
+                <Button
+                    component={Link}
+                    color="default"
+                    variant="contained"
+                    to={'/phone'}
+                    className={classes.button}>
+                    {t('common:cancel')}
+                </Button>
+                <Button
+                    component={Link}
+                    color="secondary"
+                    variant="contained"
+                    className={classes.button}
+                    to={`/phone/edit/${id}`}>
+                    {t('common:edit')}
+                </Button>
+                <Button
+                    color="primary"
+                    variant="contained"
+                    className={classes.button}
+                    onClick={() => dispatch(deletePhone(id))}
+                    disabled={updating}
+                    endIcon={updating ? <CircularProgress size="1rem"/> : null}
+                >
+                    {t('common:delete')}
+                </Button>
+            </Box>
         </Box>
     </Widget>
 };

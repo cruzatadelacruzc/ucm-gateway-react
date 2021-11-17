@@ -3,8 +3,8 @@ import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {detailsStyles} from "../style";
 import {IRootState} from "../../../shared/reducer";
-import {Link, useParams} from "react-router-dom";
-import {getWorkPlace} from "./workplace.reducer";
+import {Link, useHistory, useParams} from "react-router-dom";
+import {deleteWorkPlace, getWorkPlace} from "./workplace.reducer";
 import {
     Avatar,
     Box,
@@ -13,6 +13,7 @@ import {
     CardActionArea,
     CardMedia,
     Chip,
+    CircularProgress,
     Divider,
     FormControl,
     FormLabel,
@@ -28,15 +29,24 @@ import {LocalPhone} from "@material-ui/icons";
 
 
 const WorkplaceDetails = () => {
+    let history = useHistory();
     const dispatch = useDispatch();
     const classes = detailsStyles();
     let {id} = useParams<{ id: string }>();
     const {t} = useTranslation(['workplace']);
     const _entity = useSelector((states: IRootState) => states.workPlace.entity);
+    const updating = useSelector((states: IRootState) => states.workPlace.updating);
+    const isUpdateSuccess = useSelector((states: IRootState) => states.workPlace.updateSuccess);
 
     React.useEffect(() => {
         dispatch(getWorkPlace(id))
     }, [id])// eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (isUpdateSuccess) {
+            history.push('/workplace');
+        }
+    }, [isUpdateSuccess, history])
 
     return (
         <Widget disableWidgetMenu>
@@ -91,8 +101,8 @@ const WorkplaceDetails = () => {
                     <List>
                         {_entity.phones?.map( (phone, index) => {
                             return (
-                                <IconButton>
-                                    <ListItem key={index} alignItems="flex-start" component={Link} to={`/phone/show/${phone.id}`}>
+                                <IconButton key={index}>
+                                    <ListItem  alignItems="flex-start" component={Link} to={`/phone/show/${phone.id}`}>
                                         <ListItemAvatar>
                                             <LocalPhone/>
                                         </ListItemAvatar>
@@ -109,8 +119,8 @@ const WorkplaceDetails = () => {
                     <List>
                         {_entity.employees?.map((employee,index) => {
                             return (
-                                <IconButton>
-                                    <ListItem key={index} alignItems="flex-start" component={Link} to={`/employee/show/${employee.id}`}>
+                                <IconButton key={index}>
+                                    <ListItem  alignItems="flex-start" component={Link} to={`/employee/show/${employee.id}`}>
                                         <ListItemAvatar>
                                             <Avatar alt={employee.name} src={employee.avatarUrl}/>
                                         </ListItemAvatar>
@@ -124,13 +134,34 @@ const WorkplaceDetails = () => {
                         })}
                     </List>
                 </Box>
-                <Button
-                    color="default"
-                    variant="contained"
-                    component={Link}
-                    to={'/workplace'}>
-                    {t('common:cancel')}
-                </Button>
+                <Box className={classes.buttons}>
+                    <Button
+                        component={Link}
+                        color="default"
+                        variant="contained"
+                        to={'/workplace'}
+                        className={classes.button}>
+                        {t('common:cancel')}
+                    </Button>
+                    <Button
+                        component={Link}
+                        color="secondary"
+                        variant="contained"
+                        className={classes.button}
+                        to={`/workplace/edit/${id}`}>
+                        {t('common:edit')}
+                    </Button>
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        className={classes.button}
+                        onClick={() => dispatch(deleteWorkPlace(id))}
+                        disabled={updating}
+                        endIcon={updating ? <CircularProgress size="1rem"/> : null}
+                    >
+                        {t('common:delete')}
+                    </Button>
+                </Box>
             </Box>
         </Widget>
     );

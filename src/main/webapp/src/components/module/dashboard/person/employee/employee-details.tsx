@@ -1,27 +1,34 @@
 import React from 'react'
-import {Link, RouteComponentProps} from "react-router-dom";
+import {Link, useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {IRootState} from "../../../../shared/reducer";
-import {getEmployee} from "./employee.reducer";
-import {Box, Button, Chip, Divider, FormControl, FormLabel} from "@material-ui/core";
+import {deleteEmployee, getEmployee} from "./employee.reducer";
+import {Box, Button, Chip, CircularProgress, Divider, FormControl, FormLabel} from "@material-ui/core";
 import {detailsStyles} from "../../style";
 import PersonDetails from "../person-details";
 import dayjs from "dayjs";
 import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
 
-export interface IEmployeeDetailsProps extends RouteComponentProps<{ id: string}> {
-}
-
-function EmployeeDetails(props: IEmployeeDetailsProps) {
+function EmployeeDetails() {
+    let history = useHistory();
     const dispatch = useDispatch();
-    const {t} = useTranslation(['employee']);
     const classes = detailsStyles();
+    let {id} = useParams<{ id: string }>();
+    const {t} = useTranslation(['employee']);
     const _entity = useSelector((states: IRootState) => states.employee.entity);
+    const updating = useSelector((states: IRootState) => states.employee.updating);
+    const isUpdateSuccess = useSelector((states: IRootState) => states.employee.updateSuccess);
 
     React.useEffect(() => {
-        dispatch(getEmployee(props.match.params.id))
-    }, [props.match.params.id]) // eslint-disable-line react-hooks/exhaustive-deps
+        dispatch(getEmployee(id))
+    }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (isUpdateSuccess) {
+            history.push('/employee');
+        }
+    }, [isUpdateSuccess, history])
 
     return (
         <Box className={classes.root}>
@@ -128,13 +135,34 @@ function EmployeeDetails(props: IEmployeeDetailsProps) {
                     </FormControl>
                 </Box>
             </Box>
-            <Button
-                color="default"
-                variant="contained"
-                component={Link}
-                to={'/employee'}>
-                {t('common:cancel')}
-            </Button>
+            <Box className={classes.buttons}>
+                <Button
+                    component={Link}
+                    color="default"
+                    variant="contained"
+                    to={'/employee'}
+                    className={classes.button}>
+                    {t('common:cancel')}
+                </Button>
+                <Button
+                    component={Link}
+                    color="secondary"
+                    variant="contained"
+                    className={classes.button}
+                    to={`/employee/edit/${id}`}>
+                    {t('common:edit')}
+                </Button>
+                <Button
+                    color="primary"
+                    variant="contained"
+                    className={classes.button}
+                    onClick={() => dispatch(deleteEmployee(id))}
+                    disabled={updating}
+                    endIcon={updating ? <CircularProgress size="1rem"/> : null}
+                >
+                    {t('common:delete')}
+                </Button>
+            </Box>
         </Box>
     );
 }

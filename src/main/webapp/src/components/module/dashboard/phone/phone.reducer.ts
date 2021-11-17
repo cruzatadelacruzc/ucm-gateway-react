@@ -1,6 +1,6 @@
 import axios from "axios";
 import {AnyAction} from "redux";
-import {ICrudGetAction, ICrudPutAction, ICrudSearchAction} from "../../../types";
+import {ICrudDeleteAction, ICrudGetAction, ICrudPutAction, ICrudSearchAction} from "../../../types";
 import {defaultValue, IPhone} from "../../../shared/models/phone.model";
 import {FAILURE, REQUEST, SUCCESS} from "../../../shared/reducer/action-type.util";
 import {cleanEntity} from "../../../shared/util/entity-util";
@@ -124,6 +124,13 @@ export const getPhone: ICrudGetAction<IPhone> = id => async dispatch => {
     return await dispatch({
         type: ACTION_TYPES.FETCH_PHONE,
         payload: axios.get<IPhone>(`${apiUrl}/${id}`)
+    })
+}
+
+export const deletePhone: ICrudDeleteAction<IPhone> = id => async dispatch => {
+    return await dispatch({
+        type: ACTION_TYPES.DELETE_PHONE,
+        payload: axios.delete(`${apiUrl}/${id}`)
     })
 }
 

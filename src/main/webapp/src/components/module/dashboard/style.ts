@@ -202,6 +202,24 @@ export const detailsStyles = makeStyles((theme: Theme) => ({
             marginRight: theme.spacing(0),
         },
     },
+    buttons: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-start",
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(3),
+        [theme.breakpoints.down('xs')]: {
+            flexDirection: "column",
+        }
+    },
+    button: {
+        marginRight: theme.spacing(3),
+        [theme.breakpoints.down('xs')]: {
+            width: "100%",
+            marginRight: theme.spacing(0),
+            marginBottom: theme.spacing(1)
+        }
+    }
 }));
 
 export const MenuProps =

@@ -1,7 +1,7 @@
 import {defaultValue, IWorkPlace} from "../../../shared/models/workplace.model";
 import {AnyAction} from "redux";
 import {FAILURE, REQUEST, SUCCESS} from "../../../shared/reducer/action-type.util";
-import {ICrudGetAction, ICrudGetAllAction, ICrudPutAction} from "../../../types";
+import {ICrudDeleteAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction} from "../../../types";
 import axios from "axios";
 import {cleanEntity} from "../../../shared/util/entity-util";
 
@@ -127,6 +127,13 @@ export const updateWorkPlace: ICrudPutAction<IWorkPlace> = entity => async dispa
     return await dispatch({
         type: ACTION_TYPES.UPDATE_WORKPLACE,
         payload: axios.put<IWorkPlace>(apiUrl, cleanEntity(entity))
+    })
+}
+
+export const deleteWorkPlace: ICrudDeleteAction<IWorkPlace> = id => async dispatch => {
+    return await dispatch({
+        type: ACTION_TYPES.DELETE_WORKPLACE,
+        payload: axios.delete(`${apiUrl}/${id}`)
     })
 }
 
