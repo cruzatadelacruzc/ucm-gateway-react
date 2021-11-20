@@ -10,6 +10,7 @@ import ErrorBoundaryRoute from '../../shared/error/error-boundary-route';
 import Employees from "./person/employee";
 import WorkPlaces from "./workplace";
 import Phones from "./phone";
+import Students from "./person/student/students";
 
 
 const Dashboard = ({match}) => {
@@ -30,6 +31,7 @@ const Dashboard = ({match}) => {
             <Switch>
                 <ErrorBoundaryRoute path={`${match.url}home`} component={Home}/>
                 <ErrorBoundaryRoute path={`${match.url}phone`} component={Phones}/>
+                <ErrorBoundaryRoute path={`${match.url}student`} component={Students}/>
                 <ErrorBoundaryRoute path={`${match.url}employee`} component={Employees}/>
                 <ErrorBoundaryRoute path={`${match.url}workplace`} component={WorkPlaces}/>
                 <ErrorBoundaryRoute path={`${match.url}nomenclature`} component={Nomenclature}/>

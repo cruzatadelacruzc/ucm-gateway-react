@@ -1,0 +1,16 @@
+{
+  "title": {
+    "manage":  "Manage student",
+    "list": "Students list",
+    "step": "Student data"
+  },
+  "kind": "Kind",
+  "residence": "Residence",
+  "classRoom": "Class room",
+  "studyCenter": "Study center",
+  "universityYear": "University year",
+  "delete": {
+    "title": "Delete student",
+    "question": "Are you sure you want to delete Student {{ param }}?"
+  }
+}

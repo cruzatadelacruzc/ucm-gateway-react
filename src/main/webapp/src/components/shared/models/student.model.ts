@@ -1,19 +1,18 @@
-export interface IStudent {
-  id?: string;
-  active: boolean;
-  description?: string;
-  email?: string;
-  employees?: Array<string>;
-  name: string;
-  phones?: Array<string>;
+import {defaultValue as personModel, IPerson} from "./person.model";
+
+export interface IStudent extends IPerson {
+  kind?: string
+  classRoom?: string
+  residence?: string
+  studyCenter?: string
+  universityYear?: number
 }
 
 export const defaultValue: Readonly<IStudent> = {
-  id: '',
-  name: '',
-  email: '',
-  active: true,
-  description: '',
-  employees: [],
-  phones: [],
+  ...personModel,
+  kind: '',
+  classRoom: '',
+  residence: '',
+  studyCenter: '',
+  universityYear: 1,
 };

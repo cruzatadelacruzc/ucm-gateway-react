@@ -8,12 +8,17 @@ import AddAlertIcon from "@material-ui/icons/AddAlert";
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import i18n from "../../../../config/i18n";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
-import {ContactPhone} from "@material-ui/icons";
+import {ContactPhone, Face} from "@material-ui/icons";
 
 export const menuItems = [
     {   label: i18n.t("common:dashboard"),
         link: "/home",
         icon: <AddAlertIcon /> },
+    {
+        label: i18n.t("common:entities.directoryStudent"),
+        link: "/student",
+        icon: <Face />,
+    },
     {
         label: i18n.t("common:entities.directoryEmployee"),
         link: "/employee",

@@ -25,6 +25,8 @@ import workplace_es from '../i18n/es/workplace.json'
 import workplace_en from '../i18n/en/workplace.json'
 import phone_es from '../i18n/es/phone.json'
 import phone_en from '../i18n/en/phone.json'
+import student_en from '../i18n/en/student.json'
+import student_es from '../i18n/es/student.json'
 
 i18n
     .use(initReactI18next)
@@ -44,7 +46,8 @@ i18n
             "nomenclature",
             "directoryApp",
             "datatable",
-            "workplace"
+            "workplace",
+            "student"
         ],
         resources: {
             en: {
@@ -54,6 +57,7 @@ i18n
                 header: header_en,
                 common: common_en,
                 person: person_en,
+                student: student_en,
                 employee: employee_en,
                 datatable: datatable_en,
                 directory: directory_en,
@@ -68,6 +72,7 @@ i18n
                 header: header_es,
                 common: common_es,
                 person: person_es,
+                student: student_es,
                 employee: employee_es,
                 datatable: datatable_es,
                 directory: directory_es,

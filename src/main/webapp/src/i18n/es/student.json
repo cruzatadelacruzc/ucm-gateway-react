@@ -1,0 +1,16 @@
+{
+  "title": {
+    "manage":  "Gestionar estudiante",
+    "list": "Lista de estudiantes",
+    "step": "Datos estudiantil"
+  },
+  "kind": "Tipo",
+  "residence": "Residencia",
+  "classRoom": "Brigada",
+  "studyCenter": "Centro de estudio",
+  "universityYear": "Años universitarios",
+  "delete": {
+    "title": "Eliminar estudiante",
+    "question": "¿Estás segura qué quieres eliminar al estudinate {{ param }}?"
+  }
+}
