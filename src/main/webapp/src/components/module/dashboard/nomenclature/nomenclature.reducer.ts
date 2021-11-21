@@ -9,10 +9,12 @@ import {ITEMS_PER_PAGE} from "../../../../config/constants";
 export enum ACTION_TYPES  {
     FETCH_NOMENCLATURE_TEACHING_CATEGORIES = 'nomenclature/FETCH_NOMENCLATURE_TEACHING_CATEGORIES',
     FETCH_NOMENCLATURE_SCIENTIFIC_DEGREES = 'nomenclature/FETCH_NOMENCLATURE_SCIENTIFIC_DEGREES',
+    FETCH_NOMENCLATURE_STUDY_CENTERS = 'nomenclature/FETCH_NOMENCLATURE_STUDY_CENTERS',
     FETCH_NOMENCLATURE_SPECIALTIES = 'nomenclature/FETCH_NOMENCLATURE_SPECIALTIES',
     FETCH_NOMENCLATURE_PROFESSIONS = 'nomenclature/FETCH_NOMENCLATURE_PROFESSIONS',
     FETCH_NOMENCLATURE_CATEGORIES = 'nomenclature/FETCH_NOMENCLATURE_CATEGORIES',
     FETCH_NOMENCLATURE_DISTRICTS = 'nomenclature/FETCH_NOMENCLATURE_DISTRICTS',
+    FETCH_NOMENCLATURE_KINDS = 'nomenclature/FETCH_NOMENCLATURE_KINDS',
     FETCH_NOMENCLATURE_CHARGES = 'nomenclature/FETCH_NOMENCLATURE_CHARGES',
     FETCH_NOMENCLATURE_SEARCH = 'nomenclature/FETCH_NOMENCLATURE_SEARCH',
     FETCH_NOMENCLATURE_LIST= 'nomenclature/FETCH_NOMENCLATURE_LIST',
@@ -27,12 +29,14 @@ const initialState = {
     errorMessage: null,
     teachingCategories: [] as ReadonlyArray<INomenclature>,
     scientificDegrees: [] as ReadonlyArray<INomenclature>,
+    studyCenters: [] as ReadonlyArray<INomenclature>,
     specialties: [] as ReadonlyArray<INomenclature>,
     professions: [] as ReadonlyArray<INomenclature>,
     categories: [] as ReadonlyArray<INomenclature>,
     districts: [] as ReadonlyArray<INomenclature>,
     entities: [] as ReadonlyArray<INomenclature>,
     charges: [] as ReadonlyArray<INomenclature>,
+    kinds: [] as ReadonlyArray<INomenclature>,
     entity: defaultValue,
     updating: false,
     totalItems: 0,
@@ -48,12 +52,14 @@ const nomenclatureReducer = (state: NomenclatureStateType = initialState, {type,
     switch (type) {
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_TEACHING_CATEGORIES):
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_SCIENTIFIC_DEGREES):
+        case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_STUDY_CENTERS):
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_PROFESSIONS):
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_SPECIALTIES):
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_CATEGORIES):
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_DISTRICTS):
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_CHARGES):
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_SEARCH):
+        case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_KINDS):
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_LIST):
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE):
                 return {
@@ -83,6 +89,20 @@ const nomenclatureReducer = (state: NomenclatureStateType = initialState, {type,
                 ...state,
                 loading: false,
                 charges: payload.data,
+                totalItems: parseInt(payload.headers['x-total-count'], 10)
+            }
+        case SUCCESS(ACTION_TYPES.FETCH_NOMENCLATURE_KINDS):
+            return {
+                ...state,
+                loading: false,
+                kinds: payload.data,
+                totalItems: parseInt(payload.headers['x-total-count'], 10)
+            }
+        case SUCCESS(ACTION_TYPES.FETCH_NOMENCLATURE_STUDY_CENTERS):
+            return {
+                ...state,
+                loading: false,
+                studyCenters: payload.data,
                 totalItems: parseInt(payload.headers['x-total-count'], 10)
             }
         case SUCCESS(ACTION_TYPES.FETCH_NOMENCLATURE_TEACHING_CATEGORIES):
@@ -153,12 +173,14 @@ const nomenclatureReducer = (state: NomenclatureStateType = initialState, {type,
             }
         case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_TEACHING_CATEGORIES):
         case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_SCIENTIFIC_DEGREES):
+        case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_STUDY_CENTERS):
         case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_PROFESSIONS):
         case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_SPECIALTIES):
         case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_CATEGORIES):
         case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_DISTRICTS):
         case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_CHARGES):
         case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_SEARCH):
+        case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_KINDS):
         case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_LIST):
         case FAILURE(ACTION_TYPES.CREATE_NOMENCLATURE):
         case FAILURE(ACTION_TYPES.UPDATE_NOMENCLATURE):
@@ -203,56 +225,56 @@ export const getNomenclature: ICrudGetAction<INomenclature> = id => async dispat
 export const getDistricts: ICrudGetAllAction<INomenclature> = (page, size, sort) => async dispatch =>  {
     return await dispatch( {
         type: ACTION_TYPES.FETCH_NOMENCLATURE_DISTRICTS,
-        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.DISTRICT}${sort ? `&page=${page}&size=${size}&sort=${sort}` : '?unpaged=true'}`)
+        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.DISTRICT}?${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
     })
 }
 
 export const getSpecialties: ICrudGetAllAction<INomenclature> = (page, size, sort) => async dispatch =>  {
     return await dispatch( {
         type: ACTION_TYPES.FETCH_NOMENCLATURE_SPECIALTIES,
-        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.SPECIALTY}${sort ? `?page=${page}&size=${size}&sort=${sort}` : '?unpaged=true'}`)
+        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.SPECIALTY}?${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
     })
 }
 
 export const getCategories: ICrudGetAllAction<INomenclature> = (page, size, sort) => async dispatch =>  {
     return await dispatch( {
         type: ACTION_TYPES.FETCH_NOMENCLATURE_CATEGORIES,
-        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.CATEGORY}${sort ? `?page=${page}&size=${size}&sort=${sort}` : '?unpaged=true'}`)
+        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.CATEGORY}?${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
     })
 }
 
 export const getTeachingCategories: ICrudGetAllAction<INomenclature> = (page, size, sort) => async dispatch =>  {
     return await dispatch( {
         type: ACTION_TYPES.FETCH_NOMENCLATURE_TEACHING_CATEGORIES,
-        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.TEACHING_CATEGORY}${sort ? `?page=${page}&size=${size}&sort=${sort}` : '?unpaged=true'}`)
+        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.TEACHING_CATEGORY}?${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
     })
 }
 
 export const getScientificDegrees: ICrudGetAllAction<INomenclature> = (page, size, sort) => async dispatch =>  {
     return await dispatch( {
         type: ACTION_TYPES.FETCH_NOMENCLATURE_SCIENTIFIC_DEGREES,
-        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.SCIENTIFIC_DEGREE}${sort ? `?page=${page}&size=${size}&sort=${sort}` : '?unpaged=true'}`)
+        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.SCIENTIFIC_DEGREE}?${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
     })
 }
 
 export const getProfessions: ICrudGetAllAction<INomenclature> = (page, size, sort) => async dispatch =>  {
     return await dispatch( {
         type: ACTION_TYPES.FETCH_NOMENCLATURE_PROFESSIONS,
-        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.PROFESSION}${sort ? `?page=${page}&size=${size}&sort=${sort}` : '?unpaged=true'}`)
+        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.PROFESSION}?${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
     })
 }
 
 export const getCharges: ICrudGetAllAction<INomenclature> = (page, size, sort) => async dispatch =>  {
     return await dispatch( {
         type: ACTION_TYPES.FETCH_NOMENCLATURE_CHARGES,
-        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.CHARGE}${sort ? `?page=${page}&size=${size}&sort=${sort}` : '?unpaged=true'}`)
+        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.CHARGE}?${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
     })
 }
 
 export const getNomenclatures: ICrudGetAllAction<INomenclature> = (page, size, sort) => async dispatch =>  {
     return await dispatch( {
         type: ACTION_TYPES.FETCH_NOMENCLATURE_LIST,
-        payload: axios.get<INomenclature>(`${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : '?unpaged=true'}`)
+        payload: axios.get<INomenclature>(`${apiUrl}?${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
     })
 }
 
@@ -260,7 +282,7 @@ export const getSearchNomenclatures: ICrudSearchAction<INomenclature> = (search,
     const filter = `name.contains=${search}&description.contains=${search}&discriminator.contains=${search}&parentDistrictName.contains=${search}`
     return await dispatch( {
         type: ACTION_TYPES.FETCH_NOMENCLATURE_SEARCH,
-        payload: axios.get<INomenclature>(`${apiUrl}/filtered/or?${filter}${sort ? `&page=${page}&size=${size}&sort=${sort}` : '?unpaged=true'}`)
+        payload: axios.get<INomenclature>(`${apiUrl}/filtered/or?${filter}&${sort ? `&page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
     })
 }
 
