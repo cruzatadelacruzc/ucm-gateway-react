@@ -52,7 +52,7 @@ const notificationMiddleware = () => next => action => {
                             toast.error(i18n.t('error:server.not.reachable'));
                             break;
                         case 400: {
-                                if (data !== '' && data.fieldErrors) {
+                            if (data !== '' && data.fieldErrors) {
                                 const fieldErrors = data.fieldErrors;
                                 for (let i = 0; i < fieldErrors.length; i++) {
                                     const fieldError = fieldErrors[i];
@@ -66,7 +66,7 @@ const notificationMiddleware = () => next => action => {
                             } else if (data !== '' && data.message) {
                                 addErrorAlert(data.message, data.message, {param: data.params});
                             } else {
-                                addErrorAlert(data);
+                                addErrorAlert("error:unknown", "error:unknown");
                             }
                             break;
                         }
