@@ -76,7 +76,7 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
                     {<Button className={classes.button} type="submit" disabled={isSubmitting}
                              endIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
                              color="primary" variant="contained">
-                        {isLastStep ? t('submit') : t('forward')}
+                        {isLastStep ? t('finish') : t('forward')}
                     </Button>}
                 </Box>
             </Form>
