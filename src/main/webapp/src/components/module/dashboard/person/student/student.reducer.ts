@@ -2,9 +2,13 @@ import {AnyAction} from "redux";
 import {ITEMS_PER_PAGE} from "../../../../../config/constants";
 import {defaultValue, IStudent} from "../../../../shared/models/student.model";
 import {FAILURE, REQUEST, SUCCESS} from "../../../../shared/reducer/action-type.util";
+import {ICrudGetAction, ICrudPutAction} from "../../../../types";
+import axios from "axios";
+import {cleanEntity} from "../../../../shared/util/entity-util";
 
 
 export const ACTION_TYPES =  {
+    PARTIAL_UPDATE_STUDENT: 'student/PARTIAL_UPDATE_STUDENT',
     FETCH_STUDENT_FILTERED: "student/FETCH_STUDENT_FILTERED",
     FETCH_STUDENT_LIST : 'student/FETCH_STUDENT_LIST',
     FETCH_STUDENT : 'student/FETCH_STUDENT',
@@ -39,6 +43,7 @@ const studentReducer = (state: StudentStateType = initialState, { type, payload 
                 updateSuccess: false,
                 loading: true
             }
+        case REQUEST(ACTION_TYPES.PARTIAL_UPDATE_STUDENT):
         case REQUEST(ACTION_TYPES.CREATE_STUDENT):
         case REQUEST(ACTION_TYPES.UPDATE_STUDENT):
         case REQUEST(ACTION_TYPES.DELETE_STUDENT):
@@ -62,6 +67,7 @@ const studentReducer = (state: StudentStateType = initialState, { type, payload 
                 loading: false,
                 entity: payload.data
             }
+        case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_STUDENT):
         case SUCCESS(ACTION_TYPES.CREATE_STUDENT):
         case SUCCESS(ACTION_TYPES.UPDATE_STUDENT):
             return {
@@ -77,6 +83,7 @@ const studentReducer = (state: StudentStateType = initialState, { type, payload 
                 updateSuccess: true,
                 entity: {}
             }
+        case FAILURE(ACTION_TYPES.PARTIAL_UPDATE_STUDENT):
         case FAILURE(ACTION_TYPES.FETCH_STUDENT_FILTERED):
         case FAILURE(ACTION_TYPES.FETCH_STUDENT_LIST):
         case FAILURE(ACTION_TYPES.FETCH_STUDENT):
@@ -95,6 +102,33 @@ const studentReducer = (state: StudentStateType = initialState, { type, payload 
 }
 
 // Actions
-const apiUrl = 'services/directory/api/employees';
+const apiUrl = 'services/directory/api/students';
+
+export const getStudent: ICrudGetAction<IStudent> = id => async dispatch => {
+    return await dispatch({
+        type: ACTION_TYPES.FETCH_STUDENT,
+        payload: axios.get<IStudent>(`${apiUrl}/${id}`)
+    })
+}
+
+export const createStudent: ICrudPutAction<IStudent> = entity => async  dispatch => {
+    return await dispatch({
+        type: ACTION_TYPES.CREATE_STUDENT,
+        payload: axios.post<IStudent>(apiUrl, cleanEntity(entity))
+    })
+}
+
+export const updateStudent: ICrudPutAction<IStudent> = entity => async  dispatch => {
+    return await dispatch({
+        type: ACTION_TYPES.UPDATE_STUDENT,
+        payload: axios.put<IStudent>(apiUrl, cleanEntity(entity))
+    })
+}
+export const partialUpdateStudent: ICrudPutAction<IStudent> = entity => async dispatch => {
+    return await dispatch({
+        type: ACTION_TYPES.PARTIAL_UPDATE_STUDENT,
+        payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity))
+    })
+}
 
 export default studentReducer;

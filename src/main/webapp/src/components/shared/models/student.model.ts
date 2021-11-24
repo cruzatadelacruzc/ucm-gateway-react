@@ -1,18 +1,22 @@
 import {defaultValue as personModel, IPerson} from "./person.model";
 
 export interface IStudent extends IPerson {
-  kind?: string
+  kindId?: string
+  kindName?: string
   classRoom?: string
   residence?: string
-  studyCenter?: string
+  studyCenterId?: string
   universityYear?: number
+  studyCenterName?: string
 }
 
 export const defaultValue: Readonly<IStudent> = {
   ...personModel,
-  kind: '',
+  kindId: '',
+  kindName: '',
   classRoom: '',
   residence: '',
-  studyCenter: '',
+  studyCenterId: '',
   universityYear: 1,
+  studyCenterName: ''
 };

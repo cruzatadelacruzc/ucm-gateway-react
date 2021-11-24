@@ -10,7 +10,7 @@ import ErrorBoundaryRoute from '../../shared/error/error-boundary-route';
 import Employees from "./person/employee";
 import WorkPlaces from "./workplace";
 import Phones from "./phone";
-import Students from "./person/student/students";
+import Students from "./person/student";
 
 
 const Dashboard = ({match}) => {

@@ -47,7 +47,7 @@ export declare type ICrudGetAction<T> = (
 ) => IPayload<T> | ((dispatch: any) =>  AxiosPromise<IPayload<T>>);
 
 export declare type ICrudPutAction<T> = (
-    data?: T
+    data: T
 ) => IPayload<T> | IPayloadResult<T>;
 
 export declare type ICrudDeleteAction<T> = (
