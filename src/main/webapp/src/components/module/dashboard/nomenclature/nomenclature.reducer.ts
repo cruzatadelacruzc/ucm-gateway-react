@@ -271,6 +271,20 @@ export const getCharges: ICrudGetAllAction<INomenclature> = (page, size, sort) =
     })
 }
 
+export const getKinds: ICrudGetAllAction<INomenclature> = (page, size, sort) => async dispatch =>  {
+    return await dispatch( {
+        type: ACTION_TYPES.FETCH_NOMENCLATURE_KINDS,
+        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.KIND}?${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
+    })
+}
+
+export const getStudyCenters: ICrudGetAllAction<INomenclature> = (page, size, sort) => async dispatch =>  {
+    return await dispatch( {
+        type: ACTION_TYPES.FETCH_NOMENCLATURE_STUDY_CENTERS,
+        payload: axios.get<INomenclature>(`${apiUrl}/discriminator/${DISCRIMINATOR.STUDY_CENTER}?${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
+    })
+}
+
 export const getNomenclatures: ICrudGetAllAction<INomenclature> = (page, size, sort) => async dispatch =>  {
     return await dispatch( {
         type: ACTION_TYPES.FETCH_NOMENCLATURE_LIST,
