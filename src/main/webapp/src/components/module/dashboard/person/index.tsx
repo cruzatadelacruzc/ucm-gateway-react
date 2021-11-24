@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import i18n from '../../../../config/i18n'
 import {useTranslation} from "react-i18next";
-import {useDispatch, useSelector} from "react-redux";
+import {batch, useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../../shared/reducer";
 import {Field} from 'formik';
 import {getDistricts, getSpecialties} from "../nomenclature/nomenclature.reducer";
@@ -43,9 +43,11 @@ const PersonalStep = React.memo((props: IPersonStep) => {
     const specialties = useSelector((states: IRootState) => states.nomenclature.specialties);
 
     useEffect(() => {
-        dispatch(getDistricts())
-        dispatch(getSpecialties())
-    }, [dispatch])
+        batch(() => {
+            dispatch(getDistricts())
+            dispatch(getSpecialties())
+        })
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <>
