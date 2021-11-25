@@ -2,7 +2,7 @@ import {AnyAction} from "redux";
 import {ITEMS_PER_PAGE} from "../../../../../config/constants";
 import {defaultValue, IStudent} from "../../../../shared/models/student.model";
 import {FAILURE, REQUEST, SUCCESS} from "../../../../shared/reducer/action-type.util";
-import {ICrudGetAction, ICrudPutAction} from "../../../../types";
+import {ICrudDeleteAction, ICrudGetAction, ICrudPutAction} from "../../../../types";
 import axios from "axios";
 import {cleanEntity} from "../../../../shared/util/entity-util";
 
@@ -128,6 +128,13 @@ export const partialUpdateStudent: ICrudPutAction<IStudent> = entity => async di
     return await dispatch({
         type: ACTION_TYPES.PARTIAL_UPDATE_STUDENT,
         payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity))
+    })
+}
+
+export const deleteStudent: ICrudDeleteAction<IStudent> = id => async dispatch => {
+    return await dispatch({
+        type: ACTION_TYPES.DELETE_STUDENT,
+        payload: axios.delete(`${apiUrl}/${id}`)
     })
 }
 
