@@ -4,11 +4,27 @@ import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {IRootState} from "../../../../shared/reducer";
 import {deleteEmployee, getEmployee} from "./employee.reducer";
-import {Box, Button, Chip, CircularProgress, Divider, FormControl, FormLabel} from "@material-ui/core";
+import {
+    Avatar,
+    Box,
+    Button,
+    Chip,
+    CircularProgress,
+    Divider,
+    FormControl,
+    FormLabel,
+    IconButton,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText
+} from "@material-ui/core";
 import {detailsStyles} from "../../style";
 import PersonDetails from "../person-details";
 import dayjs from "dayjs";
 import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
+import {LocalPhone} from "@material-ui/icons";
+import Widget from "../../../../shared/layout/widget";
 
 function EmployeeDetails() {
     let history = useHistory();
@@ -30,7 +46,7 @@ function EmployeeDetails() {
         }
     }, [isUpdateSuccess, history])
 
-    return (
+    return <Widget disableWidgetMenu>
         <Box className={classes.root}>
             <Box className={classes.wrapDivider}>
                 <Divider className={classes.order1}/>
@@ -164,7 +180,7 @@ function EmployeeDetails() {
                 </Button>
             </Box>
         </Box>
-    );
+    </Widget>
 }
 
 export default EmployeeDetails

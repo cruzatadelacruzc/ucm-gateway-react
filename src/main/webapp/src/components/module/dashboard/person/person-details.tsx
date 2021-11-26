@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import {detailsStyles} from "../style";
 import {useTranslation} from "react-i18next";
 import {IPerson} from "../../../shared/models/person.model";
-import {Box, FormControl, FormLabel, Paper} from "@material-ui/core";
+import {Box, Card, CardActionArea, CardMedia, FormControl, FormLabel} from "@material-ui/core";
 
 export default function PersonDetails(_entity: IPerson) {
     const {t} = useTranslation(['person']);
@@ -11,13 +11,17 @@ export default function PersonDetails(_entity: IPerson) {
     return (
         <>
             <Box className={classes.data_row}>
-                <Box className={classes.data_column} style={{flex: '0.2 0.2 auto'}}>
-                    <Box className={classes.data_cell} style={{alignSelf: 'center'}}>
-                        <Paper className={classes.cover}>
-                            <img alt={`${_entity.name} ${_entity.firstLastName} ${_entity.secondLastName}`}
-                                 src={_entity.avatarUrl || "../../user.svg"} style={{width: 200}}/>
-                        </Paper>
-                    </Box>
+                <Box className={classes.data_column}>
+                        <Card>
+                            <CardActionArea>
+                                <CardMedia
+                                    component="img"
+                                    style={{maxWidth: '100%' , padding: "10px"}}
+                                    image={_entity.avatarUrl || "../../user.svg"}
+                                    alt={`${_entity.name} ${_entity.firstLastName} ${_entity.secondLastName}`}
+                                 />
+                            </CardActionArea>
+                        </Card>
                 </Box>
                 <Box className={classes.data_column}>
                     <Box className={classes.data_cell}>
