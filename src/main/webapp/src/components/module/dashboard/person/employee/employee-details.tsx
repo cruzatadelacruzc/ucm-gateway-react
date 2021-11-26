@@ -145,9 +145,24 @@ function EmployeeDetails() {
             </Box>
             <Box className={classes.data_row}>
                 <Box className={classes.data_cell}>
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend"><ContactPhoneIcon/></FormLabel>
-                        {_entity.phones?.join("-")}
+                    <FormControl>
+                        <FormLabel><ContactPhoneIcon/></FormLabel>
+                        <List>
+                            {_entity.phones?.map((phone, index) => (
+                                    <IconButton key={index}>
+                                        <ListItem component={Link} to={`/phone/show/${phone.id}`}>
+                                            <ListItemAvatar>
+                                                <Avatar>
+                                                    <LocalPhone/>
+                                                </Avatar>
+                                            </ListItemAvatar>
+                                            <ListItemText primary={phone.number}/>
+                                        </ListItem>
+                                    </IconButton>
+                                )
+                              )
+                            }
+                        </List>
                     </FormControl>
                 </Box>
             </Box>

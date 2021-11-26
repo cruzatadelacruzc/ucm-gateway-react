@@ -65,29 +65,23 @@ export default function PersonDetails(_entity: IPerson) {
                 </Box>
             </Box>
             <Box className={classes.data_row}>
-                <Box className={classes.data_column}>
-                    <Box className={classes.data_cell}>
-                        <FormControl component="fieldset">
-                            <FormLabel component="legend">{`${t("race")} & ${t("gender.label")}`}</FormLabel>
-                            {`${_entity.race} | ${_entity.gender}`}
-                        </FormControl>
-                    </Box>
+                <Box className={classes.data_cell}>
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">{`${t("race")} & ${t("gender.label")}`}</FormLabel>
+                        {`${_entity.race} | ${_entity.gender}`}
+                    </FormControl>
                 </Box>
-                <Box className={classes.data_column}>
-                    <Box className={classes.data_cell}>
-                        <FormControl component="fieldset">
-                            <FormLabel component="legend">{t("birthdate")}</FormLabel>
-                            {`${dayjs(_entity.birthdate).format(t('common:date_format'))} | ${_entity.age} ${t("age")}`}
-                        </FormControl>
-                    </Box>
+                <Box className={classes.data_cell}>
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">{t("birthdate")}</FormLabel>
+                        {`${dayjs(_entity.birthdate).format(t('common:date_format'))} | ${_entity.age} ${t("age")}`}
+                    </FormControl>
                 </Box>
-                <Box className={classes.data_column}>
-                    <Box className={classes.data_cell}>
-                        <FormControl component="fieldset">
-                            <FormLabel component="legend">{t("district")}</FormLabel>
-                            {_entity.districtName}
-                        </FormControl>
-                    </Box>
+                <Box className={classes.data_cell}>
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">{t("district")}</FormLabel>
+                        {_entity.districtName}
+                    </FormControl>
                 </Box>
             </Box>
             <Box className={classes.data_row}>
