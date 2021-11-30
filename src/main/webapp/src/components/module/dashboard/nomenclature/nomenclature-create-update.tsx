@@ -41,7 +41,7 @@ const NomenclatureManage = () => {
             <Formik
                 initialValues={isNew ? defaultValue : entity}
                 enableReinitialize={!isNew}
-                onSubmit={(values: INomenclature, {setSubmitting, setFieldValue}) => {
+                onSubmit={(values: INomenclature, {setSubmitting}) => {
                     if (isNew) {
                         dispatch(createNomenclature(values))
                     } else {
@@ -49,7 +49,6 @@ const NomenclatureManage = () => {
                     }
                     if (!updating && !updateSuccess) {
                         setSubmitting(false);
-                        setFieldValue("name", "");
                     }
                 }}
                 validationSchema={yup.object().shape({
