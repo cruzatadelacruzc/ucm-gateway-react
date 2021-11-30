@@ -8,54 +8,32 @@ import {IRootState} from "../../../shared/reducer";
 import Widget from "../../../shared/layout/widget";
 import {useDispatch, useSelector} from "react-redux";
 import {Box, Button, CircularProgress, MenuItem} from "@material-ui/core";
-import {Link, RouteComponentProps} from 'react-router-dom'
+import {Link, useHistory, useParams} from 'react-router-dom'
 import {defaultValue, DISCRIMINATOR, INomenclature} from "../../../shared/models/nomenclature.model";
-import {createNomenclature, getDistricts, getNomenclature, updateNomenclature} from "./nomenclature.reducer";
+import {createNomenclature, getNomenclature, updateNomenclature} from "./nomenclature.reducer";
 
-
-export interface INomenclatureManageProps extends RouteComponentProps<{ id: string }> {
-}
-
-const NomenclatureManage = (props: INomenclatureManageProps) => {
+const NomenclatureManage = () => {
+    let history = useHistory();
     const dispatch = useDispatch();
     const classes = formUpdateStyles();
+    let {id} = useParams<{id: string}>();
+    const [isNew] = React.useState(!id);
     const {t} = useTranslation(['nomenclature']);
-    const [open, setOpen] = React.useState(false);
-    const [isNew] = React.useState(!props.match.params || !props.match.params.id);
-    const [visibleParentDistrict, setVisibleParentDistrict] = React.useState(false);
-    const {updating, entity, districts, updateSuccess, loading} = useSelector((states: IRootState) => states.nomenclature);
-
-    const handleSelect = React.useCallback((handleChange) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.value === DISCRIMINATOR.DISTRICT) {
-            setVisibleParentDistrict(true)
-        } else {
-            setVisibleParentDistrict(false)
-        }
-        handleChange(event);
-    }, [])
+    const entity = useSelector((states: IRootState) => states.nomenclature.entity);
+    const updating = useSelector((states: IRootState) => states.nomenclature.updating);
+    const updateSuccess = useSelector((states: IRootState) => states.nomenclature.updateSuccess);
 
     React.useEffect(() => {
-        if (isNew) {
-            setVisibleParentDistrict(false)
-        } else {
-            setVisibleParentDistrict(true)
-            setOpen(true)
-            dispatch(getNomenclature(props.match.params.id))
+        if (!isNew) {
+            dispatch(getNomenclature(id))
         }
-    }, [dispatch, isNew, props.match.params.id])
+    }, [isNew, id]) // eslint-disable-line react-hooks/exhaustive-deps
 
     React.useEffect(() => {
         if (updateSuccess) {
-            props.history.push('/nomenclature');
+            history.push('/nomenclature');
         }
-    }, [updateSuccess, props.history])
-
-
-    React.useEffect(() => {
-        if (open){
-            dispatch(getDistricts())
-        }
-    }, [open,dispatch])
+    }, [updateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
     return (
@@ -63,11 +41,15 @@ const NomenclatureManage = (props: INomenclatureManageProps) => {
             <Formik
                 initialValues={isNew ? defaultValue : entity}
                 enableReinitialize={!isNew}
-                onSubmit={(values: INomenclature) => {
+                onSubmit={(values: INomenclature, {setSubmitting, setFieldValue}) => {
                     if (isNew) {
                         dispatch(createNomenclature(values))
                     } else {
                         dispatch(updateNomenclature(values))
+                    }
+                    if (!updating && !updateSuccess) {
+                        setSubmitting(false);
+                        setFieldValue("name", "");
                     }
                 }}
                 validationSchema={yup.object().shape({
@@ -88,21 +70,21 @@ const NomenclatureManage = (props: INomenclatureManageProps) => {
                                     label={t("name")}
                                 />
                             </Box>
-                            <Box className={classes.input}>
+                            {isNew && <Box className={classes.input}>
                                 <Field
-                                    InputLabelProps={{shrink: true}}
-                                    component={TextField}
-                                    fullWidth
                                     select
-                                    onChange={handleSelect(handleChange)}
+                                    fullWidth
                                     variant="outlined"
                                     name="discriminator"
+                                    component={TextField}
                                     SelectProps={MenuProps}
+                                    InputLabelProps={{shrink: true}}
                                     label={t('discriminator')}
                                 >
                                     <MenuItem value={DISCRIMINATOR.CHARGE}>{t("charge")}</MenuItem>
                                     <MenuItem value={DISCRIMINATOR.CATEGORY}>{t("category")}</MenuItem>
-                                    <MenuItem value={DISCRIMINATOR.TEACHING_CATEGORY}>{t("teaching_category")}</MenuItem>
+                                    <MenuItem
+                                        value={DISCRIMINATOR.TEACHING_CATEGORY}>{t("teaching_category")}</MenuItem>
                                     <MenuItem value={DISCRIMINATOR.STUDY_CENTER}>{t("study_center")}</MenuItem>
                                     <MenuItem value={DISCRIMINATOR.DISTRICT}>{t("district")}</MenuItem>
                                     <MenuItem value={DISCRIMINATOR.SPECIALTY}>{t("specialty")}</MenuItem>
@@ -111,26 +93,8 @@ const NomenclatureManage = (props: INomenclatureManageProps) => {
                                     <MenuItem value={DISCRIMINATOR.PROFESSION}>{t("profession")}</MenuItem>
                                     <MenuItem value={DISCRIMINATOR.KIND}>{t("kind")}</MenuItem>
                                 </Field>
-                            </Box>
-                            <Box className={classes.input} style={{display: visibleParentDistrict ? '' : 'none'}}>
-                                <Field
-                                    select
-                                    fullWidth
-                                    variant="outlined"
-                                    component={TextField}
-                                    name="parentDistrictId"
-                                    SelectProps={{...MenuProps, onOpen: () => setOpen(true)}}
-                                    label={t('parentDistrict')}
-                                    InputLabelProps={{shrink: true}}
-                                    disabled={!visibleParentDistrict}
-                                >
-                                    <MenuItem value=""><em>-- {loading ? t('common:loading'): t('common:empty')} --</em></MenuItem>
-                                    {districts.map((option, index) => <MenuItem
-                                            selected={!isNew && entity.parentDistrictId === option.id}
-                                            key={index} value={option.id}>{option.name}</MenuItem>
-                                    )}
-                                </Field>
-                            </Box>
+                              </Box>
+                            }
                         </Box>
                         <Box className={classes.form_group}>
                             <Box className={classes.input}>

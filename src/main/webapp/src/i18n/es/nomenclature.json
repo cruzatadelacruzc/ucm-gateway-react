@@ -3,7 +3,6 @@
     "manage":  "Gestionar nomenclador",
     "list": "Listado de nomencladores"
   },
-  "parentDistrict": "Distrito padre",
   "description": "Descripción",
   "name": "Nombre",
   "discriminator": "Discriminador",

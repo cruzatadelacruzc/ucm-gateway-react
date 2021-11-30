@@ -3,7 +3,6 @@
     "manage":  "Manage nomenclature",
     "list": "Nomenclatures list"
   },
-  "parentDistrict": "Parent district",
   "description": "Description",
   "name": "Name",
   "discriminator": "Discriminator",

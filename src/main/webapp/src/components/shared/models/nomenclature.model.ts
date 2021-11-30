@@ -13,13 +13,11 @@ export interface INomenclature {
     id?: string;
     "name"?: string,
     "description"?: string| null,
-    "parentDistrictId"?: string | null,
     "discriminator"?: DISCRIMINATOR
 }
 
 export const defaultValue: Readonly<INomenclature> = {
     discriminator: DISCRIMINATOR.CATEGORY,
-    parentDistrictId: '',
     description: '',
     name: ''
 }
