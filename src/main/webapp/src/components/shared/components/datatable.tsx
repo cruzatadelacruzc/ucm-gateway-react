@@ -34,6 +34,9 @@ export interface IUCMDataBase {
     editRoute?: string,
     showRoute?: string,
     deleteRoute?: string,
+    disableShowButton?,
+    disableDeleteButton?,
+    disableEditButton?,
     customOptions?: {},
     columns: Array<{ name: string, label?: string, options?: {} }>,
     resourceURL: string,
@@ -68,7 +71,10 @@ export default function UCMDataBase(
         reduxAction,
         customOptions,
         sortOrderState,
-        downloadFilename
+        downloadFilename,
+        disableEditButton,
+        disableShowButton,
+        disableDeleteButton
     }: IUCMDataBase
 ) {
     const {t} = useTranslation();
@@ -88,7 +94,7 @@ export default function UCMDataBase(
 
 
     React.useEffect(() => {
-        const getItems = async () => {
+        (async () => {
             try {
                 let searchURl = `${resourceURL}/filtered/or?`;
                 if (search) {
@@ -117,8 +123,7 @@ export default function UCMDataBase(
                 }
                 toast.error(t(error.message))
             }
-        }
-        getItems()
+        })()
     },[search, currentPage, numberOfRows, sortOrder.name, sortOrder.direction, update, resourceURL, columns, reduxAction]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
@@ -170,41 +175,47 @@ export default function UCMDataBase(
         return (
             <>
                 <Paper elevation={1} className={dataTableClasses.paper}>
-                    <Tooltip title={t("common:edit") || "Editar"} aria-label={t("common:edit")} arrow>
-                        <IconButton
-                            component={Link}
-                            to={`${match.url}${editRoute || '/edit'}/${id}`}
-                            aria-label={t("common:edit")}
-                            color="primary"
-                            size="small"
-                            className={dataTableClasses.iconButton}
-                        >
-                            <EditIcon/>
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title={t("common:show") || "Mostrar"} aria-label={t("common:show")} arrow>
-                        <IconButton
-                            component={Link}
-                            to={`${match.url}${showRoute || '/show'}/${id}`}
-                            aria-label={t("common:show")}
-                            color="primary"
-                            size="small"
-                            className={dataTableClasses.iconButton}
-                        >
-                            <VisibilityIcon/>
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title={t("common:delete") || "Eliminar"} aria-label={t("common:delete")} arrow>
-                        <IconButton
-                            onClick={handleClickOpen}
-                            aria-label={t("common:delete")}
-                            color="primary"
-                            size="small"
-                            className={dataTableClasses.iconButton}
-                        >
-                            <DeleteIcon/>
-                        </IconButton>
-                    </Tooltip>
+                    {!disableEditButton &&
+                        <Tooltip title={t("common:edit") || "Editar"} aria-label={t("common:edit")} arrow>
+                            <IconButton
+                                component={Link}
+                                to={`${match.url}${editRoute || '/edit'}/${id}`}
+                                aria-label={t("common:edit")}
+                                color="primary"
+                                size="small"
+                                className={dataTableClasses.iconButton}
+                            >
+                                <EditIcon/>
+                            </IconButton>
+                        </Tooltip>
+                    }
+                    {!disableShowButton &&
+                        <Tooltip title={t("common:show") || "Mostrar"} aria-label={t("common:show")} arrow>
+                            <IconButton
+                                component={Link}
+                                to={`${match.url}${showRoute || '/show'}/${id}`}
+                                aria-label={t("common:show")}
+                                color="primary"
+                                size="small"
+                                className={dataTableClasses.iconButton}
+                            >
+                                <VisibilityIcon/>
+                            </IconButton>
+                        </Tooltip>
+                    }
+                    {!disableDeleteButton &&
+                        <Tooltip title={t("common:delete") || "Eliminar"} aria-label={t("common:delete")} arrow>
+                            <IconButton
+                                onClick={handleClickOpen}
+                                aria-label={t("common:delete")}
+                                color="primary"
+                                size="small"
+                                className={dataTableClasses.iconButton}
+                            >
+                                <DeleteIcon/>
+                            </IconButton>
+                        </Tooltip>
+                    }
                 </Paper>
                 <Dialog
                     open={modalOpen}
@@ -277,7 +288,7 @@ export default function UCMDataBase(
                     columns={columns}
                     options={customOptions ? customOptions : options}
                     components={{
-                        TableToolbarSelect: CustomToolbar
+                        TableToolbarSelect: (!disableDeleteButton || !disableShowButton || !disableEditButton) && CustomToolbar
                     }}
                 />
             </div>
