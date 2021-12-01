@@ -4,7 +4,6 @@ import {cleanEntity} from "../../../shared/util/entity-util";
 import {ICrudDeleteAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudSearchAction} from "../../../types";
 import {FAILURE, REQUEST, SUCCESS} from "../../../shared/reducer/action-type.util";
 import {defaultValue, DISCRIMINATOR, INomenclature} from "../../../shared/models/nomenclature.model";
-import {ITEMS_PER_PAGE} from "../../../../config/constants";
 
 export enum ACTION_TYPES  {
     FETCH_NOMENCLATURE_TEACHING_CATEGORIES = 'nomenclature/FETCH_NOMENCLATURE_TEACHING_CATEGORIES',
@@ -16,7 +15,7 @@ export enum ACTION_TYPES  {
     FETCH_NOMENCLATURE_DISTRICTS = 'nomenclature/FETCH_NOMENCLATURE_DISTRICTS',
     FETCH_NOMENCLATURE_KINDS = 'nomenclature/FETCH_NOMENCLATURE_KINDS',
     FETCH_NOMENCLATURE_CHARGES = 'nomenclature/FETCH_NOMENCLATURE_CHARGES',
-    FETCH_NOMENCLATURE_SEARCH = 'nomenclature/FETCH_NOMENCLATURE_SEARCH',
+    FETCH_NOMENCLATURE_FILTERED = 'nomenclature/FETCH_NOMENCLATURE_FILTERED',
     FETCH_NOMENCLATURE_LIST= 'nomenclature/FETCH_NOMENCLATURE_LIST',
     FETCH_NOMENCLATURE= 'nomenclature/FETCH_NOMENCLATURE',
     CREATE_NOMENCLATURE= 'nomenclature/CREATE_NOMENCLATURE',
@@ -40,8 +39,6 @@ const initialState = {
     entity: defaultValue,
     updating: false,
     totalItems: 0,
-    page: 0,
-    size: ITEMS_PER_PAGE,
     updateSuccess: false,
 }
 
@@ -58,7 +55,7 @@ const nomenclatureReducer = (state: NomenclatureStateType = initialState, {type,
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_CATEGORIES):
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_DISTRICTS):
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_CHARGES):
-        case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_SEARCH):
+        case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_FILTERED):
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_KINDS):
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE_LIST):
         case REQUEST(ACTION_TYPES.FETCH_NOMENCLATURE):
@@ -140,15 +137,13 @@ const nomenclatureReducer = (state: NomenclatureStateType = initialState, {type,
                 districts: payload.data,
                 totalItems: parseInt(payload.headers['x-total-count'], 10)
             }
-        case SUCCESS(ACTION_TYPES.FETCH_NOMENCLATURE_SEARCH):
+        case SUCCESS(ACTION_TYPES.FETCH_NOMENCLATURE_FILTERED):
         case SUCCESS(ACTION_TYPES.FETCH_NOMENCLATURE_LIST):
             return {
                 ...state,
                 loading: false,
                 entities: payload.data,
-                totalItems: parseInt(payload.headers['x-total-count'], 10),
-                page: parseInt(payload.headers['x-page'], 10),
-                size: parseInt(payload.headers['x-size'], 10),
+                totalItems: parseInt(payload.headers['x-total-count'], 10)
             }
         case SUCCESS(ACTION_TYPES.FETCH_NOMENCLATURE):
             return {
@@ -179,7 +174,7 @@ const nomenclatureReducer = (state: NomenclatureStateType = initialState, {type,
         case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_CATEGORIES):
         case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_DISTRICTS):
         case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_CHARGES):
-        case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_SEARCH):
+        case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_FILTERED):
         case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_KINDS):
         case FAILURE(ACTION_TYPES.FETCH_NOMENCLATURE_LIST):
         case FAILURE(ACTION_TYPES.CREATE_NOMENCLATURE):
@@ -295,7 +290,7 @@ export const getNomenclatures: ICrudGetAllAction<INomenclature> = (page, size, s
 export const getSearchNomenclatures: ICrudSearchAction<INomenclature> = (search,page, size, sort) => async dispatch =>  {
     const filter = `name.contains=${search}&description.contains=${search}&discriminator.contains=${search}&parentDistrictName.contains=${search}`
     return await dispatch( {
-        type: ACTION_TYPES.FETCH_NOMENCLATURE_SEARCH,
+        type: ACTION_TYPES.FETCH_NOMENCLATURE_FILTERED,
         payload: axios.get<INomenclature>(`${apiUrl}/filtered/or?${filter}&${sort ? `&page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
     })
 }
