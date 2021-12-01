@@ -41,10 +41,11 @@ const NomenclatureManage = () => {
             <Formik
                 initialValues={isNew ? defaultValue : entity}
                 enableReinitialize={!isNew}
-                onSubmit={(values: INomenclature, {setSubmitting}) => {
+                onSubmit={(values: INomenclature, {setSubmitting, setFieldValue}) => {
                     if (isNew) {
                         dispatch(createNomenclature(values))
                     } else {
+                        setFieldValue("discriminator", entity.discriminator)
                         dispatch(updateNomenclature(values))
                     }
                     if (!updating && !updateSuccess) {
@@ -69,13 +70,14 @@ const NomenclatureManage = () => {
                                     label={t("name")}
                                 />
                             </Box>
-                            {isNew && <Box className={classes.input}>
+                           <Box className={classes.input}>
                                 <Field
                                     select
                                     fullWidth
                                     variant="outlined"
                                     name="discriminator"
                                     component={TextField}
+                                    disabled={!isNew}
                                     SelectProps={MenuProps}
                                     InputLabelProps={{shrink: true}}
                                     label={t('discriminator')}
@@ -92,8 +94,7 @@ const NomenclatureManage = () => {
                                     <MenuItem value={DISCRIMINATOR.PROFESSION}>{t("profession")}</MenuItem>
                                     <MenuItem value={DISCRIMINATOR.KIND}>{t("kind")}</MenuItem>
                                 </Field>
-                              </Box>
-                            }
+                           </Box>
                         </Box>
                         <Box className={classes.form_group}>
                             <Box className={classes.input}>
