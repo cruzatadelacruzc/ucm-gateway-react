@@ -90,6 +90,7 @@ export default function UCMDataBase(
     const [modalOpen, setModalOpen] = React.useState(false);
     const [currentPage, setCurrentPage] = React.useState(0);
     const [numberOfRows, setNumberOfRows] = React.useState(ITEMS_PER_PAGE);
+    const [_rowsSelected, setRowsSelected] = React.useState<Array<number>>([]);
     const [sortOrder, setSortOrder] = React.useState<{ name: string, direction: string }>(sortOrderState)
 
 
@@ -140,6 +141,7 @@ export default function UCMDataBase(
         axios.delete(`${deleteRoute ? deleteRoute : resourceURL}/${id}`)
             .then(() => {
                 setModalOpen(false)
+                setRowsSelected([])
                 setUpdate(true)
             })
             .catch(error => {
@@ -161,6 +163,8 @@ export default function UCMDataBase(
         selectableRows: 'single',
         rowsPerPageOptions: [20, 50, 100],
         draggableColumns: {enabled: true},
+        rowsSelected: _rowsSelected,
+        onRowSelectionChange: (p1,p2,rowsSelected: Array<number>) => setRowsSelected(rowsSelected),
         downloadOptions: {filename: `${downloadFilename || 'download'}.csv`},
         onChangePage: (currentPage: number) => setCurrentPage(currentPage),
         onChangeRowsPerPage: (numberOfRows: number) => setNumberOfRows(numberOfRows),
