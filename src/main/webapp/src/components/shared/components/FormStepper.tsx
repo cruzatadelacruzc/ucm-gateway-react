@@ -28,7 +28,7 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
     const currentChild = childrenArray[step];
     const isLastStep = step === childrenArray.length - 1;
     const [completed, setCompleted] = React.useState(false);
-    const buttonName = () => {
+    const buttonSubmitName = () => {
         let message = t("continue");
         if (currentChild.props.operationKind && currentChild.props.operationKind === "UPDATE") {
             message = t("save_continue")
@@ -77,7 +77,8 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
                 <Box className={classes.buttons}>
                     {<Button className={classes.button} component={Link} to={props.cancelRoute}
                              disabled={isSubmitting} color="default" variant="contained">
-                        {t('cancel')}
+                        {currentChild.props.operationKind && currentChild.props.operationKind === "CREATE"
+                            ? t('cancel') : t('close')}
                     </Button>}
 
                     {step > 0 && <Button className={classes.button} color="secondary" variant="contained"
@@ -87,7 +88,7 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
                     {<Button className={classes.button} type="submit" disabled={isSubmitting}
                              endIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
                              color="primary" variant="contained">
-                        {isLastStep ? t('finish') : buttonName()}
+                        {isLastStep ? t('finish') : buttonSubmitName()}
                     </Button>}
                 </Box>
             </Form>
