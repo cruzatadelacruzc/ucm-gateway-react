@@ -27,6 +27,7 @@ const initialState = {
     page: 0,
     size: ITEMS_PER_PAGE,
     updateSuccess: false,
+    partialUpdateSuccess: false,
 }
 
 export type StudentStateType = Readonly<typeof initialState>;
@@ -51,6 +52,7 @@ const studentReducer = (state: StudentStateType = initialState, { type, payload 
                 ...state,
                 errorMessage: null,
                 updateSuccess: false,
+                partialUpdateSuccess: false,
                 updating: true
             }
         case SUCCESS(ACTION_TYPES.FETCH_STUDENT_FILTERED):
@@ -67,13 +69,19 @@ const studentReducer = (state: StudentStateType = initialState, { type, payload 
                 loading: false,
                 entity: payload.data
             }
-        case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_STUDENT):
         case SUCCESS(ACTION_TYPES.CREATE_STUDENT):
         case SUCCESS(ACTION_TYPES.UPDATE_STUDENT):
             return {
                 ...state,
                 updating: false,
                 updateSuccess: true,
+                entity: payload.data
+            }
+        case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_STUDENT):
+            return {
+                ...state,
+                updating: false,
+                partialUpdateSuccess: true,
                 entity: payload.data
             }
         case SUCCESS(ACTION_TYPES.DELETE_STUDENT):
@@ -127,7 +135,11 @@ export const updateStudent: ICrudPutAction<IStudent> = entity => async  dispatch
 export const partialUpdateStudent: ICrudPutAction<IStudent> = entity => async dispatch => {
     return await dispatch({
         type: ACTION_TYPES.PARTIAL_UPDATE_STUDENT,
-        payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity))
+        payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity), {
+            "headers": {
+                "Content-Type": "application/merge-patch+json"
+            }
+        })
     })
 }
 

@@ -23,7 +23,6 @@ const StudentManage = () => {
     let {id} = useParams<{id: string}>();
     const [isNew] = React.useState(!id);
     const {t} = useTranslation(['student']);
-    const [isPartial, _setPartial] = React.useState(false);
     const _entity = useSelector((states: IRootState) => states.student.entity);
     const kinds = useSelector((states: IRootState) => states.nomenclature.kinds);
     const isUpdateSuccess = useSelector((states: IRootState) => states.student.updateSuccess);
@@ -51,13 +50,11 @@ const StudentManage = () => {
         <FormStepper
             initialValues={isNew ? defaultValue : _entity}
             enableReinitialize={!isNew}
-            onSubmit={(values: IStudent) => {
+            onSubmit={async (values: IStudent) => {
                 if (isNew) {
-                    dispatch(createStudent(values));
-                } else if (isPartial) {
-                    dispatch(partialUpdateStudent(values))
+                   return dispatch(createStudent(values));
                 } else {
-                    dispatch(updateStudent(values));
+                  return dispatch(updateStudent(values));
                 }
             }}
             cancelRoute='/student'
@@ -65,6 +62,12 @@ const StudentManage = () => {
             <FormStep
                 label={t("person:step")}
                 validationSchema={_validationSchema}
+                operationKind={isNew ? "CREATE": "UPDATE"}
+                onSubmit={async (values: IStudent) => {
+                    if (!isNew) {
+                       return dispatch(partialUpdateStudent(values))
+                    }
+                }}
             >
                 <PersonalStep
                     isNew={isNew}
@@ -76,7 +79,8 @@ const StudentManage = () => {
             <FormStep
                 label={t("title.step")}
                 validationSchema={yup.object().shape({
-                    universityYear: yup.number().integer(i18n.t("error:form.number")).min(0, i18n.t("error:form.min", {min: 0})),
+                    universityYear: yup.number().required(i18n.t("error:form.required"))
+                        .integer(i18n.t("error:form.number")).min(1, i18n.t("error:form.min", {min: 1})),
                     classRoom: yup.string().required(i18n.t("error:form.required")),
                     residence: yup.string().required(i18n.t("error:form.required")),
                     studyCenterId: yup.string().required(i18n.t("error:form.required"))
