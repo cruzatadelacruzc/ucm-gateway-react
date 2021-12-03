@@ -21,7 +21,7 @@
   "delete": "Eliminar",
   "print": "Imprimir",
   "cancel": "Cancelar",
-  "date_format": "D MMM YYYY",
+  "date_format": "D [de] MMM [de] YYYY",
   "submit": "Enviar",
   "select": "--Selecionar--",
   "logout_ok": "Seccion cerrada exitosamente!",
@@ -31,6 +31,7 @@
   "empty": "Vacío",
   "loading": "Cargando...",
   "back": "Atrás",
-  "forward": "Adelante",
-  "finish": "Finalizar"
+  "continue": "Continuar",
+  "finish": "Finalizar",
+  "save_continue": "Guardar y Continuar"
 }

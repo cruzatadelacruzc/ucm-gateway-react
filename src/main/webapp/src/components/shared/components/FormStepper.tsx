@@ -10,7 +10,8 @@ import {Box, CircularProgress, Step, StepLabel, Stepper} from "@material-ui/core
 
 interface IFormStepProps extends Pick<FormikConfig<FormikValues>, 'children' | 'validationSchema'> {
     label: string,
-    onSubmit?: (values: FormikValues, formikHelpers: FormikHelpers<FormikValues>) => void | Promise<any>;
+    operationKind?: "CREATE"|"UPDATE"|"DELETE"
+    onSubmit?: (values: FormikValues, formikHelpers: FormikHelpers<FormikValues>) => Promise<any>;
 }
 
 export const FormStep = ({children}: IFormStepProps) => <>{children}</>
@@ -27,14 +28,24 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
     const currentChild = childrenArray[step];
     const isLastStep = step === childrenArray.length - 1;
     const [completed, setCompleted] = React.useState(false);
+    const buttonName = () => {
+        let message = t("continue");
+        if (currentChild.props.operationKind && currentChild.props.operationKind === "UPDATE") {
+            message = t("save_continue")
+        }
+        if (currentChild.props.operationKind && currentChild.props.operationKind === "DELETE") {
+            message = t("delete")
+        }
+        return message;
+    }
     return <Formik
         {...props}
         validationSchema={currentChild.props.validationSchema}
         onSubmit={async (values, action) => {
             if (currentChild.props.onSubmit && !isLastStep) {
-                await currentChild.props.onSubmit(values, action)
+                await currentChild.props.onSubmit(values, action).then(() => setStep(prevStep => prevStep + 1))
             }
-            if (isLastStep) {
+            else if (isLastStep) {
                 setCompleted(true)
                 return props.onSubmit(values, action)
             } else {
@@ -76,7 +87,7 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
                     {<Button className={classes.button} type="submit" disabled={isSubmitting}
                              endIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
                              color="primary" variant="contained">
-                        {isLastStep ? t('finish') : t('forward')}
+                        {isLastStep ? t('finish') : buttonName()}
                     </Button>}
                 </Box>
             </Form>

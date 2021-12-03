@@ -31,6 +31,7 @@
   "empty": "Empty",
   "loading": "Loading...",
   "back": "Back",
-  "forward": "Forward",
-  "finish": "Finished"
+  "continue": "Continue",
+  "finish": "Finished",
+  "save_continue": "Save & Continue"
 }
