@@ -10,7 +10,6 @@ export interface IPerson {
     firstLastName?: string;
     secondLastName?: string;
     gender?: string;
-    age?: number;
     birthdate?: string | null
     race?: string;
     districtId?: string;
@@ -28,7 +27,6 @@ export const defaultValue: Readonly<IPerson> = {
     firstLastName: '',
     secondLastName: '',
     gender: '',
-    age: 15,
     birthdate: dayjs().subtract(15, "year").toISOString(),
     race: '',
     districtId: '',

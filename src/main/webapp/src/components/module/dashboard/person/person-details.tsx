@@ -74,7 +74,8 @@ export default function PersonDetails(_entity: IPerson) {
                 <Box className={classes.data_cell}>
                     <FormControl component="fieldset">
                         <FormLabel component="legend">{t("birthdate")}</FormLabel>
-                        {`${dayjs(_entity.birthdate).format(t('common:date_format'))} | ${_entity.age} ${t("age")}`}
+                        {`${dayjs(_entity.birthdate).format(t('common:date_format'))} | 
+                           ${dayjs().diff(_entity.birthdate,"year")} ${t("age")}`}
                     </FormControl>
                 </Box>
                 <Box className={classes.data_cell}>

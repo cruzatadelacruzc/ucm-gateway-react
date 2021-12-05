@@ -107,12 +107,20 @@ const PersonalStep = React.memo((props: IPersonStep) => {
                         </Field>
                     </Box>
                     <Box className={classes.input}>
-                        <Field name="age" type="number" label={t('age')} InputLabelProps={{shrink: true}}
+                        <Field name="race" label={t('race')} fullWidth InputLabelProps={{shrink: true}}
                                variant="outlined" component={TextField}/>
                     </Box>
                     <Box className={classes.input}>
-                        <Field name="race" label={t('race')} fullWidth InputLabelProps={{shrink: true}}
-                               variant="outlined" component={TextField}/>
+                        <Field
+                            autoOk
+                            fullWidth
+                            inputVariant="outlined"
+                            name={"birthdate"}
+                            component={DatePicker}
+                            label={t('birthdate')}
+                            InputLabelProps={{shrink: true}}
+                            format={t("common:date_format")}
+                        />
                     </Box>
                 </Box>
                 <Box className={classes.form_group}>
@@ -155,18 +163,6 @@ const PersonalStep = React.memo((props: IPersonStep) => {
                                 </MenuItem>
                             ))}
                         </Field>
-                    </Box>
-                    <Box className={classes.input}>
-                        <Field
-                            autoOk
-                            fullWidth
-                            inputVariant="outlined"
-                            name={"birthdate"}
-                            component={DatePicker}
-                            label={t('birthdate')}
-                            InputLabelProps={{shrink: true}}
-                            format={t("common:date_format")}
-                        />
                     </Box>
                 </Box>
             </MuiPickersUtilsProvider>
