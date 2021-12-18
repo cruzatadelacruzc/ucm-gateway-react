@@ -1,13 +1,24 @@
 import Paper from '@material-ui/core/Paper';
 import dayjs from 'dayjs';
-import {Grid, TextField} from '@material-ui/core';
+import {Card, CardActionArea, CardMedia, Grid, TextField} from '@material-ui/core';
 import {ISearchResultPersonHit} from '../../shared/models/search-result-person.model';
 import {cardStyles, StyledBadge} from './style';
 import {useTranslation} from 'react-i18next';
+import {buildAvatarURL} from "../../shared/util/function-utils";
+import React from "react";
 
 export default function CardPerson(props: ISearchResultPersonHit) {
   const { t } = useTranslation(['card']);
   const classes = cardStyles();
+
+  const getAvatarUrl = (): string => {
+    if (props._source.avatarUrl) {
+      return buildAvatarURL(props._source.avatarUrl)
+    } else {
+      return  "./user.svg"
+    }
+  }
+
   return (
     <div className={classes.root}>
       <Paper elevation={3} className={classes.content}>
@@ -15,12 +26,19 @@ export default function CardPerson(props: ISearchResultPersonHit) {
           <Grid md={3} lg={3} item>
             {props._type ? (
               <StyledBadge badgeContent={t(`card:${props._type}`)} color='secondary'>
-                <img alt={`${props._source.name} ${props._source.firstLastName} ${props._source.secondLastName}`}
-                     src='./user.svg' className={classes.cover} />
+                <Card className={classes.cover}>
+                  <CardActionArea>
+                    <CardMedia
+                        style={{padding: "5px"}}
+                        component="img"
+                        image={getAvatarUrl()}
+                        />
+                  </CardActionArea>
+                </Card>
               </StyledBadge>
             ) : (
               <img alt={`${props._source.name} ${props._source.firstLastName} ${props._source.secondLastName}`}
-                   src='./user.svg' className={classes.cover} />
+                   src={getAvatarUrl()} className={classes.cover} />
             )}
           </Grid>
           <Grid item md={3} lg={3} container justifyContent='center' direction='row'>
@@ -57,7 +75,7 @@ export default function CardPerson(props: ISearchResultPersonHit) {
               <TextField disabled label={t('card:birthdate')} value={dayjs(props._source.birthdate).format(t('card:date_format'))} />
             </Grid>
             <Grid item>
-              <TextField disabled label={t('card:district')} value={`${props._source.parentDistrict}, ${props._source.district}`} />
+              <TextField disabled label={t('card:district')} value={props._source.district} />
             </Grid>
           </Grid>
         </Grid>

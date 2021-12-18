@@ -8,7 +8,7 @@ export const cardStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     cover: {
-      width: 151,
+      width: 210,
     },
     content: {
       padding: theme.spacing(2),
@@ -21,7 +21,7 @@ export const StyledBadge = withStyles((theme: Theme) =>
   createStyles({
     badge: {
       right: -3,
-      top: 13,
+      top: 7,
       border: `2px solid ${theme.palette.background.paper}`,
       padding: '0 4px',
     },
