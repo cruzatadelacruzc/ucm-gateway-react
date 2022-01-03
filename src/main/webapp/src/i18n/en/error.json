@@ -39,5 +39,7 @@
   "badoperatorjoin": "Wrong Logical operator {{ param }}",
   "enddategt": "End Date {{param}} cannot be greater than Start Date",
   "relationshipnull": "{{ param }} must be related",
-  "UniqueValue": "The value of {{ name }} must be unique"
+  "UniqueValue": "The value of {{ name }} must be unique",
+  "upload": "There was an error uploading your file",
+  "wrongtype": "Content type of File [{{ param }}] not allowed"
 }
