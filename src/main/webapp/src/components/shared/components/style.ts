@@ -94,3 +94,45 @@ export const formStepperStyles = makeStyles((theme: Theme) => createStyles({
         }
     }
 }));
+
+export const cropDialogStyles = makeStyles((theme: Theme) => ({
+    cover: {
+        position: "relative",
+        overflow: "hidden",
+        cursor: "pointer",
+    },
+    paper: {
+        minWidth: 200,
+        minHeight: 200
+    },
+    picture: {
+        width: "100%",
+        display: "block",
+        margin: "0 auto"
+    },
+    closeButton: {
+        position: 'absolute',
+        right: theme.spacing(1),
+        top: theme.spacing(1),
+        color: theme.palette.grey[500],
+    },
+}))
+
+export const avatarStyles = makeStyles((theme: Theme) => ({
+    cover: {
+        position: "relative",
+        overflow: "hidden",
+        cursor: "pointer",
+    },
+    picture: {
+        width: "100%",
+        display: "block",
+        margin: "0 auto"
+    },
+    closeButton: {
+        position: 'absolute',
+        right: theme.spacing(1),
+        top: theme.spacing(1),
+        color: theme.palette.grey[500],
+    },
+}))
