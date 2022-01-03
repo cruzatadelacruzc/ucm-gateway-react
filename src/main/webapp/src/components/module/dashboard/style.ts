@@ -175,7 +175,7 @@ export const detailsStyles = makeStyles((theme: Theme) => ({
         flex: '1 1 auto'
     },
     cover: {
-        borderRadius: 5,
+        width: 210,
     },
     data_row: {
         display: "flex",

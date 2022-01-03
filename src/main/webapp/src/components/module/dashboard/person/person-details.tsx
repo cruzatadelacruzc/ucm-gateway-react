@@ -4,24 +4,35 @@ import {detailsStyles} from "../style";
 import {useTranslation} from "react-i18next";
 import {IPerson} from "../../../shared/models/person.model";
 import {Box, Card, CardActionArea, CardMedia, FormControl, FormLabel} from "@material-ui/core";
+import {buildAvatarURL} from "../../../shared/util/function-utils";
 
 export default function PersonDetails(_entity: IPerson) {
     const {t} = useTranslation(['person']);
     const classes = detailsStyles();
+    const getAvatarUrl = (): string => {
+        if (_entity.avatarUrl) {
+            return buildAvatarURL(_entity.avatarUrl)
+        } else {
+        return  "../../user.svg"
+        }
+    }
+
     return (
         <>
             <Box className={classes.data_row}>
                 <Box className={classes.data_column}>
-                        <Card>
+                    <Box className={classes.data_cell}>
+                        <Card className={classes.cover}>
                             <CardActionArea>
                                 <CardMedia
                                     component="img"
-                                    style={{maxWidth: '100%' , padding: "10px"}}
-                                    image={_entity.avatarUrl || "../../user.svg"}
+                                    style={{padding: "5px"}}
+                                    image={getAvatarUrl()}
                                     alt={`${_entity.name} ${_entity.firstLastName} ${_entity.secondLastName}`}
                                  />
                             </CardActionArea>
                         </Card>
+                    </Box>
                 </Box>
                 <Box className={classes.data_column}>
                     <Box className={classes.data_cell}>
