@@ -1,5 +1,6 @@
 import {createSelectorCreator, defaultMemoize} from 'reselect'
 import isEqual from 'lodash.isequal'
+import {CONFIG} from "../../../config/constants";
 
 
 // create a "selector creator" that uses lodash.isequal instead of ===
@@ -14,3 +15,13 @@ export const isPromise = (value): boolean => {
     }
     return false;
 };
+
+const apiUrl = "services/directory/api/files";
+
+export const buildAvatarURL = (fileName: string): string => {
+    if (fileName !== '') {
+        const serviceURL = `${apiUrl}/avatar`.replace("avatar", fileName);
+        return CONFIG.SERVER_API_URL?.endsWith("/") ? CONFIG.SERVER_API_URL + serviceURL : CONFIG.SERVER_API_URL + "/" + serviceURL;
+    }
+    return '';
+}
