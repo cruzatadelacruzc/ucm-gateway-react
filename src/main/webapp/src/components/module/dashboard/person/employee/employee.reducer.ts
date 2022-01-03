@@ -9,7 +9,7 @@ import {
     ICrudSearchAction
 } from "../../../../types";
 import axios from "axios";
-import {cleanEntity} from "../../../../shared/util/entity-util";
+import {buildFormData} from "../../../../shared/util/entity-util";
 import {ITEMS_PER_PAGE} from "../../../../../config/constants";
 
 
@@ -19,7 +19,9 @@ export const ACTION_TYPES =  {
     FETCH_EMPLOYEE : 'employee/FETCH_EMPLOYEE',
     CREATE_EMPLOYEE : 'employee/CREATE_EMPLOYEE',
     UPDATE_EMPLOYEE : 'employee/UPDATE_EMPLOYEE',
-    DELETE_EMPLOYEE : 'employee/DELETE_EMPLOYEE'
+    DELETE_EMPLOYEE : 'employee/DELETE_EMPLOYEE',
+    DELETE_AVATAR : 'employee/DELETE_AVATAR',
+    RESET: 'employee/RESET',
 }
 
 const initialState = {
@@ -50,7 +52,6 @@ const employeeReducer = (state: EmployeeStateType = initialState, { type, payloa
             }
         case REQUEST(ACTION_TYPES.CREATE_EMPLOYEE):
         case REQUEST(ACTION_TYPES.UPDATE_EMPLOYEE):
-        case REQUEST(ACTION_TYPES.DELETE_EMPLOYEE):
             return {
                 ...state,
                 errorMessage: null,
@@ -86,11 +87,18 @@ const employeeReducer = (state: EmployeeStateType = initialState, { type, payloa
                 updateSuccess: true,
                 entity: {}
             }
+        case SUCCESS(ACTION_TYPES.DELETE_AVATAR):
+            return {
+                ...state,
+                entity: payload.data === true ? { ...state.entity, avatarUrl: undefined}: state.entity
+            }
         case FAILURE(ACTION_TYPES.FETCH_EMPLOYEE_FILTERED):
         case FAILURE(ACTION_TYPES.FETCH_EMPLOYEE_LIST):
         case FAILURE(ACTION_TYPES.FETCH_EMPLOYEE):
         case FAILURE(ACTION_TYPES.CREATE_EMPLOYEE):
         case FAILURE(ACTION_TYPES.UPDATE_EMPLOYEE):
+        case FAILURE(ACTION_TYPES.DELETE_EMPLOYEE):
+        case FAILURE(ACTION_TYPES.DELETE_AVATAR):
             return {
                 ...state,
                 loading: false,
@@ -98,6 +106,10 @@ const employeeReducer = (state: EmployeeStateType = initialState, { type, payloa
                 updateSuccess: false,
                 errorMessage: payload.data
             }
+        case ACTION_TYPES.RESET:
+            return {
+                ...initialState,
+            };
         default:
             return state
     }
@@ -106,17 +118,19 @@ const employeeReducer = (state: EmployeeStateType = initialState, { type, payloa
 // Actions
 const apiUrl = 'services/directory/api/employees';
 
-export const createEmployee: ICrudPutAction<IEmployee> = entity => async dispatch =>  {
+export const createEmployee: ICrudPutAction<{employee: IEmployee, avatar?: File}> = data => async dispatch =>  {
+    const formData = buildFormData(data.employee,"employee", data.avatar)
     return await dispatch({
         type: ACTION_TYPES.CREATE_EMPLOYEE,
-        payload: axios.post(apiUrl, cleanEntity(entity))
+        payload: axios.post(apiUrl, formData)
     })
 }
 
-export const updateEmployee: ICrudPutAction<IEmployee> = entity => async dispatch =>  {
+export const updateEmployee: ICrudPutAction<{employee: IEmployee, avatar?: File}> = data => async dispatch =>  {
+    const formData = buildFormData(data.employee,"employee", data.avatar)
     return await dispatch({
         type: ACTION_TYPES.UPDATE_EMPLOYEE,
-        payload: axios.put(apiUrl, cleanEntity(entity))
+        payload: axios.put(apiUrl, formData)
     })
 }
 
@@ -147,6 +161,17 @@ export const deleteEmployee: ICrudDeleteAction<IEmployee> = id => async dispatch
         payload: axios.delete(`${apiUrl}/${id}`)
     })
 }
+
+export const deleteAvatar: ICrudDeleteAction<IEmployee> = id => async dispatch => {
+    return await dispatch({
+        type: ACTION_TYPES.DELETE_AVATAR,
+        payload: axios.delete(`${apiUrl}/avatar/${id}`)
+    })
+}
+
+export const reset = () => ({
+    type: ACTION_TYPES.RESET,
+});
 
 export default employeeReducer;
 

@@ -1,3 +1,4 @@
+import * as yup from "yup";
 import React, {useEffect} from "react";
 import i18n from '../../../../config/i18n'
 import {useTranslation} from "react-i18next";
@@ -11,7 +12,10 @@ import {Box, MenuItem} from "@material-ui/core";
 import {formUpdateStyles, MenuProps} from "../style";
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DayjsUtils from "@date-io/dayjs";
-import * as yup from "yup";
+import {IEmployee} from "../../../shared/models/employee.model";
+import {IStudent} from "../../../shared/models/student.model";
+import {deleteAvatar} from "./employee/employee.reducer";
+import UCMAvatar from "../../../shared/components/avatar";
 
 export const PERSON_GENDER = {
     FEMALE: "Femenino",
@@ -24,18 +28,18 @@ export const _validationSchema = yup.object().shape({
     name: yup.string().required(i18n.t("error:form.required")),
     race: yup.string().required(i18n.t("error:form.required")),
     gender: yup.string().required(i18n.t("error:form.required")),
+    address: yup.string().required(i18n.t("error:form.required")),
     districtId: yup.string().required(i18n.t("error:form.required")),
     birthdate: yup.string().required(i18n.t("error:form.required")),
 })
 
 interface IPersonStep {
     isNew: boolean,
-    districtId?: string
-    specialtyId?: string
-    gender?: string
+    person: IEmployee | IStudent,
+    setFileInput: React.Dispatch<React.SetStateAction<File| undefined>>
 }
 
-const PersonalStep = React.memo((props: IPersonStep) => {
+const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => {
     const dispatch = useDispatch();
     const classes = formUpdateStyles();
     const {t} = useTranslation(["person"]);
@@ -50,9 +54,17 @@ const PersonalStep = React.memo((props: IPersonStep) => {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <>
-            <MuiPickersUtilsProvider utils={DayjsUtils}>
+        <MuiPickersUtilsProvider utils={DayjsUtils}>
                 <Box className={classes.form_group}>
+                    <Box className={classes.form_group}>
+                        <Box className={classes.input}>
+                            <UCMAvatar
+                                avatarUrl={person.avatarUrl}
+                                setResultAvatar={setFileInput}
+                                deleteAvatar={() => dispatch(deleteAvatar(person.id))}
+                            />
+                        </Box>
+                    </Box>
                     <Box className={classes.inputSM}>
                         <Field name="ci" label={t('ci')} variant="outlined" fullWidth InputLabelProps={{shrink: true}}
                                component={TextField}/>
@@ -97,11 +109,11 @@ const PersonalStep = React.memo((props: IPersonStep) => {
                         >
                             <MenuItem value=""><em>-- {t('common:empty')} --</em></MenuItem>
                             <MenuItem value={PERSON_GENDER.FEMALE}
-                                      selected={!props.isNew && props.gender !== undefined && props.gender === PERSON_GENDER.FEMALE}>
+                                      selected={!isNew && person.gender !== undefined && person.gender === PERSON_GENDER.FEMALE}>
                                 {t("gender.female")}
                             </MenuItem>
                             <MenuItem value={PERSON_GENDER.MALE}
-                                      selected={!props.isNew && props.gender !== undefined && props.gender === PERSON_GENDER.MALE}>
+                                      selected={!isNew && person.gender !== undefined && person.gender === PERSON_GENDER.MALE}>
                                 {t("gender.male")}
                             </MenuItem>
                         </Field>
@@ -138,7 +150,7 @@ const PersonalStep = React.memo((props: IPersonStep) => {
                             <MenuItem value=""><em>-- {t('common:empty')} --</em></MenuItem>
                             {districts.map((option, index) => (
                                 <MenuItem key={index} value={option.id}
-                                          selected={!props.isNew && props.districtId !== undefined && props.districtId === option.id}>
+                                          selected={!isNew && person.districtId !== undefined && person.districtId === option.id}>
                                     {option.name}
                                 </MenuItem>
                             ))}
@@ -158,7 +170,7 @@ const PersonalStep = React.memo((props: IPersonStep) => {
                             <MenuItem value=""><em>-- {t('common:empty')} --</em></MenuItem>
                             {specialties.map((option, index) => (
                                 <MenuItem key={index} value={option.id}
-                                          selected={!props.isNew && props.specialtyId !== undefined && props.specialtyId === option.id}>
+                                          selected={!isNew && person.specialtyId !== undefined && person.specialtyId === option.id}>
                                     {option.name}
                                 </MenuItem>
                             ))}
@@ -166,7 +178,6 @@ const PersonalStep = React.memo((props: IPersonStep) => {
                     </Box>
                 </Box>
             </MuiPickersUtilsProvider>
-        </>
     )
 })
 
