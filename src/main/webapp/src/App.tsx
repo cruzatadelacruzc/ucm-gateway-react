@@ -9,7 +9,7 @@ import React, {useEffect} from 'react';
 import {ThemeProvider} from "@material-ui/core/styles";
 import ErrorBoundary from './components/shared/error/error-boudary';
 import {getSession} from "./components/shared/reducer/authenticate";
-import {SnackbarUtilsConfigurator} from "./components/shared/notification-snackbar.util";
+import {SnackbarUtilsConfigurator} from "./components/shared/util/notification-snackbar.util";
 
 export default function App() {
     const dispatch = useDispatch();
