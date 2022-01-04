@@ -10,6 +10,11 @@ import {
     Button,
     Chip,
     CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
     Divider,
     FormControl,
     FormLabel,
@@ -17,14 +22,16 @@ import {
     List,
     ListItem,
     ListItemAvatar,
-    ListItemText
+    ListItemText,
+    useMediaQuery
 } from "@material-ui/core";
 import {detailsStyles} from "../../style";
 import PersonDetails from "../person-details";
 import dayjs from "dayjs";
 import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
-import {LocalPhone} from "@material-ui/icons";
+import {Close as CloseIcon, LocalPhone} from "@material-ui/icons";
 import Widget from "../../../../shared/layout/widget";
+import theme from "../../../../../theme";
 
 function EmployeeDetails() {
     let history = useHistory();
@@ -32,6 +39,7 @@ function EmployeeDetails() {
     const classes = detailsStyles();
     let {id} = useParams<{ id: string }>();
     const {t} = useTranslation(['employee']);
+    const [modalOpen, setModalOpen] = React.useState(false);
     const _entity = useSelector((states: IRootState) => states.employee.entity);
     const updating = useSelector((states: IRootState) => states.employee.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.employee.updateSuccess);
@@ -173,7 +181,7 @@ function EmployeeDetails() {
                     variant="contained"
                     to={'/employee'}
                     className={classes.button}>
-                    {t('common:cancel')}
+                    {t('common:close')}
                 </Button>
                 <Button
                     component={Link}
@@ -187,12 +195,37 @@ function EmployeeDetails() {
                     color="primary"
                     variant="contained"
                     className={classes.button}
-                    onClick={() => dispatch(deleteEmployee(id))}
+                    onClick={() => setModalOpen(true)}
                     disabled={updating}
                     endIcon={updating ? <CircularProgress size="1rem"/> : null}
                 >
                     {t('common:delete')}
                 </Button>
+                <Dialog
+                    open={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    fullScreen={useMediaQuery(theme.breakpoints.down('sm'))}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title"> {t("delete.title")}</DialogTitle>
+                    <IconButton aria-label="close" className={classes.closeButton} onClick={() => setModalOpen(false)}>
+                        <CloseIcon/>
+                    </IconButton>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            {t("delete.question", {param: _entity.name})}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setModalOpen(false)} color="primary">
+                            {t('common:cancel')}
+                        </Button>
+                        <Button onClick={() => dispatch(deleteEmployee(id))} color="primary" autoFocus>
+                            {t('common:accept')}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Box>
         </Box>
     </Widget>
