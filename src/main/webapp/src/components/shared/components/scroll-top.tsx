@@ -1,6 +1,5 @@
 import React from "react";
-import { Theme, makeStyles, useTheme, createStyles } from "@material-ui/core";
-import { Zoom, useScrollTrigger } from "@material-ui/core";
+import {createStyles, makeStyles, Theme, useScrollTrigger, useTheme, Zoom} from "@material-ui/core";
 
 export type IScrollTopProps = {
   children: React.ReactElement;
