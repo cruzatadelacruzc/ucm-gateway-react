@@ -26,7 +26,7 @@ import {ITEMS_PER_PAGE} from "../../../config/constants";
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import {FAILURE, REQUEST, SUCCESS} from "../reducer/action-type.util";
-import toast from "../notification-snackbar.util";
+import toast from "../util/notification-snackbar.util";
 import theme from "../../../theme";
 
 export interface IUCMDataBase {

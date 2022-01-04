@@ -2,7 +2,7 @@ import React from 'react';
 import {avatarStyles} from "./style";
 import CropImageDialog from "./crop-image";
 import {useTranslation} from "react-i18next";
-import toast from "../notification-snackbar.util";
+import toast from "../util/notification-snackbar.util";
 import {IconButton, Paper} from "@material-ui/core";
 import {buildAvatarURL} from "../util/function-utils";
 import {DeleteOutline, EditOutlined} from "@material-ui/icons";

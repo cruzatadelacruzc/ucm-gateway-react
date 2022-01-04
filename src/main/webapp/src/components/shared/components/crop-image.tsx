@@ -2,7 +2,7 @@ import React from 'react';
 import {cropDialogStyles} from "./style";
 import {useTranslation} from "react-i18next";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton} from "@material-ui/core";
-import toast from '../notification-snackbar.util';
+import toast from '../util/notification-snackbar.util';
 import {Close as CloseIcon} from '@material-ui/icons';
 import ReactCrop, {Crop} from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
