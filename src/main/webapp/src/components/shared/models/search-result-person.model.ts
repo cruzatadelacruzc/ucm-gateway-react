@@ -11,6 +11,7 @@ export interface ISearchResultPersonDetails {
   gender: string;
   race: string;
   ci: string;
+  avatarUrl: string;
   bossWorkPlace: boolean;
   parentDistrict?: string;
   firstLastName: string;
@@ -57,6 +58,7 @@ export const defaultDetailsValue: Readonly<ISearchResultPersonDetails> = {
       gender: '',
       race: '',
       ci: '',
+      avatarUrl: '',
       bossWorkPlace: false,
       parentDistrict: '',
       firstLastName: '',
