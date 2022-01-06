@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 import {Button, FormControlLabel, Switch} from "@material-ui/core";
 import UCMDataBase from "../../../shared/components/datatable";
 import axios from "axios";
-import toast from "../../../shared/notification-snackbar.util";
+import toast from "../../../shared/util/notification-snackbar.util";
 import {Link} from "react-router-dom";
 
 const Phones = () => {

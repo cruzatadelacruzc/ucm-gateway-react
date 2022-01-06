@@ -4,7 +4,7 @@ import UCMDataBase from "../../../shared/components/datatable";
 import {ACTION_TYPES, apiUrl} from "./workplace.reducer";
 import {FormControlLabel, Switch} from "@material-ui/core";
 import axios from "axios";
-import toast from "../../../shared/notification-snackbar.util";
+import toast from "../../../shared/util/notification-snackbar.util";
 
 type ChangeStatusType = {
     id: string,

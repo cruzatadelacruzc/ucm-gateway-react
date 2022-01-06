@@ -1,6 +1,6 @@
 import React from 'react';
 import {KeyboardArrowUp as KeyboardArrowUpIcon, Search as SearchIcon} from '@material-ui/icons';
-import ScrollTop from '../../shared/scroll-top';
+import ScrollTop from '../../shared/components/scroll-top';
 import {AppBar, Avatar, Fab, IconButton, InputBase, Paper, Toolbar, useScrollTrigger} from '@material-ui/core';
 import {Link} from 'react-router-dom';
 import {IDirectoryProps} from './directory';

@@ -26,6 +26,7 @@ import {
 } from "@material-ui/core";
 import Widget from "../../../shared/layout/widget";
 import {LocalPhone} from "@material-ui/icons";
+import {buildAvatarURL} from "../../../shared/util/function-utils";
 
 
 const WorkplaceDetails = () => {
@@ -122,7 +123,7 @@ const WorkplaceDetails = () => {
                                 <IconButton key={index}>
                                     <ListItem  alignItems="flex-start" component={Link} to={`/employee/show/${employee.id}`}>
                                         <ListItemAvatar>
-                                            <Avatar alt={employee.name} src={employee.avatarUrl}/>
+                                            <Avatar alt={employee.name} src={employee.avatarUrl ? buildAvatarURL(employee.avatarUrl): ''}/>
                                         </ListItemAvatar>
                                         <ListItemText
                                             primary={`${employee.name} ${employee.firstLastName} ${employee.secondLastName}`}

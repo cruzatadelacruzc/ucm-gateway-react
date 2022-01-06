@@ -1,6 +1,6 @@
 import axios, {AxiosError} from 'axios';
 import {CONFIG} from './constants';
-import toast from '../components/shared/notification-snackbar.util'
+import toast from '../components/shared/util/notification-snackbar.util'
 import i18n from './i18n';
 
 const TIMEOUT = 60 * 1000;
@@ -14,6 +14,7 @@ export const httpES = axios.create({
     },
 });
 
+// TODO los errores que viene con un objectos en la respuesta  no son bien mostrado al usuario: ejem: error 400 type: "illegal_argument_exception"
 httpES.interceptors.response.use(config => config, (error: AxiosError) => {
     const fullResponse: (msg: string) => string = (msg: string) => `${msg} [${i18n.t("error:notify.admin")}]`
     if (error.response) {

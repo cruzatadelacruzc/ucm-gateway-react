@@ -1,5 +1,5 @@
 import {isPromise} from "../../components/shared/util/function-utils";
-import toast from '../../components/shared/notification-snackbar.util'
+import toast from '../../components/shared/util/notification-snackbar.util'
 import i18n from '../i18n'
 
 const addErrorAlert = (message, key?, interpolate?) => {
