@@ -8,7 +8,8 @@ export const cardStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     cover: {
-      width: 210,
+      maxWidth: 255,
+      maxHeight: 255
     },
     content: {
       padding: theme.spacing(2),

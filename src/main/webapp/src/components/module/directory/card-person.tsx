@@ -29,7 +29,7 @@ export default function CardPerson(props: ISearchResultPersonHit) {
                 <Card className={classes.cover}>
                   <CardActionArea>
                     <CardMedia
-                        style={{padding: "5px"}}
+                        style={{padding: 5, height: 250, width: 250}}
                         component="img"
                         image={getAvatarUrl()}
                         />
@@ -38,7 +38,7 @@ export default function CardPerson(props: ISearchResultPersonHit) {
               </StyledBadge>
             ) : (
               <img alt={`${props._source.name} ${props._source.firstLastName} ${props._source.secondLastName}`}
-                   src={getAvatarUrl()} className={classes.cover} />
+                   src={getAvatarUrl()} style={{padding: 5, height: 250, width: 250}} />
             )}
           </Grid>
           <Grid item md={3} lg={3} container justifyContent='center' direction='row'>
