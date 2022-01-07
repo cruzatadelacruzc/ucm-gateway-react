@@ -26,7 +26,7 @@ export default function PersonDetails(_entity: IPerson) {
                             <CardActionArea>
                                 <CardMedia
                                     component="img"
-                                    style={{padding: "5px"}}
+                                    style={{padding:5, height: 250}}
                                     image={getAvatarUrl()}
                                     alt={`${_entity.name} ${_entity.firstLastName} ${_entity.secondLastName}`}
                                  />

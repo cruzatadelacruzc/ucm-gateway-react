@@ -175,7 +175,8 @@ export const detailsStyles = makeStyles((theme: Theme) => ({
         flex: '1 1 auto'
     },
     cover: {
-        width: 210,
+        maxWidth: 255,
+        maxHeight: 255
     },
     data_row: {
         display: "flex",
@@ -219,13 +220,7 @@ export const detailsStyles = makeStyles((theme: Theme) => ({
             marginRight: theme.spacing(0),
             marginBottom: theme.spacing(1)
         }
-    },
-    closeButton: {
-        position: 'absolute',
-        right: theme.spacing(1),
-        top: theme.spacing(1),
-        color: theme.palette.grey[500],
-    },
+    }
 }));
 
 export const MenuProps =
