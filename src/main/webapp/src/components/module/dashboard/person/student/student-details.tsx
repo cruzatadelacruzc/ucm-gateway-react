@@ -8,6 +8,7 @@ import {Link, useHistory, useParams} from "react-router-dom";
 import Widget from "../../../../shared/layout/widget";
 import {Box, Button, Chip, CircularProgress, Divider, FormControl, FormLabel} from "@material-ui/core";
 import PersonDetails from "../person-details";
+import DialogDelete from "../../../../shared/components/dialog-delete";
 
 const StudentDetails = () => {
     let history = useHistory();
@@ -15,6 +16,7 @@ const StudentDetails = () => {
     const classes = detailsStyles();
     let {id} = useParams<{ id: string }>();
     const {t} = useTranslation(['student']);
+    const [modalOpen, setModalOpen] = React.useState(false);
     const _entity = useSelector((states: IRootState) => states.student.entity);
     const updating = useSelector((states: IRootState) => states.student.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.student.updateSuccess);
@@ -97,7 +99,7 @@ const StudentDetails = () => {
                         variant="contained"
                         to={'/student'}
                         className={classes.button}>
-                        {t('common:cancel')}
+                        {t('common:close')}
                     </Button>
                     <Button
                         component={Link}
@@ -111,13 +113,20 @@ const StudentDetails = () => {
                         color="primary"
                         variant="contained"
                         className={classes.button}
-                        onClick={() => dispatch(deleteStudent(id))}
+                        onClick={() => setModalOpen(true)}
                         disabled={updating}
                         endIcon={updating ? <CircularProgress size="1rem"/> : null}
                     >
                         {t('common:delete')}
                     </Button>
                 </Box>
+                <DialogDelete
+                    open={modalOpen}
+                    setOpen={setModalOpen}
+                    title={t("delete.title")}
+                    deleteItem={() => dispatch(deleteStudent(id))}
+                    content={t("delete.question", {param: _entity.name})}
+                />
             </Box>
         </Widget>
     );

@@ -4,7 +4,7 @@ import {defaultValue, IStudent} from "../../../../shared/models/student.model";
 import {FAILURE, REQUEST, SUCCESS} from "../../../../shared/reducer/action-type.util";
 import {ICrudDeleteAction, ICrudGetAction, ICrudPutAction} from "../../../../types";
 import axios from "axios";
-import {cleanEntity} from "../../../../shared/util/entity-util";
+import {buildFormData, cleanEntity} from "../../../../shared/util/entity-util";
 
 
 export const ACTION_TYPES =  {
@@ -14,7 +14,9 @@ export const ACTION_TYPES =  {
     FETCH_STUDENT : 'student/FETCH_STUDENT',
     CREATE_STUDENT : 'student/CREATE_STUDENT',
     UPDATE_STUDENT : 'student/UPDATE_STUDENT',
-    DELETE_STUDENT : 'student/DELETE_STUDENT'
+    DELETE_STUDENT : 'student/DELETE_STUDENT',
+    DELETE_AVATAR : 'student/DELETE_AVATAR',
+    RESET: 'student/RESET',
 }
 
 const initialState = {
@@ -104,6 +106,10 @@ const studentReducer = (state: StudentStateType = initialState, { type, payload 
                 updateSuccess: false,
                 errorMessage: payload.data
             }
+        case ACTION_TYPES.RESET:
+            return {
+                ...initialState,
+            }
         default:
             return state
     }
@@ -119,19 +125,29 @@ export const getStudent: ICrudGetAction<IStudent> = id => async dispatch => {
     })
 }
 
-export const createStudent: ICrudPutAction<IStudent> = entity => async  dispatch => {
+export const createStudent: ICrudPutAction<{student: IStudent, avatar?: File}> = data => async dispatch => {
+    const formData = buildFormData(data.student,"student", data.avatar)
     return await dispatch({
         type: ACTION_TYPES.CREATE_STUDENT,
-        payload: axios.post<IStudent>(apiUrl, cleanEntity(entity))
+        payload: axios.post<IStudent>(apiUrl, formData)
     })
 }
 
-export const updateStudent: ICrudPutAction<IStudent> = entity => async  dispatch => {
+export const updateStudent: ICrudPutAction<{student: IStudent, avatar?: File}> = data => async dispatch => {
+    const formData = buildFormData(data.student,"student", data.avatar)
     return await dispatch({
         type: ACTION_TYPES.UPDATE_STUDENT,
-        payload: axios.put<IStudent>(apiUrl, cleanEntity(entity))
+        payload: axios.put<IStudent>(apiUrl, formData)
     })
 }
+
+export const deleteAvatar: ICrudDeleteAction<IStudent> = id => async dispatch => {
+    return await dispatch({
+        type: ACTION_TYPES.DELETE_AVATAR,
+        payload: axios.delete<IStudent>(`${apiUrl}/avatar/${id}`)
+    })
+}
+
 export const partialUpdateStudent: ICrudPutAction<IStudent> = entity => async dispatch => {
     return await dispatch({
         type: ACTION_TYPES.PARTIAL_UPDATE_STUDENT,
@@ -149,5 +165,7 @@ export const deleteStudent: ICrudDeleteAction<IStudent> = id => async dispatch =
         payload: axios.delete(`${apiUrl}/${id}`)
     })
 }
+
+export const reset = () => ({type: ACTION_TYPES.RESET});
 
 export default studentReducer;

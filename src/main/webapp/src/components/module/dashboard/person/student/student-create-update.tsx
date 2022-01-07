@@ -23,6 +23,7 @@ const StudentManage = () => {
     let {id} = useParams<{id: string}>();
     const [isNew] = React.useState(!id);
     const {t} = useTranslation(['student']);
+    const [avatar, setAvatar] = React.useState<File>();
     const _entity = useSelector((states: IRootState) => states.student.entity);
     const kinds = useSelector((states: IRootState) => states.nomenclature.kinds);
     const isUpdateSuccess = useSelector((states: IRootState) => states.student.updateSuccess);
@@ -52,9 +53,9 @@ const StudentManage = () => {
             enableReinitialize={!isNew}
             onSubmit={async (values: IStudent) => {
                 if (isNew) {
-                   return dispatch(createStudent(values));
+                   return dispatch(createStudent({student: values, avatar: avatar}));
                 } else {
-                  return dispatch(updateStudent(values));
+                  return dispatch(updateStudent({student: values, avatar: avatar}));
                 }
             }}
             cancelRoute='/student'
@@ -71,9 +72,8 @@ const StudentManage = () => {
             >
                 <PersonalStep
                     isNew={isNew}
-                    districtId={_entity.districtId}
-                    specialtyId={_entity.specialtyId}
-                    gender={_entity.gender}
+                    person={_entity}
+                    setFileInput={setAvatar}
                 />
             </FormStep>
             <FormStep
