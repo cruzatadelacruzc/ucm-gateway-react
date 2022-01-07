@@ -10,11 +10,6 @@ import {
     Button,
     Chip,
     CircularProgress,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
     Divider,
     FormControl,
     FormLabel,
@@ -23,15 +18,14 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
-    useMediaQuery
 } from "@material-ui/core";
 import {detailsStyles} from "../../style";
 import PersonDetails from "../person-details";
 import dayjs from "dayjs";
 import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
-import {Close as CloseIcon, LocalPhone} from "@material-ui/icons";
+import {LocalPhone} from "@material-ui/icons";
 import Widget from "../../../../shared/layout/widget";
-import theme from "../../../../../theme";
+import DialogDelete from "../../../../shared/components/dialog-delete";
 
 function EmployeeDetails() {
     let history = useHistory();
@@ -201,31 +195,13 @@ function EmployeeDetails() {
                 >
                     {t('common:delete')}
                 </Button>
-                <Dialog
+                <DialogDelete
                     open={modalOpen}
-                    onClose={() => setModalOpen(false)}
-                    fullScreen={useMediaQuery(theme.breakpoints.down('sm'))}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title"> {t("delete.title")}</DialogTitle>
-                    <IconButton aria-label="close" className={classes.closeButton} onClick={() => setModalOpen(false)}>
-                        <CloseIcon/>
-                    </IconButton>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            {t("delete.question", {param: _entity.name})}
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => setModalOpen(false)} color="primary">
-                            {t('common:cancel')}
-                        </Button>
-                        <Button onClick={() => dispatch(deleteEmployee(id))} color="primary" autoFocus>
-                            {t('common:accept')}
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                    setOpen={setModalOpen}
+                    title={t("delete.title")}
+                    deleteItem={() => dispatch(deleteEmployee(id))}
+                    content={t("delete.question", {param: _entity.name})}
+                />
             </Box>
         </Box>
     </Widget>
