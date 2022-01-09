@@ -31,7 +31,7 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
     const buttonSubmitName = () => {
         let message = t("continue");
         if (currentChild.props.operationKind && currentChild.props.operationKind === "UPDATE") {
-            message = t("save_continue")
+            message = t("save_finished")
         }
         if (currentChild.props.operationKind && currentChild.props.operationKind === "DELETE") {
             message = t("delete")
@@ -89,6 +89,13 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
                              endIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
                              color="primary" variant="contained">
                         {isLastStep ? t('finish') : buttonSubmitName()}
+                    </Button>}
+                    {!isLastStep && currentChild.props.operationKind && <Button className={classes.button} color="primary"
+                           variant="contained"
+                           disabled={isSubmitting}
+                           onClick={() => setStep(prevStep => prevStep + 1)}
+                    >
+                        {t('continue')}
                     </Button>}
                 </Box>
             </Form>
