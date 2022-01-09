@@ -26,8 +26,8 @@ const StudentManage = () => {
     const [avatar, setAvatar] = React.useState<File>();
     const _entity = useSelector((states: IRootState) => states.student.entity);
     const kinds = useSelector((states: IRootState) => states.nomenclature.kinds);
-    const isUpdateSuccess = useSelector((states: IRootState) => states.student.updateSuccess);
     const studyCenters = useSelector((states: IRootState) => states.nomenclature.studyCenters);
+    const isUpdateSuccess = useSelector((states: IRootState) => states.student.updateSuccess);
 
     React.useEffect(() => {
         if (!isNew){
@@ -66,7 +66,7 @@ const StudentManage = () => {
                 operationKind={isNew ? "CREATE": "UPDATE"}
                 onSubmit={async (values: IStudent) => {
                     if (!isNew) {
-                       return dispatch(partialUpdateStudent(values))
+                       return dispatch(partialUpdateStudent({id, student: values, avatar: avatar}))
                     }
                 }}
             >
