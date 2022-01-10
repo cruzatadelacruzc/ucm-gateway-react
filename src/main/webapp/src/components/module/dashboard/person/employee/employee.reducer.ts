@@ -14,6 +14,7 @@ import {ITEMS_PER_PAGE} from "../../../../../config/constants";
 
 
 export const ACTION_TYPES =  {
+    PARTIAL_UPDATE_EMPLOYEE: 'employee/PARTIAL_UPDATE_EMPLOYEE',
     FETCH_EMPLOYEE_FILTERED: "employee/FETCH_EMPLOYEE_FILTERED",
     FETCH_EMPLOYEE_LIST : 'employee/FETCH_EMPLOYEE_LIST',
     FETCH_EMPLOYEE : 'employee/FETCH_EMPLOYEE',
@@ -50,6 +51,7 @@ const employeeReducer = (state: EmployeeStateType = initialState, { type, payloa
                 updateSuccess: false,
                 loading: true
             }
+        case REQUEST(ACTION_TYPES.PARTIAL_UPDATE_EMPLOYEE):
         case REQUEST(ACTION_TYPES.CREATE_EMPLOYEE):
         case REQUEST(ACTION_TYPES.UPDATE_EMPLOYEE):
             return {
@@ -72,6 +74,7 @@ const employeeReducer = (state: EmployeeStateType = initialState, { type, payloa
                 loading: false,
                 entity: payload.data
             }
+        case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_EMPLOYEE):
         case SUCCESS(ACTION_TYPES.CREATE_EMPLOYEE):
         case SUCCESS(ACTION_TYPES.UPDATE_EMPLOYEE):
             return {
@@ -92,6 +95,7 @@ const employeeReducer = (state: EmployeeStateType = initialState, { type, payloa
                 ...state,
                 entity: payload.data === true ? { ...state.entity, avatarUrl: undefined}: state.entity
             }
+        case FAILURE(ACTION_TYPES.PARTIAL_UPDATE_EMPLOYEE):
         case FAILURE(ACTION_TYPES.FETCH_EMPLOYEE_FILTERED):
         case FAILURE(ACTION_TYPES.FETCH_EMPLOYEE_LIST):
         case FAILURE(ACTION_TYPES.FETCH_EMPLOYEE):
@@ -166,6 +170,14 @@ export const deleteAvatar: ICrudDeleteAction<IEmployee> = id => async dispatch =
     return await dispatch({
         type: ACTION_TYPES.DELETE_AVATAR,
         payload: axios.delete(`${apiUrl}/avatar/${id}`)
+    })
+}
+
+export const partialUpdateEmployee: ICrudPutAction<{id: string, employee: IEmployee, avatar?: File}> =  data => async dispatch => {
+    const formData = buildFormData(data.employee, "employee", data.avatar)
+    return await dispatch({
+        type: ACTION_TYPES.PARTIAL_UPDATE_EMPLOYEE,
+        payload: axios.patch(`${apiUrl}/${data.id}`, formData)
     })
 }
 

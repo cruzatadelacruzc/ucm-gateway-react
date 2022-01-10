@@ -23,8 +23,8 @@ import {
 import {DatePicker} from "formik-material-ui-pickers";
 import {CheckboxWithLabel, TextField} from 'formik-material-ui';
 import {defaultValue, IEmployee} from "../../../../shared/models/employee.model";
-import {createEmployee, getEmployee, reset, updateEmployee} from "./employee.reducer";
 import FormStepper, {FormStep} from "../../../../shared/components/FormStepper";
+import {createEmployee, getEmployee, partialUpdateEmployee, reset, updateEmployee} from "./employee.reducer";
 
 function EmployeeManage() {
     const history = useHistory();
@@ -84,6 +84,12 @@ function EmployeeManage() {
             <FormStep
                 label={t("person:step")}
                 validationSchema={_validationSchema}
+                operationKind={_isNew ? "CREATE": "UPDATE"}
+                onSubmit={async (values: IEmployee) => {
+                    if (!_isNew) {
+                        return dispatch(partialUpdateEmployee({id, employee: values, avatar: avatar}))
+                    }
+                }}
             >
                 <PersonalStep
                     isNew={_isNew}
