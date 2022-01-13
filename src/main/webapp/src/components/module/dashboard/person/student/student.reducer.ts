@@ -85,6 +85,11 @@ const studentReducer = (state: StudentStateType = initialState, { type, payload 
                 updateSuccess: true,
                 entity: {}
             }
+        case SUCCESS(ACTION_TYPES.DELETE_AVATAR):
+            return {
+                ...state,
+                entity: payload.data === true ? { ...state.entity, avatarUrl: undefined}: state.entity
+            }
         case FAILURE(ACTION_TYPES.PARTIAL_UPDATE_STUDENT):
         case FAILURE(ACTION_TYPES.FETCH_STUDENT_FILTERED):
         case FAILURE(ACTION_TYPES.FETCH_STUDENT_LIST):

@@ -14,7 +14,8 @@ import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DayjsUtils from "@date-io/dayjs";
 import {IEmployee} from "../../../shared/models/employee.model";
 import {IStudent} from "../../../shared/models/student.model";
-import {deleteAvatar} from "./employee/employee.reducer";
+import {deleteAvatar as deleteEmployeeAvatar} from "./employee/employee.reducer";
+import {deleteAvatar as deleteStudentAvatar} from "./student/student.reducer";
 import UCMAvatar from "../../../shared/components/avatar";
 
 export const PERSON_GENDER = {
@@ -53,6 +54,10 @@ const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => 
         })
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+    const isEmployee = (person): person is IEmployee  => {
+        return (person as IEmployee).registerNumber !== undefined
+    }
+
     return (
         <MuiPickersUtilsProvider utils={DayjsUtils}>
             <Grid container>
@@ -60,7 +65,13 @@ const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => 
                         <UCMAvatar
                             avatarUrl={person.avatarUrl}
                             setResultAvatar={setFileInput}
-                            deleteAvatar={() => dispatch(deleteAvatar(person.id))}
+                            deleteAvatar={() => {
+                                if (isEmployee(person)) {
+                                    dispatch(deleteEmployeeAvatar(person.id))
+                                } else {
+                                    dispatch(deleteStudentAvatar(person.id))
+                                }
+                            }}
                         />
                 </Grid>
                 <Grid container item md={8} sm={12} xs={12} lg={8}>
