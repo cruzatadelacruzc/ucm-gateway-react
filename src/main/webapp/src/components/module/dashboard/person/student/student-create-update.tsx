@@ -11,7 +11,7 @@ import {useHistory, useParams} from "react-router-dom";
 import {formUpdateStyles, MenuProps} from "../../style";
 import PersonalStep, {_validationSchema} from "../index";
 import {batch, useDispatch, useSelector} from "react-redux";
-import {createStudent, getStudent, partialUpdateStudent, updateStudent} from "./student.reducer";
+import {createStudent, getStudent, partialUpdateStudent, reset, updateStudent} from "./student.reducer";
 import {defaultValue, IStudent} from "../../../../shared/models/student.model";
 import FormStepper, {FormStep} from "../../../../shared/components/FormStepper";
 import {getKinds, getStudyCenters} from "../../nomenclature/nomenclature.reducer";
@@ -30,7 +30,9 @@ const StudentManage = () => {
     const isUpdateSuccess = useSelector((states: IRootState) => states.student.updateSuccess);
 
     React.useEffect(() => {
-        if (!isNew){
+        if (isNew) {
+            dispatch(reset())
+        } else {
             dispatch(getStudent(id))
         }
     }, [isNew, id]) // eslint-disable-line react-hooks/exhaustive-deps
