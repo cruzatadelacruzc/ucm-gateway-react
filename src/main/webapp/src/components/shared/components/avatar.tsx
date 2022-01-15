@@ -10,7 +10,10 @@ import {DeleteOutline, EditOutlined} from "@material-ui/icons";
 interface IUCMAvatar {
     setResultAvatar: React.Dispatch<React.SetStateAction<File| undefined>>
     deleteAvatar?: () => void,
+    backgroundUrl? : string,
     avatarUrl?: string,
+    frameHeight?: number
+    frameWidth?: number,
     height?: number
     width?: number
 }
@@ -25,64 +28,6 @@ const UCMAvatar = ({setResultAvatar, avatarUrl, deleteAvatar, ...props}: IUCMAva
     const {t} = useTranslation(["error"]);
     const classes = avatarStyles();
 
-    // React.useEffect(() => {
-    //     const canvas = previewCanvasRef.current;
-    //     const avatarHeight = height ?? 200;
-    //     const avatarWidth = width ?? 200;
-    //     if (!canvas || !selectedFile) {
-    //         return;
-    //     }
-    //     const reader = new FileReader();
-    //     const image = new Image()
-    //     reader.onloadend = () => {
-    //         image.src = reader.result as string;
-    //     }
-    //     reader.readAsDataURL(selectedFile);
-    //
-    //     image.onload = () => {
-    //         const scaleX = image.naturalWidth / image.width;
-    //         const scaleY = image.naturalHeight / image.height;
-    //         const ctx = canvas.getContext("2d");
-    //
-    //         const pixelRatio = window.devicePixelRatio;
-    //         canvas.width = avatarWidth * pixelRatio;
-    //         canvas.height = avatarHeight * pixelRatio;
-    //
-    //         if (!ctx) {
-    //             return;
-    //         }
-    //
-    //         ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    //         // ctx.imageSmoothingEnabled = false; only to crop image/jpeg
-    //         ctx.imageSmoothingQuality = "high"
-    //
-    //         ctx.drawImage(
-    //             image,
-    //             25 * scaleX,
-    //             25 * scaleY,
-    //             avatarWidth * scaleX,
-    //             avatarHeight * scaleY,
-    //             0,
-    //             0,
-    //             avatarWidth,
-    //             avatarHeight
-    //         );
-    //
-    //         canvas.toBlob((blob) => {
-    //             if (!blob || !image) {
-    //                 return;
-    //             }
-    //             const newFile = new File(
-    //                 [blob],
-    //                 "avatar.png",
-    //                 {type: "image/png", lastModified: Date.now()}
-    //             );
-    //             setCroppedImage(newFile);
-    //             setResultAvatar(newFile);
-    //         });
-    //     }
-    // }, [selectedFile])
-
     const onCropSave = (image: File) => {
         setCroppedImage(image)
         setResultAvatar(image)
@@ -94,7 +39,7 @@ const UCMAvatar = ({setResultAvatar, avatarUrl, deleteAvatar, ...props}: IUCMAva
         } else if (preview && (selectedFile || croppedImage)) {
             return preview;
         } else {
-            return "../../user.svg";
+            return props.backgroundUrl || "../../user.svg";
         }
     }
 
@@ -142,11 +87,11 @@ const UCMAvatar = ({setResultAvatar, avatarUrl, deleteAvatar, ...props}: IUCMAva
                 <Paper
                     elevation={3}
                     className={classes.cover}
-                    style={{width: props.width ?? 200, height: props.height ?? 200}}
+                    style={{width: props.frameWidth ?? 250, height: props.frameHeight ?? 250}}
                 >
                     <img alt={selectedFile ? selectedFile.name : "avatar"}
                          className={classes.picture}
-                         style={{width : props.width ?? 200, height: props.height ?? 200}}
+                         style={{width : "100%", height: "100%"}}
                          src={getAvatarSrc()}/>
 
                 </Paper>

@@ -63,6 +63,8 @@ const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => 
             <Grid container>
                 <Grid container item md={4} sm={12} xs={12} lg={4} justifyContent="center">
                         <UCMAvatar
+                            height={250}
+                            width={250}
                             avatarUrl={person.avatarUrl}
                             setResultAvatar={setFileInput}
                             deleteAvatar={() => {
