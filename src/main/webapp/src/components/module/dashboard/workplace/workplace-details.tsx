@@ -17,6 +17,7 @@ import {
     Divider,
     FormControl,
     FormLabel,
+    Grid,
     IconButton,
     List,
     ListItem,
@@ -27,14 +28,37 @@ import {
 import Widget from "../../../shared/layout/widget";
 import {LocalPhone} from "@material-ui/icons";
 import {buildAvatarURL} from "../../../shared/util/function-utils";
+import DialogDelete from "../../../shared/components/dialog-delete";
+import {makeStyles, Theme} from "@material-ui/core/styles";
 
+const localStyles = makeStyles((theme: Theme) => ({
+    cover: {
+        maxWidth: 305,
+        maxHeight: 305,
+        [theme.breakpoints.down('md')]: {
+            maxWidth: 260,
+            maxHeight: 260,
+        },
+        [theme.breakpoints.down('sm')]: {
+            maxWidth: 305,
+            maxHeight: 305,
+        },
+    },
+    item: {
+        [theme.breakpoints.down('xs')]: {
+            marginBottom: theme.spacing(2)
+        }
+    }
+}));
 
 const WorkplaceDetails = () => {
     let history = useHistory();
     const dispatch = useDispatch();
     const classes = detailsStyles();
+    const localClasses = localStyles();
     let {id} = useParams<{ id: string }>();
     const {t} = useTranslation(['workplace']);
+    const [modalOpen, setModalOpen] = React.useState(false);
     const _entity = useSelector((states: IRootState) => states.workPlace.entity);
     const updating = useSelector((states: IRootState) => states.workPlace.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.workPlace.updateSuccess);
@@ -49,6 +73,14 @@ const WorkplaceDetails = () => {
         }
     }, [isUpdateSuccess, history])
 
+    const getAvatarUrl = (): string => {
+        if (_entity.avatarUrl) {
+            return buildAvatarURL(_entity.avatarUrl)
+        } else {
+            return  "../../workplace.jpg"
+        }
+    }
+
     return (
         <Widget disableWidgetMenu>
             <Box className={classes.root}>
@@ -57,56 +89,53 @@ const WorkplaceDetails = () => {
                     <Chip variant='outlined' label={t('detail.title')} className={classes.order2}/>
                     <Divider className={classes.order3}/>
                 </Box>
-                <Box className={classes.data_row}>
-                    <Box className={classes.data_column}>
-                        <Card>
+                <Grid container>
+                    <Grid item xs={12} sm={5} md={5} lg={4} className={localClasses.item}>
+                        <Card className={localClasses.cover}>
                             <CardActionArea>
                                 <CardMedia
-                                    style={{maxWidth: '100%' , padding: "10px"}}
                                     component="img"
+                                    style={{padding:5, maxHeight: 300}}
                                     alt={_entity.name}
-                                    image={_entity.avatarUrl || "../../workplace.jpg"}
+                                    image={getAvatarUrl()}
                                 />
                             </CardActionArea>
                         </Card>
-                    </Box>
-                    <Box className={classes.data_column}>
-                        <Box className={classes.data_row}>
+                    </Grid>
+                    <Grid item container xs={12} sm={6} md={7} lg={8} spacing={1}>
+                        <Grid item xs={12}>
                             <FormControl component="fieldset">
                                 <FormLabel component="legend">{t("active")}</FormLabel>
                                 {_entity.active ? t("positive") : "NO"}
                             </FormControl>
-                        </Box>
-                        <Box className={classes.data_row}>
+                        </Grid>
+                        <Grid item xs={12}>
                             <FormControl component="fieldset">
                                 <FormLabel component="legend">{t("name")}</FormLabel>
                                 {_entity.name}
                             </FormControl>
-                        </Box>
-                        <Box className={classes.data_row}>
+                        </Grid>
+                        <Grid item xs={12}>
                             <FormControl component="fieldset">
                                 <FormLabel component="legend">{t("email")}</FormLabel>
                                 {_entity.email}
                             </FormControl>
-                        </Box>
-                        <Box className={classes.data_row}>
+                        </Grid>
+                        <Grid item xs={12}>
                             <FormControl component="fieldset">
                                 <FormLabel component="legend">{t("description")}</FormLabel>
                                 {_entity.description}
                             </FormControl>
-                        </Box>
-                    </Box>
-                </Box>
-                <Box className={classes.data_row}><Typography variant="h6">{t("phones")}:</Typography></Box>
-                <Box className={classes.data_row}>
+                        </Grid>
+                    </Grid>
+                <Grid item xs={12} style={{marginTop: 10}}><Typography variant="h6">{t("phones")}:</Typography></Grid>
+                <Grid item xs={12}>
                     <List>
                         {_entity.phones?.map( (phone, index) => {
                             return (
                                 <IconButton key={index}>
                                     <ListItem  alignItems="flex-start" component={Link} to={`/phone/show/${phone.id}`}>
-                                        <ListItemAvatar>
-                                            <LocalPhone/>
-                                        </ListItemAvatar>
+                                        <LocalPhone/>
                                         <ListItemText primary={phone.number} />
                                     </ListItem>
                                 </IconButton>
@@ -114,9 +143,9 @@ const WorkplaceDetails = () => {
                          })
                         }
                     </List>
-                </Box>
-                <Box className={classes.data_row}><Typography variant="h6">{t("members")}:</Typography></Box>
-                <Box className={classes.data_row}>
+                </Grid>
+                <Grid item xs={12}><Typography variant="h6">{t("members")}:</Typography></Grid>
+                <Grid item xs={12}>
                     <List>
                         {_entity.employees?.map((employee,index) => {
                             return (
@@ -134,15 +163,15 @@ const WorkplaceDetails = () => {
                             )
                         })}
                     </List>
-                </Box>
-                <Box className={classes.buttons}>
+                </Grid>
+                <Grid item xs={12}>
                     <Button
                         component={Link}
                         color="default"
                         variant="contained"
                         to={'/workplace'}
                         className={classes.button}>
-                        {t('common:cancel')}
+                        {t('common:close')}
                     </Button>
                     <Button
                         component={Link}
@@ -156,13 +185,21 @@ const WorkplaceDetails = () => {
                         color="primary"
                         variant="contained"
                         className={classes.button}
-                        onClick={() => dispatch(deleteWorkPlace(id))}
+                        onClick={() => setModalOpen(true)}
                         disabled={updating}
                         endIcon={updating ? <CircularProgress size="1rem"/> : null}
                     >
                         {t('common:delete')}
                     </Button>
-                </Box>
+                    <DialogDelete
+                        open={modalOpen}
+                        setOpen={setModalOpen}
+                        title={t("delete.title")}
+                        deleteItem={() => dispatch(deleteWorkPlace(id))}
+                        content={t("delete.question", {param: _entity.name})}
+                    />
+                </Grid>
+                </Grid>
             </Box>
         </Widget>
     );

@@ -3,7 +3,7 @@ import {AnyAction} from "redux";
 import {FAILURE, REQUEST, SUCCESS} from "../../../shared/reducer/action-type.util";
 import {ICrudDeleteAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction} from "../../../types";
 import axios from "axios";
-import {cleanEntity} from "../../../shared/util/entity-util";
+import {buildFormData} from "../../../shared/util/entity-util";
 
 export const ACTION_TYPES = {
     FETCH_WORKPLACE_FILTERED: "employee/FETCH_WORKPLACE_FILTERED",
@@ -12,10 +12,11 @@ export const ACTION_TYPES = {
     CREATE_WORKPLACE: 'workplace/CREATE_WORKPLACE',
     UPDATE_WORKPLACE: 'workplace/UPDATE_WORKPLACE',
     DELETE_WORKPLACE: 'workplace/DELETE_WORKPLACE',
+    DELETE_AVATAR: 'workplace/DELETE_AVATAR',
     RESET: 'workplace/RESET',
 }
 
-export const initialState = {
+const initialState = {
     loading: false,
     errorMessage: null,
     entities: [] as ReadonlyArray<IWorkPlace>,
@@ -70,6 +71,11 @@ const workPlaceReducer = (state: WorkplaceStateType = initialState, {type, paylo
                 updateSuccess: true,
                 entity: payload.data
             }
+        case SUCCESS(ACTION_TYPES.DELETE_AVATAR):
+            return {
+                ...state,
+                entity: payload.data === true ? { ...state.entity, avatarUrl: undefined}: state.entity
+            }
         case SUCCESS(ACTION_TYPES.DELETE_WORKPLACE):
             return {
                 ...state,
@@ -83,6 +89,7 @@ const workPlaceReducer = (state: WorkplaceStateType = initialState, {type, paylo
         case FAILURE(ACTION_TYPES.UPDATE_WORKPLACE):
         case FAILURE(ACTION_TYPES.DELETE_WORKPLACE):
         case FAILURE(ACTION_TYPES.FETCH_WORKPLACE):
+        case FAILURE(ACTION_TYPES.DELETE_AVATAR):
             return {
                 ...state,
                 loading: false,
@@ -116,17 +123,19 @@ export const getWorkPlace: ICrudGetAction<IWorkPlace> = id => async dispatch => 
     })
 }
 
-export const createWorkPlace: ICrudPutAction<IWorkPlace> = entity => async dispatch => {
+export const createWorkPlace: ICrudPutAction<{workplace: IWorkPlace, avatar?: File}> = data => async dispatch => {
+    const formData = buildFormData(data.workplace,"workplace", data.avatar)
     return await dispatch({
         type: ACTION_TYPES.CREATE_WORKPLACE,
-        payload: axios.post<IWorkPlace>(apiUrl, cleanEntity(entity))
+        payload: axios.post<IWorkPlace>(apiUrl, formData)
     })
 }
 
-export const updateWorkPlace: ICrudPutAction<IWorkPlace> = entity => async dispatch => {
+export const updateWorkPlace: ICrudPutAction<{workplace: IWorkPlace, avatar?: File}> = data => async dispatch => {
+    const formData = buildFormData(data.workplace,"workplace", data.avatar)
     return await dispatch({
         type: ACTION_TYPES.UPDATE_WORKPLACE,
-        payload: axios.put<IWorkPlace>(apiUrl, cleanEntity(entity))
+        payload: axios.put<IWorkPlace>(apiUrl, formData)
     })
 }
 
@@ -136,5 +145,16 @@ export const deleteWorkPlace: ICrudDeleteAction<IWorkPlace> = id => async dispat
         payload: axios.delete(`${apiUrl}/${id}`)
     })
 }
+
+export const deleteAvatar: ICrudDeleteAction<IWorkPlace> = id => async dispatch => {
+    return await dispatch({
+        type: ACTION_TYPES.DELETE_AVATAR,
+        payload: axios.delete(`${apiUrl}/avatar/${id}`)
+    })
+}
+
+export const reset = () => ({
+    type: ACTION_TYPES.RESET
+})
 
 export default workPlaceReducer;
