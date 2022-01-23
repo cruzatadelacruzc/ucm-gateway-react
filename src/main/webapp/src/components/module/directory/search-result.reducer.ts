@@ -64,7 +64,6 @@ export const getSearchPerson: ICrudSearchAction<ISearchResultPerson> = (search, 
         query: {
             multi_match: {
                 query: search,
-                type: "best_fields",
                 tie_breaker: 0.3,
                 fields: ["ci^1.8","name^2","*LastName^1.9","email^1.8",
                     "workPlace.name^1.6","specialty^1.6","district^1.6",
@@ -83,17 +82,23 @@ export const getSearchPerson: ICrudSearchAction<ISearchResultPerson> = (search, 
 
 export const getSearchWorkPlace: ICrudSearchAction<ISearchResultWorkPlace> = (search, from, size) => async dispatch =>{
   const query = CONFIG.ES_WORKPLACE_SEARCH_TEMPLATE ? {id: CONFIG.ES_WORKPLACE_SEARCH_TEMPLATE, params: search} : {
-        query: {
-            multi_match: {
-                query: search,
-                type: "best_fields",
-                tie_breaker: 0.3,
-                fields: [
-                    "name^2","email^1.9","description^1.8","employees.ci^1.7","phones.number^1.6",
-                    "employees.name^1.7","employees.specialty^1.5","employees.profession^1.4"
-                ]
-            }
-        }
+      query: {
+          bool: {
+              should: [
+                  {
+                      multi_match: {
+                          query: search,
+                          tie_breaker: 0.3,
+                          fields: ["name^2","email^1.9","employees.ci^1.7","phones.number^1.6",
+                              "employees.name^1.7","employees.specialty^1.5","employees.profession^1.4"]
+                      }
+                  },
+                  {
+                      match_phrase: {description: {query: search, boost: 1.8}}
+                  }
+              ]
+          }
+      }
     }
   const { data } = await httpES.post<ISearchResultWorkPlace>(`${INDICES.WORKPLACES}/_search`, query);
   return dispatch({
@@ -104,16 +109,25 @@ export const getSearchWorkPlace: ICrudSearchAction<ISearchResultWorkPlace> = (se
 
 export const getSearchPhone: ICrudSearchAction<ISearchResultPhone> = (search, from, size) => async dispatch => {
   const query = CONFIG.ES_PHONE_SEARCH_TEMPLATE ? {id: CONFIG.ES_PHONE_SEARCH_TEMPLATE, params: search} : {
-        query: {
-            multi_match: {
-                query: search,
-                type: "best_fields",
-                tie_breaker: 0.3,
-                fields: ["number^2","description^1.8","employee.ci^1.7","employee.name^1.7","employee.specialty^1.5",
-                    "employee.profession^1.4","workPlace.email^1.6","workPlace.name^1.7"
-                ]
-            }
-        }
+      query: {
+          bool: {
+              should: [
+                  {
+                      multi_match: {
+                          query: search,
+                          tie_breaker: 0.3,
+                          fields: ["number^2","employee.ci^1.8","employee.name^1.8","workPlace.name^1.8",
+                              "workPlace.email^1.6","employee.*LastName^1.7","employee.specialty^1.5",
+                              "employee.profession^1.4","workPlace.employees.name^1.6","workPlace.employees.*LastName^1.6"
+                          ]
+                      }
+                  },
+                  {
+                      match_phrase: {description: {query: search, boost: 1.9}}
+                  }
+              ]
+          }
+      }
     }
   const { data } = await httpES.post<ISearchResultPhone>(`${INDICES.PHONES}/_search`, query);
   return dispatch({
