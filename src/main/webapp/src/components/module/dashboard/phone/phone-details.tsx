@@ -9,6 +9,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import {IRootState} from "../../../shared/reducer";
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import {Box, Button, Chip, CircularProgress, Divider, Typography, useTheme} from "@material-ui/core";
+import DialogDelete from "../../../shared/components/dialog-delete";
 
 const PhoneDetails = () => {
     const theme = useTheme();
@@ -17,6 +18,7 @@ const PhoneDetails = () => {
     const classes = detailsStyles();
     let {id} = useParams<{ id: string }>();
     const {t} = useTranslation(['phone']);
+    const [modalOpen, setModalOpen] = React.useState(false);
     const _entity = useSelector((states: IRootState) => states.phone.entity);
     const updating = useSelector((states: IRootState) => states.phone.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.phone.updateSuccess);
@@ -83,7 +85,7 @@ const PhoneDetails = () => {
                     variant="contained"
                     to={'/phone'}
                     className={classes.button}>
-                    {t('common:cancel')}
+                    {t('common:close')}
                 </Button>
                 <Button
                     component={Link}
@@ -97,12 +99,18 @@ const PhoneDetails = () => {
                     color="primary"
                     variant="contained"
                     className={classes.button}
-                    onClick={() => dispatch(deletePhone(id))}
+                    onClick={() => setModalOpen(true)}
                     disabled={updating}
                     endIcon={updating ? <CircularProgress size="1rem"/> : null}
                 >
                     {t('common:delete')}
                 </Button>
+                <DialogDelete
+                    open={modalOpen}
+                    setOpen={setModalOpen}
+                    title={t("delete.title")}
+                    deleteItem={() => dispatch(deletePhone(id))}
+                    content={t("delete.question", {param: _entity.number})}/>
             </Box>
         </Box>
     </Widget>
