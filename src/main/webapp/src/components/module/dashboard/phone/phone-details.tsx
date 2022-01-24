@@ -5,11 +5,11 @@ import {detailsStyles} from "../style";
 import {deletePhone, getPhone} from "./phone.reducer";
 import {Link, useHistory, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
-import PersonIcon from '@material-ui/icons/Person';
 import {IRootState} from "../../../shared/reducer";
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
-import {Box, Button, Chip, CircularProgress, Divider, Typography, useTheme} from "@material-ui/core";
+import {Avatar, Box, Button, Chip, CircularProgress, Divider, Typography, useTheme} from "@material-ui/core";
 import DialogDelete from "../../../shared/components/dialog-delete";
+import {buildAvatarURL} from "../../../shared/util/function-utils";
 
 const PhoneDetails = () => {
     const theme = useTheme();
@@ -40,39 +40,46 @@ const PhoneDetails = () => {
                 <Chip variant='outlined' label={t('detail.title')} className={classes.order2}/>
                 <Divider className={classes.order3}/>
             </Box>
-            <Box className={classes.data_row} style={{alignItems: 'strech'}}>
+            <Box className={classes.data_row} style={{alignItems: 'stretch'}}>
                 <Typography variant="subtitle1" style={{marginRight: theme.spacing(1)}}>{t("active")} :</Typography>
                 <Typography variant="subtitle1" color='primary'>{_entity.active ? t("positive") : "NO"}</Typography>
             </Box>
-            <Box className={classes.data_row} style={{alignItems: 'strech'}}>
+            <Box className={classes.data_row} style={{alignItems: 'stretch'}}>
                 <Typography variant="subtitle1" style={{marginRight: theme.spacing(1)}}>{t("number")} :</Typography>
                 <Typography variant="subtitle1">{_entity.number}</Typography>
             </Box>
-            <Box className={classes.data_row} style={{alignItems: 'strech'}}>
+            <Box className={classes.data_row} style={{alignItems: 'stretch'}}>
                 <Typography variant="subtitle1" style={{marginRight: theme.spacing(1)}}>{t("description")}:</Typography>
                 <Typography variant="subtitle1">{_entity.description ? _entity.description : '-'}</Typography>
             </Box>
-            {_entity.employeeId
+            {_entity.employee
                 ?
-                <Box className={classes.data_row} style={{alignItems: 'strech'}}>
-                    <PersonIcon fontSize='large' style={{marginRight: theme.spacing(1)}}/>
+                <Box className={classes.data_row} style={{alignItems: 'stretch'}}>
+                    <Avatar
+                        alt={`${_entity.employee?.name} ${_entity.employee?.firstLastName} ${_entity.employee?.secondLastName}`}
+                        src={_entity.employee.avatarUrl ? buildAvatarURL(_entity.employee.avatarUrl): ""}
+                    />
                     <Button variant="text" color='primary' component={Link}
-                            to={`/employee/show/${_entity.employeeId}`}>
+                            to={`/employee/show/${_entity.employee.id}`}>
                         <Typography variant="subtitle1" style={{borderBottom: '2px dotted red'}}>
-                            {_entity.employeeName}
+                            {`${_entity.employee?.name} ${_entity.employee?.firstLastName} ${_entity.employee?.secondLastName}`}
                         </Typography>
                     </Button>
                 </Box>
                 : ''
             }
-            {_entity.workPlaceId
+            {_entity.workPlace
                 ?
-                <Box className={classes.data_row} style={{alignItems: 'strech'}}>
-                    <HomeWorkIcon fontSize='large' style={{marginRight: theme.spacing(1)}}/>
+                <Box className={classes.data_row} style={{alignItems: 'stretch'}}>
+                    {_entity.workPlace?.avatarUrl ?
+                        <Avatar alt={_entity.workPlace?.name} src={buildAvatarURL(_entity.workPlace.avatarUrl)} />
+                        :
+                        <HomeWorkIcon fontSize='large' style={{marginRight: theme.spacing(1)}}/>
+                    }
                     <Button variant="text" color='primary' component={Link}
-                            to={`/workplace/show/${_entity.workPlaceId}`}>
+                            to={`/workplace/show/${_entity.workPlace?.id}`}>
                         <Typography variant="subtitle1" style={{borderBottom: '2px dotted red'}}>
-                            {_entity.workPlaceName}
+                            {_entity.workPlace?.name}
                         </Typography>
                     </Button>
                 </Box>
