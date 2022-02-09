@@ -18,6 +18,7 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
+    Typography,
 } from "@material-ui/core";
 import {detailsStyles} from "../../style";
 import PersonDetails from "../person-details";
@@ -88,7 +89,12 @@ function EmployeeDetails() {
                     <Box className={classes.data_cell}>
                         <FormControl component="fieldset">
                             <FormLabel component="legend">{t("workPlace")}</FormLabel>
-                            {_entity.workPlaceName}
+                            <Button variant="text" color='primary' component={Link} style={{width: '50%'}}
+                                    to={`/workplace/show/${_entity.workPlaceId}`}>
+                                <Typography variant="subtitle1" style={{borderBottom: '2px dotted red'}}>
+                                {_entity.workPlaceName}
+                                </Typography>
+                            </Button>
                         </FormControl>
                     </Box>
                     <Box className={classes.data_cell}>
