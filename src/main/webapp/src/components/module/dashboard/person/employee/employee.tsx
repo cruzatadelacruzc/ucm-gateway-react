@@ -53,6 +53,13 @@ const Employees = () => {
             }
         },
         {
+            name: "salary",
+            label: t("salary"),
+            options: {
+                display: false
+            }
+        },
+        {
             name: 'specialtyName',
             label: t("person:specialty")
         },

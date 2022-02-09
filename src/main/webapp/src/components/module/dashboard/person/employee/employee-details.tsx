@@ -75,6 +75,12 @@ function EmployeeDetails() {
                     </Box>
                     <Box className={classes.data_cell}>
                         <FormControl component="fieldset">
+                            <FormLabel component="legend">{t("salary")}</FormLabel>
+                            ${_entity.salary}
+                        </FormControl>
+                    </Box>
+                    <Box className={classes.data_cell}>
+                        <FormControl component="fieldset">
                             <FormLabel component="legend">{t("isGraduatedBySector")}</FormLabel>
                             {_entity.isGraduatedBySector ? t("positive") : "NO"}
                         </FormControl>

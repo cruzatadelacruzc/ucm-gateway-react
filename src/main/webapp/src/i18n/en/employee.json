@@ -26,5 +26,6 @@
   "detail": {
     "title": "Employee details"
   },
-  "positive": "YES"
+  "positive": "YES",
+  "salary": "Salary"
 }

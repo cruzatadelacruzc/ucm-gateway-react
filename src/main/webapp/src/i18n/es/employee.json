@@ -26,5 +26,6 @@
   "detail": {
     "title": "Detalles del trabajador"
   },
-  "positive": "SI"
+  "positive": "SI",
+  "salary": "Salario"
 }

@@ -4,6 +4,7 @@ import {IPhone} from "./phone.model";
 export interface IEmployee extends IPerson {
   startDate?: string | null
   endDate?: string | null
+  salary?: number
   graduateYears?: number
   isGraduatedBySector?: boolean
   serviceYears?: number
@@ -35,6 +36,7 @@ export const defaultValue: Readonly<IEmployee> = {
   bossWorkPlace: false,
   workPlaceId: '',
   categoryId: '',
+  salary: 0,
   scientificDegreeId: '',
   teachingCategoryId: '',
   chargeId: '',

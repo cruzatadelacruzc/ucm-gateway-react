@@ -4,7 +4,7 @@ import React, {useEffect} from "react";
 import DayjsUtils from "@date-io/dayjs";
 import {useTranslation} from "react-i18next";
 import i18n from "../../../../../config/i18n";
-import {Box, MenuItem} from "@material-ui/core";
+import {Box, InputAdornment, MenuItem} from "@material-ui/core";
 import Widget from "../../../../shared/layout/widget";
 import {batch, useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../../../shared/reducer";
@@ -102,6 +102,7 @@ function EmployeeManage() {
                 validationSchema={yup.object().shape({
                     graduateYears: yup.number().integer(i18n.t("error:form.number")).min(0, i18n.t("error:form.min", {min: 0})),
                     serviceYears: yup.number().integer(i18n.t("error:form.number")).min(0, i18n.t("error:form.min", {min: 0})),
+                    salary: yup.number().integer(i18n.t("error:form.number")).min(0, i18n.t("error:form.min", {min: 0})),
                     startDate: yup.string().required(i18n.t("error:form.required")),
                     registerNumber: yup.string().required(i18n.t("error:form.required")),
                 })}
@@ -158,6 +159,11 @@ function EmployeeManage() {
                         </Box>
                     </Box>
                     <Box className={classes.form_group}>
+                        <Box className={classes.input}>
+                            <Field component={TextField} type="number" name="salary" label={t('salary')}
+                                   variant="outlined" fullWidth InputLabelProps={{shrink: true}}
+                                   InputProps={{startAdornment: (<InputAdornment position="start">$</InputAdornment>)}}/>
+                        </Box>
                         <Box className={classes.input}>
                             <Field
                                 select
