@@ -136,7 +136,7 @@ const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => 
                     />
                 </Box>
             </Grid>
-            <Grid item container md={12} sm={12} xs={12} lg={12}>
+                {!isNew && <Grid item container md={12} sm={12} xs={12} lg={12}>
                 <Box className={classes.input}>
                     <Field
                         select
@@ -159,14 +159,6 @@ const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => 
                         </MenuItem>
                     </Field>
                 </Box>
-
-
-                <Box className={classes.input}>
-                    <Field name="race" label={t('race')} fullWidth InputLabelProps={{shrink: true}}
-                           variant="outlined" component={TextField}/>
-                </Box>
-
-
                 <Box className={classes.input}>
                     <Field
                         autoOk
@@ -179,9 +171,13 @@ const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => 
                         format={t("common:date_format")}
                     />
                 </Box>
-
-            </Grid>
+            </Grid> }
             <Grid item container>
+                <Box className={classes.input}>
+                    <Field name="race" label={t('race')} fullWidth InputLabelProps={{shrink: true}}
+                           variant="outlined" component={TextField}/>
+                </Box>
+
                 <Box className={classes.input}>
                     <Field
                         select

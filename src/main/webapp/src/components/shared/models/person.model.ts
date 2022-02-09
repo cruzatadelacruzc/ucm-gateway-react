@@ -1,5 +1,3 @@
-import dayjs from "dayjs";
-
 export interface IPerson {
     id?: string;
     ci?: string;
@@ -9,7 +7,7 @@ export interface IPerson {
     address?: string;
     firstLastName?: string;
     secondLastName?: string;
-    gender?: string;
+    gender?: string | null;
     birthdate?: string | null
     race?: string;
     districtId?: string;
@@ -26,8 +24,7 @@ export const defaultValue: Readonly<IPerson> = {
     avatarUrl: '',
     firstLastName: '',
     secondLastName: '',
-    gender: '',
-    birthdate: dayjs().subtract(15, "year").toISOString(),
+    birthdate: null,
     race: '',
     districtId: '',
     specialtyId: ''
