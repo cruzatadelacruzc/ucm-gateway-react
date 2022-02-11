@@ -9,8 +9,8 @@ import {defaultValue, IPhone} from "../../../shared/models/phone.model";
 import {IRootState} from "../../../shared/reducer";
 import {createPhone, getPhone, updatePhone} from "./phone.reducer";
 import * as yup from "yup";
-import {Box, Button, CircularProgress, MenuItem} from "@material-ui/core";
-import {CheckboxWithLabel, TextField} from "formik-material-ui";
+import {Box, Button, CircularProgress, MenuItem} from "@mui/material";
+import {CheckboxWithLabel, TextField} from "formik-mui";
 import {geEmployees} from "../person/employee/employee.reducer";
 import {getWorkPlaces} from "../workplace/workplace.reducer";
 
@@ -158,7 +158,6 @@ const PhoneManage = () => {
                         <Box className={classes.buttons}>
                             <Button
                                 className={classes.button}
-                                color="default"
                                 variant="contained"
                                 component={Link}
                                 to='/phone'

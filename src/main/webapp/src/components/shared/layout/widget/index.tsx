@@ -1,7 +1,7 @@
 import React from 'react';
 import {widgetStyles} from "./style";
-import {IconButton, Menu, MenuItem, Paper, Typography} from "@material-ui/core";
-import MoreIcon from "@material-ui/icons/MoreVert";
+import {IconButton, Menu, MenuItem, Paper, Typography} from "@mui/material";
+import MoreIcon from "@mui/icons-material/MoreVert";
 import classnames from 'classnames'
 import {useTranslation} from "react-i18next";
 
@@ -39,8 +39,8 @@ const Widget = ({header, title, children, noBodyPadding, bodyClass, disableWidge
                                     aria-owns={menuHeaderId}
                                     aria-haspopup="true"
                                     onClick={() => setMoreMenuOpen(true)}
-                                    buttonRef={setMoreButtonRef}
-                                >
+                                    ref={setMoreButtonRef}
+                                    size="large">
                                     <MoreIcon/>
                                 </IconButton>
                             )}
@@ -77,7 +77,7 @@ const Widget = ({header, title, children, noBodyPadding, bodyClass, disableWidge
                 </MenuItem>
             </Menu>
         </div>
-    )
+    );
 }
 
 export default Widget;

@@ -1,5 +1,5 @@
-import Paper from '@material-ui/core/Paper';
-import {Grid, List, ListItem, ListItemText, TextField, Typography} from '@material-ui/core';
+import Paper from '@mui/material/Paper';
+import {Grid, List, ListItem, ListItemText, TextField, Typography} from '@mui/material';
 import {cardStyles} from './style';
 import {useTranslation} from 'react-i18next';
 import React from "react";

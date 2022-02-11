@@ -1,7 +1,7 @@
 import React from 'react';
 import {ACTION_TYPES, apiUrl} from "./phone.reducer";
 import {useTranslation} from "react-i18next";
-import {Button, FormControlLabel, Switch} from "@material-ui/core";
+import {Button, FormControlLabel, Switch} from "@mui/material";
 import UCMDataBase from "../../../shared/components/datatable";
 import axios from "axios";
 import toast from "../../../shared/util/notification-snackbar.util";
@@ -52,8 +52,9 @@ const Phones = () => {
                 searchable: false,
                 customBodyRender: (value, tableMeta) => {
                     const _id = tableMeta.rowData?.length > 0 && tableMeta.rowData[0]
+                    const _label = value ? t('positive') : "NO";
                     return <FormControlLabel
-                            label={value ? t('positive') : 'NO'}
+                            label={_label}
                             control={
                                 <Switch color="primary" checked={value}
                                         onChange={(event, checked) => {

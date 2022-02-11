@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {Drawer, IconButton, List, useTheme} from "@material-ui/core";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import {Drawer, IconButton, List, useTheme} from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import classNames from 'classnames';
 import {sidebarStyles} from "./style";
 import SidebarMenu from "./sidebarMenu";
-import AddAlertIcon from "@material-ui/icons/AddAlert";
-import HomeWorkIcon from '@material-ui/icons/HomeWork';
+import AddAlertIcon from "@mui/icons-material/AddAlert";
+import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import i18n from "../../../../config/i18n";
-import AccountBoxIcon from "@material-ui/icons/AccountBox";
-import {ContactPhone, Face} from "@material-ui/icons";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import {ContactPhone, Face} from "@mui/icons-material";
 
 export const menuItems = [
     {   label: i18n.t("common:dashboard"),
@@ -87,7 +87,7 @@ const Sidebar = ({toggleSidebar, isSidebarOpened}: ISidebar) => {
        >
            <div className={classes.toolbar} />
            <div className={classes.mobileBackButton}>
-               <IconButton onClick={toggleSidebar}>
+               <IconButton onClick={toggleSidebar} size="large">
                    <ArrowBackIcon
                        classes={{
                            root: classNames(classes.headerIcon, classes.headerIconCollapse),
@@ -105,6 +105,6 @@ const Sidebar = ({toggleSidebar, isSidebarOpened}: ISidebar) => {
                ))}
            </List>
        </Drawer>
-)}
+   );}
 
 export default Sidebar;

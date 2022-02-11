@@ -1,9 +1,9 @@
 import React from 'react';
 import {cropDialogStyles} from "./style";
 import {useTranslation} from "react-i18next";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton} from "@material-ui/core";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton} from "@mui/material";
 import toast from '../util/notification-snackbar.util';
-import {Close as CloseIcon} from '@material-ui/icons';
+import {Close as CloseIcon} from '@mui/icons-material';
 import ReactCrop, {Crop} from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
@@ -94,49 +94,49 @@ export default function CropImageDialog(props: ICropImageDialog) {
         });
     }, [completedCrop])
 
-       return(
-           <>
-               <Dialog
-                   maxWidth="sm"
-                   classes={{paper: classes.paper}}
-                   open={props.openCrop}
-                   onClose={() => props.onClose(false)}
-                   aria-labelledby="image-crop-dialog"
-                   aria-describedby="image-crop-description"
-               >
-                   <DialogTitle id="image-crop-dialog">{t("common:photo_crop")}</DialogTitle>
-                   <IconButton aria-label="close" className={classes.closeButton}
-                               onClick={() => props.onClose(false)}
-                   >
-                       <CloseIcon/>
-                   </IconButton>
-                   <DialogContent>
-                       <ReactCrop
-                           src={src}
-                           crop={crop}
-                           keepSelection
-                           onImageLoaded={onLoad}
-                           maxWidth={props.imgWidth ? props.imgWidth : 200}
-                           maxHeight={props.imgHeight ? props.imgHeight : 200}
-                           onComplete={(crop) => setCompletedCrop(crop)}
-                           onChange={(crop, percentCrop) => setCrop(percentCrop)}
-                       />
-                   </DialogContent>
-                   <DialogActions>
-                       <Button
-                           variant="outlined"
-                           onClick={() => {
-                           if (croppedFile) {
-                               props.onSave(croppedFile)
-                               props.onClose(false);
-                           }
-                       }} color="primary">
-                           {t('common:finish')}
-                       </Button>
-                   </DialogActions>
-               </Dialog>
-               <canvas ref={previewCanvasRef} style={{ width: 0, height: 0 }} />
-        </>
-    )
+       return <>
+           <Dialog
+               maxWidth="sm"
+               classes={{paper: classes.paper}}
+               open={props.openCrop}
+               onClose={() => props.onClose(false)}
+               aria-labelledby="image-crop-dialog"
+               aria-describedby="image-crop-description"
+           >
+               <DialogTitle id="image-crop-dialog">{t("common:photo_crop")}</DialogTitle>
+               <IconButton
+                   aria-label="close"
+                   className={classes.closeButton}
+                   onClick={() => props.onClose(false)}
+                   size="large">
+                   <CloseIcon/>
+               </IconButton>
+               <DialogContent>
+                   <ReactCrop
+                       src={src}
+                       crop={crop}
+                       keepSelection
+                       onImageLoaded={onLoad}
+                       maxWidth={props.imgWidth ? props.imgWidth : 200}
+                       maxHeight={props.imgHeight ? props.imgHeight : 200}
+                       onComplete={(crop) => setCompletedCrop(crop)}
+                       onChange={(crop, percentCrop) => setCrop(percentCrop)}
+                   />
+               </DialogContent>
+               <DialogActions>
+                   <Button
+                       variant="outlined"
+                       onClick={() => {
+                       if (croppedFile) {
+                           props.onSave(croppedFile)
+                           props.onClose(false);
+                       }
+                   }} color="primary">
+                       {t('common:finish')}
+                   </Button>
+               </DialogActions>
+           </Dialog>
+           <canvas ref={previewCanvasRef} style={{ width: 0, height: 0 }} />
+    </>;
 };
 

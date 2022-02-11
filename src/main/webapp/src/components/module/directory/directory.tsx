@@ -1,9 +1,9 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import Header from './header';
-import {Container, Grid, Tab, Tabs, Typography} from '@material-ui/core';
-import ContactPhoneIcon from '@material-ui/icons/ContactPhone';
-import HomeWorkIcon from '@material-ui/icons/HomeWork';
-import PersonIcon from '@material-ui/icons/Person';
+import {Container, Grid, Tab, Tabs, Typography} from '@mui/material';
+import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
+import HomeWorkIcon from '@mui/icons-material/HomeWork';
+import PersonIcon from '@mui/icons-material/Person';
 import CardPerson from './card-person';
 import {getSearchPerson, getSearchPhone, getSearchWorkPlace} from './search-result.reducer';
 import {useTranslation} from 'react-i18next';

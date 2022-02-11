@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import {detailsStyles} from "../style";
 import {useTranslation} from "react-i18next";
 import {IPerson} from "../../../shared/models/person.model";
-import {Box, Card, CardActionArea, CardMedia, FormControl, FormLabel} from "@material-ui/core";
+import {Box, Card, CardActionArea, CardMedia, FormControl, FormLabel} from "@mui/material";
 import {buildAvatarURL} from "../../../shared/util/function-utils";
 
 export default function PersonDetails(_entity: IPerson) {

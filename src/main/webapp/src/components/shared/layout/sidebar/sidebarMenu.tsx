@@ -2,8 +2,8 @@ import React, {useState} from "react";
 import {NavLink, RouteComponentProps, useLocation} from "react-router-dom";
 import {sidebarStyles} from "./style";
 import classnames from "classnames";
-import {Collapse, Divider, List, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
-import ViewStreamIcon from '@material-ui/icons/ViewStream';
+import {Collapse, Divider, List, ListItem, ListItemIcon, ListItemText, Typography} from "@mui/material";
+import ViewStreamIcon from '@mui/icons-material/ViewStream';
 
 export interface ISidebarMenu {
     link: string,

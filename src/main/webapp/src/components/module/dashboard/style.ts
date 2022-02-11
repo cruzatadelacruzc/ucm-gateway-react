@@ -1,4 +1,7 @@
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import {Theme} from "@mui/material/styles";
+
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
 
 export const dashboardStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -29,7 +32,7 @@ export const formUpdateStyles = makeStyles((theme: Theme) => createStyles({
         display: "flex",
         flexDirection: "row",
         flexWrap: 'wrap',
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             flexDirection: "column",
         }
     },
@@ -37,11 +40,11 @@ export const formUpdateStyles = makeStyles((theme: Theme) => createStyles({
         marginRight: theme.spacing(3),
         marginBottom: theme.spacing(3),
         flex: '2 2 10em',
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             marginBottom: theme.spacing(1),
             marginRight: theme.spacing(0),
         },
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('md')]: {
             flex: '1 1 auto'
         }
     },
@@ -49,11 +52,11 @@ export const formUpdateStyles = makeStyles((theme: Theme) => createStyles({
         marginRight: theme.spacing(3),
         marginBottom: theme.spacing(3),
         flex: '1 1 5em',
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             marginBottom: theme.spacing(1),
             marginRight: theme.spacing(0),
         },
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('md')]: {
             flex: '1 1 auto'
         }
     },
@@ -63,13 +66,13 @@ export const formUpdateStyles = makeStyles((theme: Theme) => createStyles({
         justifyContent: "space-start",
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(3),
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             flexDirection: "column",
         }
     },
     button: {
         marginRight: theme.spacing(3),
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             width: "100%",
             marginRight: theme.spacing(0),
             marginBottom: theme.spacing(1)
@@ -84,7 +87,7 @@ export const managerSectionStyles = makeStyles((theme: Theme) => ({
         flexDirection: "row",
         flexWrap: 'wrap',
         marginBottom: theme.spacing(3),
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             flexDirection: "column",
         }
     },
@@ -107,7 +110,7 @@ export const managerSectionStyles = makeStyles((theme: Theme) => ({
         borderRadius: 50,
         marginRight: theme.spacing(3),
         order: 1,
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             order: 2,
             marginRight: theme.spacing(0),
             marginBottom: theme.spacing(1)
@@ -117,7 +120,7 @@ export const managerSectionStyles = makeStyles((theme: Theme) => ({
         order: 2,
         flex: '1 1 auto',
         marginRight: theme.spacing(3),
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             order: 1,
             marginRight: theme.spacing(0),
             marginBottom: theme.spacing(1)
@@ -135,7 +138,7 @@ export const dataTableStyles = makeStyles((theme: Theme) => ({
         zIndex: 120,
         paddingTop: theme.spacing(2),
         paddingBottom: theme.spacing(2),
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             justifyContent: 'center',
         }
     },
@@ -182,7 +185,7 @@ export const detailsStyles = makeStyles((theme: Theme) => ({
         display: "flex",
         flexDirection: "row",
         marginBottom: theme.spacing(3),
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             flexDirection: "column",
         }
     },
@@ -191,14 +194,14 @@ export const detailsStyles = makeStyles((theme: Theme) => ({
         flex: '1 1 10em',
         flexDirection: "column",
         marginRight: theme.spacing(3),
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             marginBottom: theme.spacing(1),
             marginRight: theme.spacing(0),
         }
     },
     data_cell: {
         flex: '1 1 4em',
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             marginBottom: theme.spacing(1),
             marginRight: theme.spacing(0),
         },
@@ -209,13 +212,13 @@ export const detailsStyles = makeStyles((theme: Theme) => ({
         justifyContent: "space-start",
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(3),
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             flexDirection: "column",
         }
     },
     button: {
         marginRight: theme.spacing(3),
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             width: "100%",
             marginRight: theme.spacing(0),
             marginBottom: theme.spacing(1)

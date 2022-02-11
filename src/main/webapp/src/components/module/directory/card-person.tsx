@@ -1,6 +1,6 @@
-import Paper from '@material-ui/core/Paper';
+import Paper from '@mui/material/Paper';
 import dayjs from 'dayjs';
-import {Card, CardActionArea, CardMedia, Grid, TextField} from '@material-ui/core';
+import {Card, CardActionArea, CardMedia, Grid, TextField} from '@mui/material';
 import {ISearchResultPersonHit} from '../../shared/models/search-result-person.model';
 import {cardStyles, StyledBadge} from './style';
 import {useTranslation} from 'react-i18next';

@@ -1,9 +1,9 @@
 import React from 'react';
-import {AppBar, Avatar, IconButton, Toolbar, useScrollTrigger} from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+import {AppBar, Avatar, IconButton, Toolbar, useScrollTrigger} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import {headerStyles} from './style';
-import MoreIcon from "@material-ui/icons/MoreVert";
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import MoreIcon from "@mui/icons-material/MoreVert";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import HeaderAccount from "./menu-account";
 import classNames from "classnames";
 import {useSelector} from "react-redux";
@@ -32,72 +32,70 @@ const Header = ({toggleSidebar, isSidebarOpened}: IHeader) => {
         threshold: 0,
     });
     const menuId = 'account-menu';
-    return (
-        <>
-            <AppBar elevation={trigger ? 5 : 0} className={classes.appBar}>
-                <Toolbar className={classes.toolbar}>
+    return <>
+        <AppBar elevation={trigger ? 5 : 0} className={classes.appBar}>
+            <Toolbar className={classes.toolbar}>
+                <IconButton
+                    color="primary"
+                    aria-label="open drawer"
+                    onClick={toggleSidebar}
+                    className={classNames(
+                        classes.headerMenuButton,
+                        classes.headerMenuButtonCollapse,
+                    )}
+                    size="large">
+                    { isSidebarOpened ? (
+                        <ArrowBackIcon
+                            classes={{
+                                root: classNames(
+                                    classes.headerIcon,
+                                    classes.headerIconCollapse,
+                                ),
+                            }}
+                        />
+                    ) : (
+                        <MenuIcon
+                            classes={{
+                                root: classNames(
+                                    classes.headerIcon,
+                                    classes.headerIconCollapse,
+                                ),
+                            }}
+                        />
+                    )}
+                </IconButton>
+                <div className={classes.grow}/>
+                <div className={classes.sectionDesktop}>
                     <IconButton
-                        color="primary"
-                        aria-label="open drawer"
-                        onClick={toggleSidebar}
-                        className={classNames(
-                            classes.headerMenuButton,
-                            classes.headerMenuButtonCollapse,
-                        )}
-                    >
-                        { isSidebarOpened ? (
-                            <ArrowBackIcon
-                                classes={{
-                                    root: classNames(
-                                        classes.headerIcon,
-                                        classes.headerIconCollapse,
-                                    ),
-                                }}
-                            />
-                        ) : (
-                            <MenuIcon
-                                classes={{
-                                    root: classNames(
-                                        classes.headerIcon,
-                                        classes.headerIconCollapse,
-                                    ),
-                                }}
-                            />
-                        )}
+                        aria-haspopup='true'
+                        aria-controls={menuId}
+                        aria-label="account of current user"
+                        onClick={handleProfileMenuOpen}
+                        size="large">
+                        <Avatar alt={ account.login?.toUpperCase() }
+                                src='/broken-image.jpg'
+                                className={classes.avatar}/>
                     </IconButton>
-                    <div className={classes.grow}/>
-                    <div className={classes.sectionDesktop}>
-                        <IconButton
-                            aria-haspopup='true'
-                            aria-controls={menuId}
-                            aria-label="account of current user"
-                            onClick={handleProfileMenuOpen}
-                        >
-                            <Avatar alt={ account.login?.toUpperCase() }
-                                    src='/broken-image.jpg'
-                                    className={classes.avatar}/>
-                        </IconButton>
-                    </div>
-                    <div className={classes.sectionMobile}>
-                        <IconButton
-                            aria-haspopup='true'
-                            aria-controls={menuId}
-                            aria-label="account of current user"
-                            onClick={handleProfileMenuOpen}
-                        >
-                            <MoreIcon/>
-                        </IconButton>
-                    </div>
-                    <HeaderAccount {...{
-                        anchorEl: anchorEl,
-                        menuId: menuId,
-                        isMenuOpen: isMenuOpen,
-                        handleMenuClose: handleMenuClose
-                    }}/>
-                </Toolbar>
-            </AppBar>
-        </>
-    );
+                </div>
+                <div className={classes.sectionMobile}>
+                    <IconButton
+                        aria-haspopup='true'
+                        aria-controls={menuId}
+                        aria-label="account of current user"
+                        onClick={handleProfileMenuOpen}
+                        size="large">
+                        <MoreIcon/>
+                    </IconButton>
+                </div>
+                <HeaderAccount {...{
+                    anchorEl: anchorEl,
+                    menuId: menuId,
+                    isMenuOpen: isMenuOpen,
+                    handleMenuClose: handleMenuClose
+                }}/>
+            </Toolbar>
+        </AppBar>
+    </>;
 };
 export default Header;
 

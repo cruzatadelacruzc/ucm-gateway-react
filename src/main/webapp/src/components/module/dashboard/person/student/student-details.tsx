@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../../../shared/reducer";
 import {Link, useHistory, useParams} from "react-router-dom";
 import Widget from "../../../../shared/layout/widget";
-import {Box, Button, Chip, CircularProgress, Divider, FormControl, FormLabel} from "@material-ui/core";
+import {Box, Button, Chip, CircularProgress, Divider, FormControl, FormLabel} from "@mui/material";
 import PersonDetails from "../person-details";
 import DialogDelete from "../../../../shared/components/dialog-delete";
 
@@ -95,7 +95,6 @@ const StudentDetails = () => {
                 <Box className={classes.buttons}>
                     <Button
                         component={Link}
-                        color="default"
                         variant="contained"
                         to={'/student'}
                         className={classes.button}>

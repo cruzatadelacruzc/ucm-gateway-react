@@ -1,7 +1,7 @@
 import React from 'react';
 import ErrorBoundary from '../error/error-boudary';
 import {Link, Redirect, Route, RouteProps} from 'react-router-dom';
-import {Button, Typography} from '@material-ui/core';
+import {Button, Typography} from '@mui/material';
 import {CONFIG} from "../../../config/constants";
 import {useSelector} from "react-redux";
 import {IRootState} from "../reducer";

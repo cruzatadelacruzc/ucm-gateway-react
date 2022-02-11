@@ -1,17 +1,15 @@
 import * as yup from 'yup';
 import {Field} from "formik";
 import React, {useEffect} from "react";
-import DayjsUtils from "@date-io/dayjs";
 import {useTranslation} from "react-i18next";
 import i18n from "../../../../../config/i18n";
-import {Box, InputAdornment, MenuItem} from "@material-ui/core";
+import {Box, InputAdornment, MenuItem} from "@mui/material";
 import Widget from "../../../../shared/layout/widget";
 import {batch, useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../../../shared/reducer";
 import {useHistory, useParams} from "react-router-dom";
 import PersonalStep, {_validationSchema} from '../index'
 import {formUpdateStyles, MenuProps} from "../../style";
-import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 import {getWorkPlaces} from "../../workplace/workplace.reducer";
 import {
     getCategories,
@@ -20,11 +18,13 @@ import {
     getScientificDegrees,
     getTeachingCategories
 } from "../../nomenclature/nomenclature.reducer";
-import {DatePicker} from "formik-material-ui-pickers";
-import {CheckboxWithLabel, TextField} from 'formik-material-ui';
+import {DatePicker} from "formik-mui-lab";
+import AdapterDayjs from '@mui/lab/AdapterDayjs'
+import {CheckboxWithLabel, TextField} from 'formik-mui';
 import {defaultValue, IEmployee} from "../../../../shared/models/employee.model";
 import FormStepper, {FormStep} from "../../../../shared/components/FormStepper";
 import {createEmployee, getEmployee, partialUpdateEmployee, reset, updateEmployee} from "./employee.reducer";
+import {LocalizationProvider} from "@mui/lab";
 
 function EmployeeManage() {
     const history = useHistory();
@@ -107,7 +107,7 @@ function EmployeeManage() {
                     registerNumber: yup.string().required(i18n.t("error:form.required")),
                 })}
             >
-                <MuiPickersUtilsProvider utils={DayjsUtils}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Box className={classes.form_group}>
                         <Box className={classes.input}>
                             <Field
@@ -283,7 +283,7 @@ function EmployeeManage() {
                             />
                         </Box>
                     </Box>
-                </MuiPickersUtilsProvider>
+                </LocalizationProvider>
             </FormStep>
         </FormStepper>
     </Widget>

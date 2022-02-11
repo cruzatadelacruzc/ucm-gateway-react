@@ -6,12 +6,12 @@ import {batch, useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../../shared/reducer";
 import {Field} from 'formik';
 import {getDistricts, getSpecialties} from "../nomenclature/nomenclature.reducer";
-import {DatePicker} from "formik-material-ui-pickers";
-import {TextField} from 'formik-material-ui';
-import {Box, Grid, MenuItem} from "@material-ui/core";
+import {DatePicker} from 'formik-mui-lab';
+import {TextField} from 'formik-mui';
+import {Box, Grid, MenuItem} from "@mui/material";
 import {formUpdateStyles, MenuProps} from "../style";
-import {MuiPickersUtilsProvider} from "@material-ui/pickers";
-import DayjsUtils from "@date-io/dayjs";
+import AdapterDayjs from '@mui/lab/AdapterDayjs';
+import {LocalizationProvider} from "@mui/lab";
 import {IEmployee} from "../../../shared/models/employee.model";
 import {IStudent} from "../../../shared/models/student.model";
 import {deleteAvatar as deleteEmployeeAvatar} from "./employee/employee.reducer";
@@ -59,7 +59,7 @@ const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => 
     }
 
     return (
-        <MuiPickersUtilsProvider utils={DayjsUtils}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Grid container>
                 <Grid container item md={4} sm={12} xs={12} lg={4} justifyContent="center">
                         <UCMAvatar
@@ -220,7 +220,7 @@ const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => 
                 </Box>
             </Grid>
             </Grid>
-        </MuiPickersUtilsProvider>
+        </LocalizationProvider>
     )
 })
 

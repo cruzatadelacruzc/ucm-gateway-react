@@ -1,8 +1,8 @@
 import '@fontsource/roboto';
-import {createTheme} from "@material-ui/core/styles";
-import {blue, grey, indigo} from "@material-ui/core/colors";
+import {adaptV4Theme, createTheme} from "@mui/material/styles";
+import {blue, grey, indigo} from "@mui/material/colors";
 
-export default createTheme({
+export default createTheme(adaptV4Theme({
     palette: {
         background: {
             default: grey['100'],
@@ -31,5 +31,5 @@ export default createTheme({
         },
 
     },
-});
+}));
 

@@ -1,4 +1,7 @@
-import {makeStyles, Theme} from "@material-ui/core";
+import {Theme} from "@mui/material";
+
+
+import makeStyles from '@mui/styles/makeStyles';
 
 
 export const widgetStyles = makeStyles((theme: Theme) => ({
@@ -21,7 +24,7 @@ export const widgetStyles = makeStyles((theme: Theme) => ({
         padding: 0,
         width: 40,
         height: 40,
-        color: theme.palette.text.hint,
+        color: theme.palette.text.secondary,
         "&:hover": {
             backgroundColor: theme.palette.primary.main,
             color: "rgba(255, 255, 255, 0.35)",

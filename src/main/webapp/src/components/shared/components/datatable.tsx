@@ -12,12 +12,12 @@ import {
     Paper,
     Tooltip,
     useMediaQuery
-} from "@material-ui/core";
+} from "@mui/material";
 import {Link, useRouteMatch} from "react-router-dom";
-import EditIcon from "@material-ui/icons/Edit";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import DeleteIcon from "@material-ui/icons/Delete";
-import {Add, Close as CloseIcon, Search as SearchIcon} from "@material-ui/icons";
+import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {Add, Close as CloseIcon, Search as SearchIcon} from "@mui/icons-material";
 import React from "react";
 import {dataTableStyles, managerSectionStyles} from "./style";
 import {useTranslation} from "react-i18next";
@@ -173,81 +173,83 @@ export default function UCMDataBase(
     };
 
     const CustomToolbar = ({displayData, selectedRows}: ICustomToolbarSelectProps) => {
-        const isFullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+        const isFullScreen = useMediaQuery(theme.breakpoints.down('md'));
         const id = displayData[parseInt(Object.keys(selectedRows.lookup)[0], 10)]?.data[0] || ''
         const param = displayData[parseInt(Object.keys(selectedRows.lookup)[0], 10)]?.data[modalDelete.columnIndex] || ''
-        return (
-            <>
-                <Paper elevation={1} className={dataTableClasses.paper}>
-                    {!disableEditButton &&
-                        <Tooltip title={t("common:edit") || "Editar"} aria-label={t("common:edit")} arrow>
-                            <IconButton
-                                component={Link}
-                                to={`${match.url}${editRoute || '/edit'}/${id}`}
-                                aria-label={t("common:edit")}
-                                color="primary"
-                                size="small"
-                                className={dataTableClasses.iconButton}
-                            >
-                                <EditIcon/>
-                            </IconButton>
-                        </Tooltip>
-                    }
-                    {!disableShowButton &&
-                        <Tooltip title={t("common:show") || "Mostrar"} aria-label={t("common:show")} arrow>
-                            <IconButton
-                                component={Link}
-                                to={`${match.url}${showRoute || '/show'}/${id}`}
-                                aria-label={t("common:show")}
-                                color="primary"
-                                size="small"
-                                className={dataTableClasses.iconButton}
-                            >
-                                <VisibilityIcon/>
-                            </IconButton>
-                        </Tooltip>
-                    }
-                    {!disableDeleteButton &&
-                        <Tooltip title={t("common:delete") || "Eliminar"} aria-label={t("common:delete")} arrow>
-                            <IconButton
-                                onClick={handleClickOpen}
-                                aria-label={t("common:delete")}
-                                color="primary"
-                                size="small"
-                                className={dataTableClasses.iconButton}
-                            >
-                                <DeleteIcon/>
-                            </IconButton>
-                        </Tooltip>
-                    }
-                </Paper>
-                <Dialog
-                    open={modalOpen}
-                    onClose={handleClose}
-                    fullScreen={isFullScreen}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title"> {t(modalDelete.keyDeleteTextTitle)}</DialogTitle>
-                    <IconButton aria-label="close" className={dataTableClasses.closeButton} onClick={handleClose}>
-                        <CloseIcon/>
-                    </IconButton>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            {t(modalDelete.keyDeleteText, {param: param})}
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose} color="primary">
-                            {t('common:cancel')}
-                        </Button>
-                        <Button onClick={() => removeItem(id)} color="primary" autoFocus>
-                            {t('common:accept')}
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </>
-        )
+        return <>
+            <Paper elevation={1} className={dataTableClasses.paper}>
+                {!disableEditButton &&
+                    <Tooltip title={t("common:edit") || "Editar"} aria-label={t("common:edit")} arrow>
+                        <IconButton
+                            component={Link}
+                            to={`${match.url}${editRoute || '/edit'}/${id}`}
+                            aria-label={t("common:edit")}
+                            color="primary"
+                            size="small"
+                            className={dataTableClasses.iconButton}
+                        >
+                            <EditIcon/>
+                        </IconButton>
+                    </Tooltip>
+                }
+                {!disableShowButton &&
+                    <Tooltip title={t("common:show") || "Mostrar"} aria-label={t("common:show")} arrow>
+                        <IconButton
+                            component={Link}
+                            to={`${match.url}${showRoute || '/show'}/${id}`}
+                            aria-label={t("common:show")}
+                            color="primary"
+                            size="small"
+                            className={dataTableClasses.iconButton}
+                        >
+                            <VisibilityIcon/>
+                        </IconButton>
+                    </Tooltip>
+                }
+                {!disableDeleteButton &&
+                    <Tooltip title={t("common:delete") || "Eliminar"} aria-label={t("common:delete")} arrow>
+                        <IconButton
+                            onClick={handleClickOpen}
+                            aria-label={t("common:delete")}
+                            color="primary"
+                            size="small"
+                            className={dataTableClasses.iconButton}
+                        >
+                            <DeleteIcon/>
+                        </IconButton>
+                    </Tooltip>
+                }
+            </Paper>
+            <Dialog
+                open={modalOpen}
+                onClose={handleClose}
+                fullScreen={isFullScreen}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title"> {t(modalDelete.keyDeleteTextTitle)}</DialogTitle>
+                <IconButton
+                    aria-label="close"
+                    className={dataTableClasses.closeButton}
+                    onClick={handleClose}
+                    size="large">
+                    <CloseIcon/>
+                </IconButton>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {t(modalDelete.keyDeleteText, {param: param})}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        {t('common:cancel')}
+                    </Button>
+                    <Button onClick={() => removeItem(id)} color="primary" autoFocus>
+                        {t('common:accept')}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </>;
     }
 
     return (

@@ -2,7 +2,7 @@ import React from 'react';
 import {useTranslation} from "react-i18next";
 import UCMDataBase from "../../../shared/components/datatable";
 import {ACTION_TYPES, apiUrl} from "./workplace.reducer";
-import {FormControlLabel, Switch} from "@material-ui/core";
+import {FormControlLabel, Switch} from "@mui/material";
 import axios from "axios";
 import toast from "../../../shared/util/notification-snackbar.util";
 
@@ -58,9 +58,10 @@ function WorkPlaces() {
                 searchable: false,
                 customBodyRender: (value, tableMeta) => {
                     const _id = tableMeta.rowData?.length > 0 && tableMeta.rowData[0]
+                    const _label = value ? t('positive') : "NO";
                     return (
                         <FormControlLabel
-                            label={value ? t('positive') : 'NO'}
+                            label={_label}
                             control={
                                 <Switch color="primary" checked={value}
                                         onChange={(event, checked) => {

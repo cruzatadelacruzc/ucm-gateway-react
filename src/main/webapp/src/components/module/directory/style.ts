@@ -1,6 +1,9 @@
-import {Badge} from '@material-ui/core';
-import {createStyles, makeStyles, Theme, withStyles} from '@material-ui/core/styles';
-import {indigo} from '@material-ui/core/colors';
+import {Badge} from '@mui/material';
+import {Theme} from '@mui/material/styles';
+import createStyles from '@mui/styles/createStyles';
+import makeStyles from '@mui/styles/makeStyles';
+import withStyles from '@mui/styles/withStyles';
+import {indigo} from '@mui/material/colors';
 // Card
 export const cardStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,7 +37,7 @@ export const headerStyles = makeStyles((theme: Theme) => ({
   grow: {
     flexGrow: 1,
     marginRight: theme.spacing(5),
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       marginRight: theme.spacing(0),
     },
   },
@@ -89,7 +92,7 @@ export const headerStyles = makeStyles((theme: Theme) => ({
   },
   logo: {
     display: 'flex',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
   }

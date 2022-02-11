@@ -7,8 +7,8 @@ import Widget from "../../../shared/layout/widget";
 import {formUpdateStyles, MenuProps} from "../style";
 import {batch, useDispatch, useSelector} from "react-redux";
 import {Link, useHistory, useParams} from "react-router-dom";
-import {CheckboxWithLabel, Select, TextField} from "formik-material-ui";
-import {Box, Button, CircularProgress, Grid, InputLabel, MenuItem} from "@material-ui/core";
+import {CheckboxWithLabel, Select, TextField} from "formik-mui";
+import {Box, Button, CircularProgress, Grid, InputLabel, MenuItem} from "@mui/material";
 import {defaultValue, IWorkPlace} from "../../../shared/models/workplace.model";
 import {createWorkPlace, deleteAvatar, getWorkPlace, reset, updateWorkPlace} from "./workplace.reducer";
 import {geEmployees, getFilterEmployees} from "../person/employee/employee.reducer";
@@ -160,7 +160,6 @@ const WorkPlaceManage = () => {
                             <Box className={classes.buttons}>
                                 <Button
                                     className={classes.button}
-                                    color="default"
                                     variant="contained"
                                     component={Link}
                                     to='/workplace'

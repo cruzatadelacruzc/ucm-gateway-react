@@ -1,13 +1,13 @@
 import React from 'react';
-import {KeyboardArrowUp as KeyboardArrowUpIcon, Search as SearchIcon} from '@material-ui/icons';
+import {KeyboardArrowUp as KeyboardArrowUpIcon, Search as SearchIcon} from '@mui/icons-material';
 import ScrollTop from '../../shared/components/scroll-top';
-import {AppBar, Avatar, Fab, IconButton, InputBase, Paper, Toolbar, useScrollTrigger} from '@material-ui/core';
+import {AppBar, Avatar, Fab, IconButton, InputBase, Paper, Toolbar, useScrollTrigger} from '@mui/material';
 import {Link} from 'react-router-dom';
 import {IDirectoryProps} from './directory';
 import {headerStyles} from './style';
 import {useTranslation} from 'react-i18next';
 import HeaderAccount from '../../shared/layout/header/menu-account';
-import MoreIcon from "@material-ui/icons/MoreVert";
+import MoreIcon from "@mui/icons-material/MoreVert";
 import {useSelector} from "react-redux";
 import {IRootState} from "../../shared/reducer";
 
@@ -57,7 +57,11 @@ export default function Header(props: IDirectoryProps) {
                                 placeholder={t('header:placeholder')}
                                 inputProps={{'aria-label': t('header:placeholder').toLowerCase()}}
                             />
-                            <IconButton type='submit' className={classes.iconButton} aria-label='search'>
+                            <IconButton
+                                type='submit'
+                                className={classes.iconButton}
+                                aria-label='search'
+                                size="large">
                                 <SearchIcon/>
                             </IconButton>
                         </form>
@@ -69,7 +73,7 @@ export default function Header(props: IDirectoryProps) {
                             aria-controls={menuId}
                             aria-label="account of current user"
                             onClick={handleProfileMenuOpen}
-                        >
+                            size="large">
                             <Avatar alt={ account.login?.toUpperCase() }
                                     src='/broken-image.jpg'
                                     className={classes.avatar} />
@@ -81,7 +85,7 @@ export default function Header(props: IDirectoryProps) {
                             aria-controls={menuId}
                             aria-label="account of current user"
                             onClick={handleProfileMenuOpen}
-                        >
+                            size="large">
                             <MoreIcon />
                         </IconButton>
                     </div>

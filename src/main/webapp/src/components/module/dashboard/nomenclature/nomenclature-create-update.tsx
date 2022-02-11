@@ -1,13 +1,13 @@
 import React from "react";
 import * as yup from 'yup';
 import {formUpdateStyles, MenuProps} from "../style";
-import {TextField} from 'formik-material-ui'
+import {TextField} from 'formik-mui'
 import {Field, Form, Formik} from "formik";
 import {useTranslation} from "react-i18next";
 import {IRootState} from "../../../shared/reducer";
 import Widget from "../../../shared/layout/widget";
 import {useDispatch, useSelector} from "react-redux";
-import {Box, Button, CircularProgress, MenuItem} from "@material-ui/core";
+import {Box, Button, CircularProgress, MenuItem} from "@mui/material";
 import {Link, useHistory, useParams} from 'react-router-dom'
 import {defaultValue, DISCRIMINATOR, INomenclature} from "../../../shared/models/nomenclature.model";
 import {createNomenclature, getNomenclature, updateNomenclature} from "./nomenclature.reducer";
@@ -57,7 +57,7 @@ const NomenclatureManage = () => {
                     description: yup.string().max(255, t("error:form.maxlength", {max: 255}))
                 })}
             >
-                {({submitForm, handleChange}) => (
+                {({submitForm}) => (
                     <Form autoComplete="off" noValidate={true}>
                         <Box className={classes.form_group}>
                             <Box className={classes.input}>

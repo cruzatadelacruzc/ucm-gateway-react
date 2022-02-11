@@ -3,9 +3,9 @@ import {avatarStyles} from "./style";
 import CropImageDialog from "./crop-image";
 import {useTranslation} from "react-i18next";
 import toast from "../util/notification-snackbar.util";
-import {IconButton, Paper} from "@material-ui/core";
+import {IconButton, Paper} from "@mui/material";
 import {buildAvatarURL} from "../util/function-utils";
-import {DeleteOutline, EditOutlined} from "@material-ui/icons";
+import {DeleteOutline, EditOutlined} from "@mui/icons-material";
 
 interface IUCMAvatar {
     setResultAvatar: React.Dispatch<React.SetStateAction<File| undefined>>
@@ -97,7 +97,7 @@ const UCMAvatar = ({setResultAvatar, avatarUrl, deleteAvatar, ...props}: IUCMAva
                 </Paper>
             </label>
             { selectedFile &&
-            <IconButton aria-label="edit">
+            <IconButton aria-label="edit" size="large">
                 <EditOutlined onClick={() => {
                     setCroppedImage(undefined)
                     setModalOpen(true)
@@ -106,7 +106,7 @@ const UCMAvatar = ({setResultAvatar, avatarUrl, deleteAvatar, ...props}: IUCMAva
             }
             {
                 (selectedFile || avatarUrl) &&
-                <IconButton aria-label="delete">
+                <IconButton aria-label="delete" size="large">
                     <DeleteOutline onClick={() => {
                         if (selectedFile || croppedImage) {
                             setResultAvatar(undefined)

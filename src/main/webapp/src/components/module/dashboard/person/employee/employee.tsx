@@ -2,7 +2,7 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 import UCMDataBase from "../../../../shared/components/datatable";
 import {ACTION_TYPES} from "./employee.reducer";
-import {Button} from "@material-ui/core";
+import {Button} from "@mui/material";
 import {Link} from "react-router-dom";
 
 const Employees = () => {

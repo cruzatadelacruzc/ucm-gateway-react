@@ -2,7 +2,7 @@ import React, {useLayoutEffect} from "react";
 import {logout} from "../../shared/reducer/authenticate";
 import {useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../shared/reducer";
-import {Typography} from "@material-ui/core";
+import {Typography} from "@mui/material";
 import {useTranslation} from "react-i18next";
 
 export const Logout = () => {

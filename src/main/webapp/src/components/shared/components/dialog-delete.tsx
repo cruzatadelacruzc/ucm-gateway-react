@@ -8,9 +8,9 @@ import {
     DialogTitle,
     IconButton,
     useMediaQuery
-} from "@material-ui/core";
+} from "@mui/material";
 import theme from "../../../theme";
-import {Close as CloseIcon} from "@material-ui/icons";
+import {Close as CloseIcon} from "@mui/icons-material";
 import {dialogDeleteStyle} from "./style";
 import {useTranslation} from "react-i18next";
 
@@ -28,12 +28,16 @@ const DialogDelete = (props: IDialogDelete) => {
         <Dialog
             open={props.open}
             onClose={() => props.setOpen(false)}
-            fullScreen={useMediaQuery(theme.breakpoints.down('sm'))}
+            fullScreen={useMediaQuery(theme.breakpoints.down('md'))}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
             <DialogTitle id="alert-dialog-title"> {props.title}</DialogTitle>
-            <IconButton aria-label="close" className={classes.closeButton} onClick={() => props.setOpen(false)}>
+            <IconButton
+                aria-label="close"
+                className={classes.closeButton}
+                onClick={() => props.setOpen(false)}
+                size="large">
                 <CloseIcon/>
             </IconButton>
             <DialogContent>

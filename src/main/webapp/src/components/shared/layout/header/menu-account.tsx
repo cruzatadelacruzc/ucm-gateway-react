@@ -1,7 +1,7 @@
 import React from 'react';
-import {Link, Menu, MenuItem, Typography} from '@material-ui/core';
-import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
-import MeetingRoomOutlinedIcon from '@material-ui/icons/MeetingRoomOutlined';
+import {Link, Menu, MenuItem, Typography} from '@mui/material';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
 import {headerStyles} from './style';
 import classNames from 'classnames';
 import {useTranslation} from 'react-i18next';
@@ -39,15 +39,15 @@ export default function HeaderAccount(props: IHeaderMenuAccount) {
         )
     }
     const LogInOut = function (){
-        return(
+        return (
             <MenuItem className={classNames(classes.profileMenuItem, classes.headerMenuItem)}>
                 <MeetingRoomOutlinedIcon className={classes.profileMenuIcon} />
                 {isAuthenticated ?
-                    <Link component={RouterLink} to={"/logout"} >{t('common:log_out')}</Link>:
-                    <Link href={getLoginUrl()}>{t('common:log_in')}</Link>
+                    <Link component={RouterLink} to={"/logout"} underline="hover">{t('common:log_out')}</Link>:
+                    <Link href={getLoginUrl()} underline="hover">{t('common:log_in')}</Link>
                 }
             </MenuItem>
-        )
+        );
     }
 
   return (

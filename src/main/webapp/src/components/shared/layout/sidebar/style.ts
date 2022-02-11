@@ -1,4 +1,7 @@
-import {makeStyles, Theme} from '@material-ui/core/styles';
+import {Theme} from '@mui/material/styles';
+
+
+import makeStyles from '@mui/styles/makeStyles';
 
 
 export const sidebarStyles = makeStyles((theme: Theme, drawerWidth: number = 240) => ({
@@ -74,13 +77,13 @@ export const sidebarStyles = makeStyles((theme: Theme, drawerWidth: number = 240
         }),
         overflowX: 'hidden',
         width: theme.spacing(7) + 20,
-        [theme.breakpoints.down("sm")]: {
+        [theme.breakpoints.down('md')]: {
             width: drawerWidth,
         }
     },
     toolbar: {
         ...theme.mixins.toolbar,
-        [theme.breakpoints.down("sm")]: {
+        [theme.breakpoints.down('md')]: {
             display: 'none',
         }
     },

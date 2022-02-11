@@ -24,28 +24,30 @@ import {
     ListItemAvatar,
     ListItemText,
     Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import Widget from "../../../shared/layout/widget";
-import {LocalPhone} from "@material-ui/icons";
+import {LocalPhone} from "@mui/icons-material";
 import {buildAvatarURL} from "../../../shared/util/function-utils";
 import DialogDelete from "../../../shared/components/dialog-delete";
-import {makeStyles, Theme} from "@material-ui/core/styles";
+import {Theme} from "@mui/material/styles";
+
+import makeStyles from '@mui/styles/makeStyles';
 
 const localStyles = makeStyles((theme: Theme) => ({
     cover: {
         maxWidth: 305,
         maxHeight: 305,
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('lg')]: {
             maxWidth: 260,
             maxHeight: 260,
         },
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('md')]: {
             maxWidth: 305,
             maxHeight: 305,
         },
     },
     item: {
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             marginBottom: theme.spacing(2)
         }
     }
@@ -133,13 +135,13 @@ const WorkplaceDetails = () => {
                     <List>
                         {_entity.phones?.map( (phone, index) => {
                             return (
-                                <IconButton key={index}>
+                                <IconButton key={index} size="large">
                                     <ListItem  alignItems="flex-start" component={Link} to={`/phone/show/${phone.id}`}>
                                         <LocalPhone/>
                                         <ListItemText primary={phone.number} />
                                     </ListItem>
                                 </IconButton>
-                            )
+                            );
                          })
                         }
                     </List>
@@ -149,7 +151,7 @@ const WorkplaceDetails = () => {
                     <List>
                         {_entity.employees?.map((employee,index) => {
                             return (
-                                <IconButton key={index}>
+                                <IconButton key={index} size="large">
                                     <ListItem  alignItems="flex-start" component={Link} to={`/employee/show/${employee.id}`}>
                                         <ListItemAvatar>
                                             <Avatar alt={employee.name} src={employee.avatarUrl ? buildAvatarURL(employee.avatarUrl): ''}/>
@@ -160,14 +162,13 @@ const WorkplaceDetails = () => {
                                         />
                                     </ListItem>
                                 </IconButton>
-                            )
+                            );
                         })}
                     </List>
                 </Grid>
                 <Grid item xs={12}>
                     <Button
                         component={Link}
-                        color="default"
                         variant="contained"
                         to={'/workplace'}
                         className={classes.button}>
