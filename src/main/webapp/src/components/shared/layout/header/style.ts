@@ -68,7 +68,10 @@ content: {
     padding: theme.spacing(3),
   },
 headerMenu: {
-  marginTop: theme.spacing(7),
+  marginTop: theme.spacing(1),
+  [theme.breakpoints.up('xs')]: {
+      marginRight: theme.spacing(7)
+  },
 },
 profileMenu: {
   minWidth: 256,
