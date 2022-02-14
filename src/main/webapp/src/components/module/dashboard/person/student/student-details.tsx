@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../../../shared/reducer";
 import {Link, useHistory, useParams} from "react-router-dom";
 import Widget from "../../../../shared/layout/widget";
-import {Box, Button, Chip, CircularProgress, Divider, FormControl, FormLabel} from "@mui/material";
+import {Box, Button, Chip, CircularProgress, Divider, FormControl, FormLabel, Grid} from "@mui/material";
 import PersonDetails from "../person-details";
 import DialogDelete from "../../../../shared/components/dialog-delete";
 
@@ -47,77 +47,70 @@ const StudentDetails = () => {
                     <Chip variant='outlined' label={t("title.step")} className={classes.order2}/>
                     <Divider className={classes.order3}/>
                 </Box>
-
-                <Box className={classes.data_row}>
-                    <Box className={classes.data_column}>
-                        <Box className={classes.data_cell}>
-                            <FormControl component="fieldset">
-                                <FormLabel component="legend">{t("residence")}</FormLabel>
-                                {_entity.residence}
-                            </FormControl>
-                        </Box>
-                    </Box>
-                    <Box className={classes.data_column}>
-                        <Box className={classes.data_cell}>
-                            <FormControl component="fieldset">
-                                <FormLabel component="legend">{t("classRoom")}</FormLabel>
-                                {_entity.classRoom}
-                            </FormControl>
-                        </Box>
-                    </Box>
-                    <Box className={classes.data_column}>
-                        <Box className={classes.data_cell}>
-                            <FormControl component="fieldset">
-                                <FormLabel component="legend">{t("universityYear")}</FormLabel>
-                                {_entity.universityYear}
-                            </FormControl>
-                        </Box>
-                    </Box>
-                </Box>
-                <Box className={classes.data_row}>
-                    <Box className={classes.data_column}>
-                        <Box className={classes.data_cell}>
-                            <FormControl component="fieldset">
-                                <FormLabel component="legend">{t("kind")}</FormLabel>
-                                {_entity.kindName}
-                            </FormControl>
-                        </Box>
-                    </Box>
-                    <Box className={classes.data_column}>
-                        <Box className={classes.data_cell}>
-                            <FormControl component="fieldset">
-                                <FormLabel component="legend">{t("studyCenter")}</FormLabel>
-                                {_entity.studyCenterName}
-                            </FormControl>
-                        </Box>
-                    </Box>
-                </Box>
-                <Box className={classes.buttons}>
-                    <Button
-                        component={Link}
-                        variant="contained"
-                        to={'/student'}
-                        className={classes.button}>
-                        {t('common:close')}
-                    </Button>
-                    <Button
-                        component={Link}
-                        color="secondary"
-                        variant="contained"
-                        className={classes.button}
-                        to={`/student/edit/${id}`}>
-                        {t('common:edit')}
-                    </Button>
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        className={classes.button}
-                        onClick={() => setModalOpen(true)}
-                        disabled={updating}
-                        endIcon={updating ? <CircularProgress size="1rem"/> : null}
-                    >
-                        {t('common:delete')}
-                    </Button>
+                <Box sx={{flexGrow: 1}}>
+                    <Grid container spacing={{xs: 2, md: 1}}>
+                        <Grid item container xs={12}>
+                            <Grid item xs={12} sm={4}>
+                                <FormControl component="fieldset">
+                                    <FormLabel component="legend">{t("universityYear")}</FormLabel>
+                                    {_entity.universityYear}
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <FormControl component="fieldset">
+                                    <FormLabel component="legend">{t("residence")}</FormLabel>
+                                    {_entity.residence}
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <FormControl component="fieldset">
+                                    <FormLabel component="legend">{t("studyCenter")}</FormLabel>
+                                    {_entity.studyCenterName}
+                                </FormControl>
+                            </Grid>
+                        </Grid>
+                        <Grid item container xs={12}>
+                            <Grid item xs={12} sm={4}>
+                                <FormControl component="fieldset">
+                                    <FormLabel component="legend">{t("kind")}</FormLabel>
+                                    {_entity.kindName}
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <FormControl component="fieldset">
+                                    <FormLabel component="legend">{t("classRoom")}</FormLabel>
+                                    {_entity.classRoom}
+                                </FormControl>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button
+                                component={Link}
+                                variant="contained"
+                                to={'/student'}
+                                className={classes.button}>
+                                {t('common:close')}
+                            </Button>
+                            <Button
+                                component={Link}
+                                color="success"
+                                variant="contained"
+                                className={classes.button}
+                                to={`/student/edit/${id}`}>
+                                {t('common:edit')}
+                            </Button>
+                            <Button
+                                color="error"
+                                variant="contained"
+                                className={classes.button}
+                                onClick={() => setModalOpen(true)}
+                                disabled={updating}
+                                endIcon={updating ? <CircularProgress size="1rem"/> : null}
+                            >
+                                {t('common:delete')}
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </Box>
                 <DialogDelete
                     open={modalOpen}
