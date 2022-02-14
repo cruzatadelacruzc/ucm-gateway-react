@@ -4,30 +4,27 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import classNames from 'classnames';
 import {sidebarStyles} from "./style";
 import SidebarMenu from "./sidebarMenu";
-import AddAlertIcon from "@mui/icons-material/AddAlert";
-import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import i18n from "../../../../config/i18n";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import {ContactPhone, Face} from "@mui/icons-material";
+import {Apps, Business, ContactPhone, Dashboard, Engineering, School} from "@mui/icons-material";
 
 export const menuItems = [
     {   label: i18n.t("common:dashboard"),
         link: "/home",
-        icon: <AddAlertIcon /> },
+        icon: <Dashboard /> },
     {
         label: i18n.t("common:entities.directoryStudent"),
         link: "/student",
-        icon: <Face />,
+        icon: <School />,
     },
     {
         label: i18n.t("common:entities.directoryEmployee"),
         link: "/employee",
-        icon: <AccountBoxIcon />,
+        icon: <Engineering />,
     },
     {
         label: i18n.t("common:entities.directoryNomenclature"),
         link: "/nomenclature",
-        icon: <AccountBoxIcon />,
+        icon: <Apps />,
     },
     {
         label: i18n.t("common:entities.directoryPhone"),
@@ -37,7 +34,7 @@ export const menuItems = [
     {
         label: i18n.t("common:entities.directoryWorkPlace"),
         link: "/workplace",
-        icon: <HomeWorkIcon />,
+        icon: <Business />,
     },
 ];
 
