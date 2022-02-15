@@ -29,35 +29,11 @@ import Widget from "../../../shared/layout/widget";
 import {LocalPhone} from "@mui/icons-material";
 import {buildAvatarURL} from "../../../shared/util/function-utils";
 import DialogDelete from "../../../shared/components/dialog-delete";
-import {Theme} from "@mui/material/styles";
-
-import makeStyles from '@mui/styles/makeStyles';
-
-const localStyles = makeStyles((theme: Theme) => ({
-    cover: {
-        maxWidth: 305,
-        maxHeight: 305,
-        [theme.breakpoints.down('lg')]: {
-            maxWidth: 260,
-            maxHeight: 260,
-        },
-        [theme.breakpoints.down('md')]: {
-            maxWidth: 305,
-            maxHeight: 305,
-        },
-    },
-    item: {
-        [theme.breakpoints.down('sm')]: {
-            marginBottom: theme.spacing(2)
-        }
-    }
-}));
 
 const WorkplaceDetails = () => {
     let history = useHistory();
     const dispatch = useDispatch();
     const classes = detailsStyles();
-    const localClasses = localStyles();
     let {id} = useParams<{ id: string }>();
     const {t} = useTranslation(['workplace']);
     const [modalOpen, setModalOpen] = React.useState(false);
@@ -79,7 +55,7 @@ const WorkplaceDetails = () => {
         if (_entity.avatarUrl) {
             return buildAvatarURL(_entity.avatarUrl)
         } else {
-            return  "../../workplace.jpg"
+            return "../../workplace.jpg"
         }
     }
 
@@ -91,116 +67,122 @@ const WorkplaceDetails = () => {
                     <Chip variant='outlined' label={t('detail.title')} className={classes.order2}/>
                     <Divider className={classes.order3}/>
                 </Box>
-                <Grid container>
-                    <Grid item xs={12} sm={5} md={5} lg={4} className={localClasses.item}>
-                        <Card className={localClasses.cover}>
-                            <CardActionArea>
-                                <CardMedia
-                                    component="img"
-                                    style={{padding:5, maxHeight: 300}}
-                                    alt={_entity.name}
-                                    image={getAvatarUrl()}
-                                />
-                            </CardActionArea>
-                        </Card>
+                <Box sx={{flexGrow: 1}}>
+                    <Grid container spacing={{xs: 2, md: 1}}>
+                        <Grid item xs={12} sm={4}>
+                            <Card sx={{maxWidth: 305, maxHeight: 305}}>
+                                <CardActionArea>
+                                    <CardMedia
+                                        component="img"
+                                        style={{padding: 5, maxHeight: 300}}
+                                        alt={_entity.name}
+                                        image={getAvatarUrl()}
+                                    />
+                                </CardActionArea>
+                            </Card>
+                        </Grid>
+                        <Grid item container xs={12} sm={8}>
+                            <Grid item xs={12}>
+                                <FormControl component="fieldset">
+                                    <FormLabel component="legend">{t("active")}</FormLabel>
+                                    {_entity.active ? t("positive") : "NO"}
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormControl component="fieldset">
+                                    <FormLabel component="legend">{t("name")}</FormLabel>
+                                    {_entity.name}
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormControl component="fieldset">
+                                    <FormLabel component="legend">{t("email")}</FormLabel>
+                                    {_entity.email}
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormControl component="fieldset">
+                                    <FormLabel component="legend">{t("description")}</FormLabel>
+                                    {_entity.description}
+                                </FormControl>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12} sx={{mt: 3}}>
+                            <Typography variant="h6">{t("phones")}:</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <List sx={{py: 1}}>
+                                {_entity.phones?.map((phone, index) => {
+                                    return (
+                                        <IconButton key={index} size="large" sx={{p: 0, borderRadius: 0}}>
+                                            <ListItem component={Link} to={`/phone/show/${phone.id}`} sx={{pl: 0}}>
+                                                <ListItemAvatar><Avatar><LocalPhone/></Avatar></ListItemAvatar>
+                                                <ListItemText primary={phone.number}/>
+                                            </ListItem>
+                                        </IconButton>
+                                    );
+                                })
+                                }
+                            </List>
+                        </Grid>
+                        <Grid item xs={12}><Typography variant="h6">{t("members")}:</Typography></Grid>
+                        <Grid item xs={12}>
+                            <List sx={{py: 1}}>
+                                {_entity.employees?.map((employee, index) => {
+                                    return (
+                                        <IconButton key={index} size="large" sx={{p: 0, borderRadius: 0, mr: 1}}>
+                                            <ListItem alignItems="flex-start" component={Link}
+                                                      to={`/employee/show/${employee.id}`} sx={{pl: 0}}>
+                                                <ListItemAvatar>
+                                                    <Avatar alt={employee.name}
+                                                            src={employee.avatarUrl ? buildAvatarURL(employee.avatarUrl) : ''}/>
+                                                </ListItemAvatar>
+                                                <ListItemText
+                                                    primary={`${employee.name} ${employee.firstLastName} ${employee.secondLastName}`}
+                                                    secondary={employee.chargeName}
+                                                />
+                                            </ListItem>
+                                        </IconButton>
+                                    );
+                                })}
+                            </List>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button
+                                component={Link}
+                                variant="contained"
+                                to={'/workplace'}
+                                className={classes.button}>
+                                {t('common:close')}
+                            </Button>
+                            <Button
+                                component={Link}
+                                color="success"
+                                variant="contained"
+                                className={classes.button}
+                                to={`/workplace/edit/${id}`}>
+                                {t('common:edit')}
+                            </Button>
+                            <Button
+                                color="error"
+                                variant="contained"
+                                className={classes.button}
+                                onClick={() => setModalOpen(true)}
+                                disabled={updating}
+                                endIcon={updating ? <CircularProgress size="1rem"/> : null}
+                            >
+                                {t('common:delete')}
+                            </Button>
+                            <DialogDelete
+                                open={modalOpen}
+                                setOpen={setModalOpen}
+                                title={t("delete.title")}
+                                deleteItem={() => dispatch(deleteWorkPlace(id))}
+                                content={t("delete.question", {param: _entity.name})}
+                            />
+                        </Grid>
                     </Grid>
-                    <Grid item container xs={12} sm={6} md={7} lg={8} spacing={1}>
-                        <Grid item xs={12}>
-                            <FormControl component="fieldset">
-                                <FormLabel component="legend">{t("active")}</FormLabel>
-                                {_entity.active ? t("positive") : "NO"}
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControl component="fieldset">
-                                <FormLabel component="legend">{t("name")}</FormLabel>
-                                {_entity.name}
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControl component="fieldset">
-                                <FormLabel component="legend">{t("email")}</FormLabel>
-                                {_entity.email}
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControl component="fieldset">
-                                <FormLabel component="legend">{t("description")}</FormLabel>
-                                {_entity.description}
-                            </FormControl>
-                        </Grid>
-                    </Grid>
-                <Grid item xs={12} style={{marginTop: 10}}><Typography variant="h6">{t("phones")}:</Typography></Grid>
-                <Grid item xs={12}>
-                    <List>
-                        {_entity.phones?.map( (phone, index) => {
-                            return (
-                                <IconButton key={index} size="large">
-                                    <ListItem  alignItems="flex-start" component={Link} to={`/phone/show/${phone.id}`}>
-                                        <LocalPhone/>
-                                        <ListItemText primary={phone.number} />
-                                    </ListItem>
-                                </IconButton>
-                            );
-                         })
-                        }
-                    </List>
-                </Grid>
-                <Grid item xs={12}><Typography variant="h6">{t("members")}:</Typography></Grid>
-                <Grid item xs={12}>
-                    <List>
-                        {_entity.employees?.map((employee,index) => {
-                            return (
-                                <IconButton key={index} size="large">
-                                    <ListItem  alignItems="flex-start" component={Link} to={`/employee/show/${employee.id}`}>
-                                        <ListItemAvatar>
-                                            <Avatar alt={employee.name} src={employee.avatarUrl ? buildAvatarURL(employee.avatarUrl): ''}/>
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            primary={`${employee.name} ${employee.firstLastName} ${employee.secondLastName}`}
-                                            secondary={employee.chargeName}
-                                        />
-                                    </ListItem>
-                                </IconButton>
-                            );
-                        })}
-                    </List>
-                </Grid>
-                <Grid item xs={12}>
-                    <Button
-                        component={Link}
-                        variant="contained"
-                        to={'/workplace'}
-                        className={classes.button}>
-                        {t('common:close')}
-                    </Button>
-                    <Button
-                        component={Link}
-                        color="secondary"
-                        variant="contained"
-                        className={classes.button}
-                        to={`/workplace/edit/${id}`}>
-                        {t('common:edit')}
-                    </Button>
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        className={classes.button}
-                        onClick={() => setModalOpen(true)}
-                        disabled={updating}
-                        endIcon={updating ? <CircularProgress size="1rem"/> : null}
-                    >
-                        {t('common:delete')}
-                    </Button>
-                    <DialogDelete
-                        open={modalOpen}
-                        setOpen={setModalOpen}
-                        title={t("delete.title")}
-                        deleteItem={() => dispatch(deleteWorkPlace(id))}
-                        content={t("delete.question", {param: _entity.name})}
-                    />
-                </Grid>
-                </Grid>
+                </Box>
             </Box>
         </Widget>
     );
