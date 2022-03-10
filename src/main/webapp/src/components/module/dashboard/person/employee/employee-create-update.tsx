@@ -7,7 +7,7 @@ import {Box, InputAdornment, MenuItem} from "@mui/material";
 import Widget from "../../../../shared/layout/widget";
 import {batch, useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../../../shared/reducer";
-import {useHistory, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import PersonalStep, {_validationSchema} from '../index'
 import {formUpdateStyles, MenuProps} from "../../style";
 import {getWorkPlaces} from "../../workplace/workplace.reducer";
@@ -23,11 +23,11 @@ import AdapterDayjs from '@mui/lab/AdapterDayjs'
 import {CheckboxWithLabel, TextField} from 'formik-mui';
 import {defaultValue, IEmployee} from "../../../../shared/models/employee.model";
 import FormStepper, {FormStep} from "../../../../shared/components/FormStepper";
-import {createEmployee, getEmployee, partialUpdateEmployee, reset, updateEmployee} from "./employee.reducer";
+import {createEmployee, updateEmployee} from "./employee.reducer";
 import {LocalizationProvider} from "@mui/lab";
 
 function EmployeeManage() {
-    const history = useHistory();
+    // const history = useHistory();
     const dispatch = useDispatch();
     const classes = formUpdateStyles();
     const {id} = useParams<{ id: string }>();
@@ -43,19 +43,19 @@ function EmployeeManage() {
     const teachingCategories = useSelector((states: IRootState) => states.nomenclature.teachingCategories);
     const scientificDegrees = useSelector((states: IRootState) => states.nomenclature.scientificDegrees);
 
-    React.useEffect(() => {
-        if (_isNew) {
-            dispatch(reset())
-        } else {
-            dispatch(getEmployee(id))
-        }
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-    React.useEffect(() => {
-        if (isUpdateSuccess) {
-           history.push('/employee');
-        }
-    }, [isUpdateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
+    // React.useEffect(() => {
+    //     if (_isNew) {
+    //         dispatch(reset())
+    //     } else {
+    //         dispatch(getEmployee(id))
+    //     }
+    // }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    //
+    // React.useEffect(() => {
+    //     if (isUpdateSuccess) {
+    //        history.push('/employee');
+    //     }
+    // }, [isUpdateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         batch(() => {
@@ -86,9 +86,9 @@ function EmployeeManage() {
                 validationSchema={_validationSchema}
                 operationKind={_isNew ? "CREATE": "UPDATE"}
                 onSubmit={async (values: IEmployee) => {
-                    if (!_isNew) {
-                        return dispatch(partialUpdateEmployee({id, employee: values, avatar: avatar}))
-                    }
+                    // if (!_isNew) {
+                    //     return dispatch(partialUpdateEmployee({id, employee: values, avatar: avatar}))
+                    // }
                 }}
             >
                 <PersonalStep

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {NavLink, RouteComponentProps, useLocation} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import {sidebarStyles} from "./style";
 import classnames from "classnames";
 import {Collapse, Divider, List, ListItem, ListItemIcon, ListItemText, Typography} from "@mui/material";
@@ -24,7 +24,7 @@ const SidebarMenu = ({
                          type,
                          nested = false
                      }: ISidebarMenu) => {
-    const location = useLocation<RouteComponentProps>();
+    const location = useLocation();
     const classes = sidebarStyles();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -49,13 +49,7 @@ const SidebarMenu = ({
     if (!children) {
         return (
             <ListItem
-                button
-                component={NavLink}
-                to={link}
-                activeClassName={classes.linkActive}
-                exact
                 className={classes.link}
-                disableRipple
             >
                 <ListItemIcon
                     className={classnames(classes.linkIcon, {
@@ -86,14 +80,8 @@ const SidebarMenu = ({
     return (
         <>
             <ListItem
-                button
-                component={NavLink}
                 onClick={toggleCollapse}
                 className={classes.link}
-                activeClassName={classes.linkActive}
-                exact
-                to={link}
-                disableRipple
             >
                 <ListItemIcon
                     className={classnames(classes.linkIcon, {

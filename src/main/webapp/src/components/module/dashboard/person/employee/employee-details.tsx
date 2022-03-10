@@ -1,9 +1,9 @@
 import React from 'react'
-import {Link as RouterLink, useHistory, useParams} from "react-router-dom";
+import {Link as RouterLink, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {IRootState} from "../../../../shared/reducer";
-import {deleteEmployee, getEmployee} from "./employee.reducer";
+import {deleteEmployee} from "./employee.reducer";
 import {
     Avatar,
     Box,
@@ -30,7 +30,7 @@ import Widget from "../../../../shared/layout/widget";
 import DialogDelete from "../../../../shared/components/dialog-delete";
 
 function EmployeeDetails() {
-    let history = useHistory();
+    // let history = useHistory();
     const dispatch = useDispatch();
     const classes = detailsStyles();
     let {id} = useParams<{ id: string }>();
@@ -40,15 +40,15 @@ function EmployeeDetails() {
     const updating = useSelector((states: IRootState) => states.employee.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.employee.updateSuccess);
 
-    React.useEffect(() => {
-        dispatch(getEmployee(id))
-    }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
-
-    React.useEffect(() => {
-        if (isUpdateSuccess) {
-            history.push('/employee');
-        }
-    }, [isUpdateSuccess, history])
+    // React.useEffect(() => {
+    //     dispatch(getEmployee(id))
+    // }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
+    //
+    // React.useEffect(() => {
+    //     if (isUpdateSuccess) {
+    //         history.push('/employee');
+    //     }
+    // }, [isUpdateSuccess, history])
 
     return (
         <Widget disableWidgetMenu>

@@ -13,7 +13,7 @@ import {
     Tooltip,
     useMediaQuery
 } from "@mui/material";
-import {Link, useRouteMatch} from "react-router-dom";
+import {Link} from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -27,7 +27,7 @@ import axios from "axios";
 import {useDispatch} from "react-redux";
 import {FAILURE, REQUEST, SUCCESS} from "../reducer/action-type.util";
 import toast from "../util/notification-snackbar.util";
-import theme from "../../../theme";
+import useTheme from "@mui/material/styles/useTheme";
 
 export interface IUCMDataBase {
     addRoute?: string,
@@ -77,11 +77,11 @@ export default function UCMDataBase(
         disableDeleteButton
     }: IUCMDataBase
 ) {
+    const theme = useTheme();
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const classes = managerSectionStyles();
     const dataTableClasses = dataTableStyles();
-    let match = useRouteMatch<{ url: string }>();
     const [items, setItems] = React.useState([]);
     const [search, setSearch] = React.useState('');
     const [update, setUpdate] = React.useState(false);
@@ -182,7 +182,7 @@ export default function UCMDataBase(
                     <Tooltip title={t("common:edit") || "Editar"} aria-label={t("common:edit")} arrow>
                         <IconButton
                             component={Link}
-                            to={`${match.url}${editRoute || '/edit'}/${id}`}
+                            to={`${editRoute || '/edit'}/${id}`}
                             aria-label={t("common:edit")}
                             color="primary"
                             size="small"
@@ -196,7 +196,7 @@ export default function UCMDataBase(
                     <Tooltip title={t("common:show") || "Mostrar"} aria-label={t("common:show")} arrow>
                         <IconButton
                             component={Link}
-                            to={`${match.url}${showRoute || '/show'}/${id}`}
+                            to={`${showRoute || '/show'}/${id}`}
                             aria-label={t("common:show")}
                             color="primary"
                             size="small"
@@ -276,7 +276,7 @@ export default function UCMDataBase(
                     variant="contained"
                     className={classes.buttonAdd}
                     component={Link}
-                    to={`${match.url}${addRoute || '/add'}`}
+                    to={`${addRoute || '/add'}`}
                     endIcon={<Add/>}
                 >
                     {t('common:add')}

@@ -7,7 +7,7 @@ import {
     ICrudGetAllAction,
     ICrudPutAction,
     ICrudSearchAction
-} from "../../../../types";
+} from "../../../../../types";
 import axios from "axios";
 import {buildFormData} from "../../../../shared/util/entity-util";
 import {ITEMS_PER_PAGE} from "../../../../../config/constants";

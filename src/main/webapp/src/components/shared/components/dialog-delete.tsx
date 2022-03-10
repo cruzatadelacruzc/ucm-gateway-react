@@ -9,10 +9,10 @@ import {
     IconButton,
     useMediaQuery
 } from "@mui/material";
-import theme from "../../../theme";
 import {Close as CloseIcon} from "@mui/icons-material";
 import {dialogDeleteStyle} from "./style";
 import {useTranslation} from "react-i18next";
+import useTheme from "@mui/material/styles/useTheme";
 
 interface IDialogDelete {
     open: boolean
@@ -22,6 +22,7 @@ interface IDialogDelete {
     deleteItem: () => void
 }
 const DialogDelete = (props: IDialogDelete) => {
+    const theme = useTheme();
     const classes = dialogDeleteStyle()
     const {t} = useTranslation(['common']);
     return (

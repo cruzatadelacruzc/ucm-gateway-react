@@ -5,20 +5,19 @@ import {useTranslation} from "react-i18next";
 import {IRootState} from "../../../shared/reducer";
 import Widget from "../../../shared/layout/widget";
 import {formUpdateStyles, MenuProps} from "../style";
-import {batch, useDispatch, useSelector} from "react-redux";
-import {Link, useHistory, useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {Link, useParams} from "react-router-dom";
 import {CheckboxWithLabel, Select, TextField} from "formik-mui";
 import {Box, Button, CircularProgress, Grid, InputLabel, MenuItem} from "@mui/material";
 import {defaultValue, IWorkPlace} from "../../../shared/models/workplace.model";
-import {createWorkPlace, deleteAvatar, getWorkPlace, reset, updateWorkPlace} from "./workplace.reducer";
-import {geEmployees, getFilterEmployees} from "../person/employee/employee.reducer";
+import {createWorkPlace, deleteAvatar, updateWorkPlace} from "./workplace.reducer";
 import {createDeepEqualSelector} from "../../../shared/util/function-utils";
 import {IEmployee} from "../../../shared/models/employee.model";
 import UCMAvatar from "../../../shared/components/avatar";
 
 
 const WorkPlaceManage = () => {
-    let history = useHistory();
+    // let history = useHistory();
     const dispatch = useDispatch();
     const classes = formUpdateStyles();
     let {id} = useParams<{ id: string }>();
@@ -36,23 +35,23 @@ const WorkPlaceManage = () => {
     );
     const employeesToUpdate = useSelector((states: IRootState) => selector(states));
 
-    React.useEffect(() => {
-        if (isNew) {
-            dispatch(reset())
-            dispatch(getFilterEmployees(`workPlaceId.specified=false`))
-        } else {
-            batch( () => {
-                dispatch(geEmployees())
-                dispatch(getWorkPlace(id))
-            })
-        }
-    }, [isNew, id]) // eslint-disable-line react-hooks/exhaustive-deps
-
-    React.useEffect(() => {
-        if (isUpdateSuccess) {
-            history.push('/workplace');
-        }
-    }, [isUpdateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
+    // React.useEffect(() => {
+    //     if (isNew) {
+    //         dispatch(reset())
+    //         dispatch(getFilterEmployees(`workPlaceId.specified=false`))
+    //     } else {
+    //         batch( () => {
+    //             dispatch(geEmployees())
+    //             dispatch(getWorkPlace(id))
+    //         })
+    //     }
+    // }, [isNew, id]) // eslint-disable-line react-hooks/exhaustive-deps
+    //
+    // React.useEffect(() => {
+    //     if (isUpdateSuccess) {
+    //         history.push('/workplace');
+    //     }
+    // }, [isUpdateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
 

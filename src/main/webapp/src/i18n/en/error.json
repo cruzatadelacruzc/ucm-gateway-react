@@ -41,5 +41,8 @@
   "relationshipnull": "{{ param }} must be related",
   "UniqueValue": "The value of {{ name }} must be unique",
   "upload": "There was an error uploading your file",
-  "wrongtype": "Content type of File [{{ param }}] not allowed"
+  "wrongtype": "Content type of File [{{ param }}] not allowed",
+  "menu": {
+    "items_error": "Menu Items Error"
+  }
 }

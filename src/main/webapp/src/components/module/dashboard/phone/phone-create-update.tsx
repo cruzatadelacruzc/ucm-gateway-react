@@ -1,13 +1,13 @@
 import React from 'react';
 import Widget from "../../../shared/layout/widget";
-import {Link, useHistory, useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {batch, useDispatch, useSelector} from "react-redux";
 import {formUpdateStyles, MenuProps} from "../style";
 import {useTranslation} from "react-i18next";
 import {Field, Form, Formik} from "formik";
 import {defaultValue, IPhone} from "../../../shared/models/phone.model";
 import {IRootState} from "../../../shared/reducer";
-import {createPhone, getPhone, updatePhone} from "./phone.reducer";
+import {createPhone, updatePhone} from "./phone.reducer";
 import * as yup from "yup";
 import {Box, Button, CircularProgress, MenuItem} from "@mui/material";
 import {CheckboxWithLabel, TextField} from "formik-mui";
@@ -15,7 +15,7 @@ import {geEmployees} from "../person/employee/employee.reducer";
 import {getWorkPlaces} from "../workplace/workplace.reducer";
 
 const PhoneManage = () => {
-    let history = useHistory();
+    // let history = useHistory();
     const dispatch = useDispatch();
     const classes = formUpdateStyles();
     let {id} = useParams<{id: string}>();
@@ -47,17 +47,17 @@ const PhoneManage = () => {
         })
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-    React.useEffect( () => {
-        if (!isNew) {
-         dispatch(getPhone(id))
-        }
-    }, [isNew, id])// eslint-disable-line react-hooks/exhaustive-deps
-
-    React.useEffect(() => {
-        if (isUpdateSuccess) {
-            history.push('/phone');
-        }
-    }, [isUpdateSuccess])// eslint-disable-line react-hooks/exhaustive-deps
+    // React.useEffect( () => {
+    //     if (!isNew) {
+    //      dispatch(getPhone(id))
+    //     }
+    // }, [isNew, id])// eslint-disable-line react-hooks/exhaustive-deps
+    //
+    // React.useEffect(() => {
+    //     if (isUpdateSuccess) {
+    //         history.push('/phone');
+    //     }
+    // }, [isUpdateSuccess])// eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Widget title={t('title.manage')} disableWidgetMenu>

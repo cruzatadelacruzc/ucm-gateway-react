@@ -2,8 +2,8 @@ import React from 'react';
 import Widget from "../../../shared/layout/widget";
 import {useDispatch, useSelector} from "react-redux";
 import {detailsStyles} from "../style";
-import {deletePhone, getPhone} from "./phone.reducer";
-import {Link, useHistory, useParams} from "react-router-dom";
+import {deletePhone} from "./phone.reducer";
+import {Link, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {IRootState} from "../../../shared/reducer";
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
@@ -32,7 +32,7 @@ const Root = styled("div")(({theme}) => ({
 
 const PhoneDetails = () => {
     const theme = useTheme();
-    let history = useHistory();
+    // let history = useHistory();
     const dispatch = useDispatch();
     const classes = detailsStyles();
     let {id} = useParams<{ id: string }>();
@@ -42,15 +42,15 @@ const PhoneDetails = () => {
     const updating = useSelector((states: IRootState) => states.phone.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.phone.updateSuccess);
 
-    React.useEffect(() => {
-        dispatch(getPhone(id))
-    }, [id])// eslint-disable-line react-hooks/exhaustive-deps
-
-    React.useEffect(() => {
-        if (isUpdateSuccess) {
-            history.push('/phone');
-        }
-    }, [isUpdateSuccess, history])
+    // React.useEffect(() => {
+    //     dispatch(getPhone(id))
+    // }, [id])// eslint-disable-line react-hooks/exhaustive-deps
+    //
+    // React.useEffect(() => {
+    //     if (isUpdateSuccess) {
+    //         history.push('/phone');
+    //     }
+    // }, [isUpdateSuccess, history])
 
     return (
         <Widget disableWidgetMenu>

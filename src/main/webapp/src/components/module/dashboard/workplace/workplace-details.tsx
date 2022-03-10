@@ -3,8 +3,8 @@ import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {detailsStyles} from "../style";
 import {IRootState} from "../../../shared/reducer";
-import {Link, useHistory, useParams} from "react-router-dom";
-import {deleteWorkPlace, getWorkPlace} from "./workplace.reducer";
+import {Link, useParams} from "react-router-dom";
+import {deleteWorkPlace} from "./workplace.reducer";
 import {
     Avatar,
     Box,
@@ -31,7 +31,7 @@ import {buildAvatarURL} from "../../../shared/util/function-utils";
 import DialogDelete from "../../../shared/components/dialog-delete";
 
 const WorkplaceDetails = () => {
-    let history = useHistory();
+    // let history = useHistory();
     const dispatch = useDispatch();
     const classes = detailsStyles();
     let {id} = useParams<{ id: string }>();
@@ -41,15 +41,15 @@ const WorkplaceDetails = () => {
     const updating = useSelector((states: IRootState) => states.workPlace.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.workPlace.updateSuccess);
 
-    React.useEffect(() => {
-        dispatch(getWorkPlace(id))
-    }, [id])// eslint-disable-line react-hooks/exhaustive-deps
-
-    React.useEffect(() => {
-        if (isUpdateSuccess) {
-            history.push('/workplace');
-        }
-    }, [isUpdateSuccess, history])
+    // React.useEffect(() => {
+    //     dispatch(getWorkPlace(id))
+    // }, [id])// eslint-disable-line react-hooks/exhaustive-deps
+    //
+    // React.useEffect(() => {
+    //     if (isUpdateSuccess) {
+    //         history.push('/workplace');
+    //     }
+    // }, [isUpdateSuccess, history])
 
     const getAvatarUrl = (): string => {
         if (_entity.avatarUrl) {

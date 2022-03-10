@@ -1,7 +1,6 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import Header from './header';
 import {Container, Grid, Tab, Tabs, Typography} from '@mui/material';
-import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import PersonIcon from '@mui/icons-material/Person';
 import CardPerson from './card-person';
@@ -12,9 +11,8 @@ import {IRootState} from "../../shared/reducer";
 import {ISearchResultPerson} from "../../shared/models/search-result-person.model";
 import {ISearchResultWorkPlace} from "../../shared/models/search-result-workplace.model";
 import {ISearchResultPhone} from "../../shared/models/search-result-phone.model";
-import {AUTHORITIES, INDICES} from "../../../config/constants";
+import {INDICES} from "../../../config/constants";
 import CardWorkPlace from "./card-workplace";
-import {hasAnyAuthority} from "../../shared/auth/private-route";
 import {REDIRECT_URL} from "../../shared/util/url-util";
 
 export interface IDirectoryProps {
@@ -116,14 +114,14 @@ export default function Directory() {
                         <Tabs onChange={handleTabChange} indicatorColor='primary' textColor='primary' value={tabValue}>
                             <Tab label={t('directory:tab.people')} icon={<PersonIcon/>}/>
                             <Tab label={t('directory:tab.workplaces')} icon={<HomeWorkIcon/>}/>
-                            {(auth.isAuthenticated && hasAnyAuthority(auth.account.authorities, [AUTHORITIES.ADMIN])) &&
-                            <Tab label={t('directory:tab.phones')} icon={<ContactPhoneIcon/>}/>}
+                            {/*{(auth.isAuthenticated && hasAnyAuthority(auth.account.authorities, [AUTHORITIES.ADMIN])) &&*/}
+                            {/*<Tab label={t('directory:tab.phones')} icon={<ContactPhoneIcon/>}/>}*/}
                         </Tabs>
                     </Grid>
                     {tabValue === 0 && <DisplayCardList {...search.resultPerson}/>}
                     {tabValue === 1 && <DisplayCardList {...search.resultWorkPlace}/>}
-                    {(auth.isAuthenticated && hasAnyAuthority(auth.account.authorities, [AUTHORITIES.ADMIN])) &&
-                    tabValue === 2 && <DisplayCardList {...search.resultPhone}/>}
+                    {/*{(auth.isAuthenticated && hasAnyAuthority(auth.account.authorities, [AUTHORITIES.ADMIN])) &&*/}
+                    {/*tabValue === 2 && <DisplayCardList {...search.resultPhone}/>}*/}
                 </Grid>
             </Container>
         </>

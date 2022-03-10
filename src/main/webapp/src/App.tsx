@@ -1,7 +1,7 @@
 import './config/i18n';
 import AppRouter from './routes';
-import defaultTheme from "./theme";
-import {useDispatch} from "react-redux";
+import _theme from "./theme";
+import {useDispatch, useSelector} from "react-redux";
 import {SnackbarProvider} from "notistack";
 import {CssBaseline} from '@mui/material';
 import {BrowserRouter} from 'react-router-dom';
@@ -10,6 +10,8 @@ import {StyledEngineProvider, Theme, ThemeProvider} from "@mui/material/styles";
 import ErrorBoundary from './components/shared/error/error-boudary';
 import {getSession} from "./components/shared/reducer/authenticate";
 import {SnackbarUtilsConfigurator} from "./components/shared/util/notification-snackbar.util";
+import {IRootState} from "./components/shared/reducer";
+import "react-perfect-scrollbar/dist/css/styles.css";
 
 
 declare module '@mui/styles/defaultTheme' {
@@ -20,6 +22,7 @@ declare module '@mui/styles/defaultTheme' {
 
 export default function App() {
     const dispatch = useDispatch();
+    const customization = useSelector((state: IRootState) => state.customization);
     useEffect(() => {
         dispatch(getSession())
     }, [dispatch]);
@@ -27,17 +30,15 @@ export default function App() {
     return (
         <BrowserRouter>
             <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={defaultTheme}>
+                <ThemeProvider theme={_theme(customization)}>
                     <SnackbarProvider preventDuplicate={true} autoHideDuration={8000}
                                       anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
                     >
                         <SnackbarUtilsConfigurator/>
                         <CssBaseline/>
-                        <div style={{flexGrow: 1}}>
                             <ErrorBoundary>
                                 <AppRouter/>
                             </ErrorBoundary>
-                        </div>
                     </SnackbarProvider>
                 </ThemeProvider>
             </StyledEngineProvider>

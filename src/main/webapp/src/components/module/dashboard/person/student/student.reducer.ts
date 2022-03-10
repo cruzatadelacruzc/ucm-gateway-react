@@ -2,7 +2,7 @@ import {AnyAction} from "redux";
 import {ITEMS_PER_PAGE} from "../../../../../config/constants";
 import {defaultValue, IStudent} from "../../../../shared/models/student.model";
 import {FAILURE, REQUEST, SUCCESS} from "../../../../shared/reducer/action-type.util";
-import {ICrudDeleteAction, ICrudGetAction, ICrudPutAction} from "../../../../types";
+import {ICrudDeleteAction, ICrudGetAction, ICrudPutAction} from "../../../../../types";
 import axios from "axios";
 import {buildFormData} from "../../../../shared/util/entity-util";
 

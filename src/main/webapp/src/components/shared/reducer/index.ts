@@ -6,6 +6,7 @@ import student, {StudentStateType} from "../../module/dashboard/person/student/s
 import workPlace, {WorkplaceStateType} from "../../module/dashboard/workplace/workplace.reducer";
 import employee, {EmployeeStateType} from "../../module/dashboard/person/employee/employee.reducer";
 import nomenclature, {NomenclatureStateType} from "../../module/dashboard/nomenclature/nomenclature.reducer";
+import customization, {CustomizationType} from "./customization.reducer";
 
 
 export interface IRootState {
@@ -15,10 +16,12 @@ export interface IRootState {
     readonly student: StudentStateType,
     readonly employee: EmployeeStateType,
     readonly workPlace: WorkplaceStateType,
+    readonly customization: CustomizationType,
     readonly nomenclature: NomenclatureStateType
 }
 
 const rootReducer = combineReducers<IRootState>({
+    customization,
     nomenclature,
     workPlace,
     employee,

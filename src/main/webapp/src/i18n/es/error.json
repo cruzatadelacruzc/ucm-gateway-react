@@ -41,5 +41,8 @@
   "relationshipnull": "{{ param }} debe estár relacionado",
   "UniqueValue": "El valor de {{ name }} debe ser único",
   "upload": "Hubo un error al subir su archivo",
-  "wrongtype": "Tipo de contenido del Archivo [{{ param }}] no es permitido"
+  "wrongtype": "Tipo de contenido del Archivo [{{ param }}] no es permitido",
+  "menu": {
+    "items.error": "Error de elementos del menú"
+  }
 }

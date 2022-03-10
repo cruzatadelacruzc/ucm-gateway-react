@@ -1,4 +1,4 @@
-import {ActionMap, ICrudSearchAction} from '../../types';
+import {ActionMap, ICrudSearchAction} from '../../../types';
 import {defaultValue as personDefaultValue, ISearchResultPerson} from '../../shared/models/search-result-person.model';
 import {
     defaultValue as workplaceDefaultValue,

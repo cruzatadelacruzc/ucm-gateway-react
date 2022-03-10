@@ -1,6 +1,6 @@
 import axios from "axios";
 import {AnyAction} from "redux";
-import {ICrudDeleteAction, ICrudGetAction, ICrudPutAction, ICrudSearchAction} from "../../../types";
+import {ICrudDeleteAction, ICrudGetAction, ICrudPutAction, ICrudSearchAction} from "../../../../types";
 import {defaultValue, IPhone} from "../../../shared/models/phone.model";
 import {FAILURE, REQUEST, SUCCESS} from "../../../shared/reducer/action-type.util";
 import {cleanEntity} from "../../../shared/util/entity-util";

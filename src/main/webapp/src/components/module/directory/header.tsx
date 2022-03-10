@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom';
 import {IDirectoryProps} from './directory';
 import {headerStyles} from './style';
 import {useTranslation} from 'react-i18next';
-import HeaderAccount from '../../shared/layout/header/menu-account';
+import ProfileSection from '../../shared/layout/header/profile-section';
 import MoreIcon from "@mui/icons-material/MoreVert";
 import {useSelector} from "react-redux";
 import {IRootState} from "../../shared/reducer";
@@ -89,12 +89,7 @@ export default function Header(props: IDirectoryProps) {
                             <MoreIcon />
                         </IconButton>
                     </div>
-                    <HeaderAccount {...{
-                        anchorEl: anchorEl,
-                        menuId: menuId,
-                        isMenuOpen: isMenuOpen,
-                        handleMenuClose: handleMenuClose
-                    }}/>
+                    <ProfileSection />
                 </Toolbar>
             </AppBar>
             <Toolbar id='back-to-top-anchor'/>

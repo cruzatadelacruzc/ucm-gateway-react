@@ -76,7 +76,7 @@ export const sidebarStyles = makeStyles((theme: Theme, drawerWidth: number = 240
             duration: theme.transitions.duration.leavingScreen,
         }),
         overflowX: 'hidden',
-        width: theme.spacing(7) + 20,
+        width: theme.spacing(10) ,
         [theme.breakpoints.down('md')]: {
             width: drawerWidth,
         }

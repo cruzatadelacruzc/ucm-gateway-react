@@ -1,7 +1,7 @@
 import {defaultValue, IWorkPlace} from "../../../shared/models/workplace.model";
 import {AnyAction} from "redux";
 import {FAILURE, REQUEST, SUCCESS} from "../../../shared/reducer/action-type.util";
-import {ICrudDeleteAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction} from "../../../types";
+import {ICrudDeleteAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction} from "../../../../types";
 import axios from "axios";
 import {buildFormData} from "../../../shared/util/entity-util";
 

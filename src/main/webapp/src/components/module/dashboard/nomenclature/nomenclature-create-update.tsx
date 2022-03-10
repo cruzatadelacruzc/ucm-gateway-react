@@ -8,12 +8,12 @@ import {IRootState} from "../../../shared/reducer";
 import Widget from "../../../shared/layout/widget";
 import {useDispatch, useSelector} from "react-redux";
 import {Box, Button, CircularProgress, MenuItem} from "@mui/material";
-import {Link, useHistory, useParams} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 import {defaultValue, DISCRIMINATOR, INomenclature} from "../../../shared/models/nomenclature.model";
-import {createNomenclature, getNomenclature, updateNomenclature} from "./nomenclature.reducer";
+import {createNomenclature, updateNomenclature} from "./nomenclature.reducer";
 
 const NomenclatureManage = () => {
-    let history = useHistory();
+    // let history = useHistory();
     const dispatch = useDispatch();
     const classes = formUpdateStyles();
     let {id} = useParams<{id: string}>();
@@ -23,17 +23,17 @@ const NomenclatureManage = () => {
     const updating = useSelector((states: IRootState) => states.nomenclature.updating);
     const updateSuccess = useSelector((states: IRootState) => states.nomenclature.updateSuccess);
 
-    React.useEffect(() => {
-        if (!isNew) {
-            dispatch(getNomenclature(id))
-        }
-    }, [isNew, id]) // eslint-disable-line react-hooks/exhaustive-deps
+    // React.useEffect(() => {
+    //     if (!isNew) {
+    //         dispatch(getNomenclature(id))
+    //     }
+    // }, [isNew, id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    React.useEffect(() => {
-        if (updateSuccess) {
-            history.push('/nomenclature');
-        }
-    }, [updateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
+    // React.useEffect(() => {
+    //     if (updateSuccess) {
+    //         history.push('/nomenclature');
+    //     }
+    // }, [updateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
     return (

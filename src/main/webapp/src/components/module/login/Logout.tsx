@@ -5,7 +5,7 @@ import {IRootState} from "../../shared/reducer";
 import {Typography} from "@mui/material";
 import {useTranslation} from "react-i18next";
 
-export const Logout = () => {
+const Logout = () => {
     const dispatch = useDispatch();
     const {t} = useTranslation(["common"])
     const { auth } = useSelector((states: IRootState) => states);
@@ -21,3 +21,5 @@ export const Logout = () => {
         <Typography variant="caption">{t("logout_ok")}</Typography>
     );
 }
+
+export default Logout

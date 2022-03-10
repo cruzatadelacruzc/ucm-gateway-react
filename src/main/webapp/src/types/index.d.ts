@@ -1,4 +1,5 @@
 import {AxiosPromise} from "axios";
+import * as React from "react";
 
 export type ActionMap<M extends { [index: string]: any }> = {
     [Key in keyof M]: M[Key] extends undefined
@@ -83,5 +84,23 @@ export interface ITableState {
     selectedRows: { lookup: { dataIndex: boolean }, data: Array<{ index: number, dataIndex: number }> }
     showResponsive: boolean
     sortOrder: { name: string, direction: string }
+}
+
+declare module '@mui/material/styles/createTypography' {
+    interface Typography {
+        mainContent: React.CSSProperties,
+        commonAvatar:  React.CSSProperties,
+        mediumAvatar:  React.CSSProperties,
+        menuCaption: React.CSSProperties
+        subMenuCaption: React.CSSProperties,
+    }
+    // allow configuration using `createTheme`
+    interface TypographyOptions {
+        mainContent?: React.CSSProperties,
+        menuCaption?: React.CSSProperties
+        commonAvatar?: React.CSSProperties,
+        mediumAvatar?: React.CSSProperties,
+        subMenuCaption?: React.CSSProperties
+    }
 }
 

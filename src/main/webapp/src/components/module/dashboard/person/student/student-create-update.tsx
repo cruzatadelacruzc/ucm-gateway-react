@@ -7,17 +7,17 @@ import i18n from "../../../../../config/i18n";
 import {Box, MenuItem} from "@mui/material";
 import Widget from "../../../../shared/layout/widget";
 import {IRootState} from "../../../../shared/reducer";
-import {useHistory, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {formUpdateStyles, MenuProps} from "../../style";
 import PersonalStep, {_validationSchema} from "../index";
 import {batch, useDispatch, useSelector} from "react-redux";
-import {createStudent, getStudent, partialUpdateStudent, reset, updateStudent} from "./student.reducer";
+import {createStudent, updateStudent} from "./student.reducer";
 import {defaultValue, IStudent} from "../../../../shared/models/student.model";
 import FormStepper, {FormStep} from "../../../../shared/components/FormStepper";
 import {getKinds, getStudyCenters} from "../../nomenclature/nomenclature.reducer";
 
 const StudentManage = () => {
-    let history = useHistory();
+    // let history = useHistory();
     const dispatch = useDispatch();
     const classes = formUpdateStyles();
     let {id} = useParams<{id: string}>();
@@ -29,13 +29,13 @@ const StudentManage = () => {
     const studyCenters = useSelector((states: IRootState) => states.nomenclature.studyCenters);
     const isUpdateSuccess = useSelector((states: IRootState) => states.student.updateSuccess);
 
-    React.useEffect(() => {
-        if (isNew) {
-            dispatch(reset())
-        } else {
-            dispatch(getStudent(id))
-        }
-    }, [isNew, id]) // eslint-disable-line react-hooks/exhaustive-deps
+    // React.useEffect(() => {
+    //     if (isNew) {
+    //         dispatch(reset())
+    //     } else {
+    //         dispatch(getStudent(id))
+    //     }
+    // }, [isNew, id]) // eslint-disable-line react-hooks/exhaustive-deps
 
     React.useEffect(() => {
         batch( () => {
@@ -43,11 +43,11 @@ const StudentManage = () => {
             dispatch(getStudyCenters())
         })},[]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    React.useEffect(() => {
-        if (isUpdateSuccess) {
-            history.push('/student');
-        }
-    }, [isUpdateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
+    // React.useEffect(() => {
+    //     if (isUpdateSuccess) {
+    //         history.push('/student');
+    //     }
+    // }, [isUpdateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return <Widget title={t('title.manage')} disableWidgetMenu>
         <FormStepper
@@ -67,9 +67,9 @@ const StudentManage = () => {
                 validationSchema={_validationSchema}
                 operationKind={isNew ? "CREATE": "UPDATE"}
                 onSubmit={async (values: IStudent) => {
-                    if (!isNew) {
-                       return dispatch(partialUpdateStudent({id, student: values, avatar: avatar}))
-                    }
+                    // if (!isNew) {
+                    //    return dispatch(partialUpdateStudent({id, student: values, avatar: avatar}))
+                    // }
                 }}
             >
                 <PersonalStep

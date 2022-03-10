@@ -1,7 +1,13 @@
 import axios from "axios";
 import {AnyAction} from "redux";
 import {cleanEntity} from "../../../shared/util/entity-util";
-import {ICrudDeleteAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudSearchAction} from "../../../types";
+import {
+    ICrudDeleteAction,
+    ICrudGetAction,
+    ICrudGetAllAction,
+    ICrudPutAction,
+    ICrudSearchAction
+} from "../../../../types";
 import {FAILURE, REQUEST, SUCCESS} from "../../../shared/reducer/action-type.util";
 import {defaultValue, DISCRIMINATOR, INomenclature} from "../../../shared/models/nomenclature.model";
 
