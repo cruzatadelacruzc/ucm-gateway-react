@@ -16,7 +16,7 @@ export interface IHeader {
 
 const Header = ({toggleSidebar, isSidebarOpened}: IHeader) => {
     const theme = useTheme();
-    const { account } = useSelector((states: IRootState) => states.auth);
+    const account = useSelector((states: IRootState) => states.auth.account);
     const classes = headerStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const isMenuOpen = Boolean(anchorEl);
@@ -96,18 +96,15 @@ const Header = ({toggleSidebar, isSidebarOpened}: IHeader) => {
                    width: 'auto'
                }
             }}>
-            <Box component="span" sx={{display: { xs: 'none', md: 'block'}, flexGrow: 1}}>
+            <Box component="span" sx={{display: {xs: 'none', md: 'block'}, flexGrow: 1}}>
                 <LogoSection/>
             </Box>
-            <ButtonBase sx={{borderRadius: 12, overflow: 'hidden'}}>
+            <ButtonBase>
                 <Avatar
                     variant="rounded"
                     sx={{
-                        width: 34,
-                        height: 34,
                         cursor: 'pointer',
-                        fontSize: '1.2rem',
-                        borderRadius: 8,
+                        fontSize: '1.25rem',
                         transition: 'all .2s ease-in-out',
                         background: theme.palette.secondary.light,
                         color: theme.palette.secondary.dark,
@@ -122,15 +119,15 @@ const Header = ({toggleSidebar, isSidebarOpened}: IHeader) => {
                     <Menu/>
                 </Avatar>
             </ButtonBase>
-
-            <Box sx={{ flexGrow: 1 }} />
+        </Box>
+        <Box sx={{flexGrow: 1}}/>
             <Box sx={{ flexGrow: 1 }} />
 
             {/* notification & profile */}
             <NotificationSection />
             <ProfileSection />
-        </Box>
-        </>
+
+    </>
 };
 export default Header;
 

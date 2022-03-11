@@ -56,7 +56,7 @@ const NotificationSection = () => {
                         mr: 2
                     }
                 }}>
-                <ButtonBase sx={{borderRadius: 12}}>
+                <ButtonBase>
                     <Avatar
                         variant="rounded"
                         sx={{
