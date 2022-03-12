@@ -11,22 +11,23 @@ import {
 import {FAILURE, REQUEST, SUCCESS} from "../../../shared/reducer/action-type.util";
 import {defaultValue, DISCRIMINATOR, INomenclature} from "../../../shared/models/nomenclature.model";
 
-export enum ACTION_TYPES  {
-    FETCH_NOMENCLATURE_TEACHING_CATEGORIES = 'nomenclature/FETCH_NOMENCLATURE_TEACHING_CATEGORIES',
-    FETCH_NOMENCLATURE_SCIENTIFIC_DEGREES = 'nomenclature/FETCH_NOMENCLATURE_SCIENTIFIC_DEGREES',
-    FETCH_NOMENCLATURE_STUDY_CENTERS = 'nomenclature/FETCH_NOMENCLATURE_STUDY_CENTERS',
-    FETCH_NOMENCLATURE_SPECIALTIES = 'nomenclature/FETCH_NOMENCLATURE_SPECIALTIES',
-    FETCH_NOMENCLATURE_PROFESSIONS = 'nomenclature/FETCH_NOMENCLATURE_PROFESSIONS',
-    FETCH_NOMENCLATURE_CATEGORIES = 'nomenclature/FETCH_NOMENCLATURE_CATEGORIES',
-    FETCH_NOMENCLATURE_DISTRICTS = 'nomenclature/FETCH_NOMENCLATURE_DISTRICTS',
-    FETCH_NOMENCLATURE_KINDS = 'nomenclature/FETCH_NOMENCLATURE_KINDS',
-    FETCH_NOMENCLATURE_CHARGES = 'nomenclature/FETCH_NOMENCLATURE_CHARGES',
-    FETCH_NOMENCLATURE_FILTERED = 'nomenclature/FETCH_NOMENCLATURE_FILTERED',
-    FETCH_NOMENCLATURE_LIST= 'nomenclature/FETCH_NOMENCLATURE_LIST',
-    FETCH_NOMENCLATURE= 'nomenclature/FETCH_NOMENCLATURE',
-    CREATE_NOMENCLATURE= 'nomenclature/CREATE_NOMENCLATURE',
-    UPDATE_NOMENCLATURE= 'nomenclature/UPDATE_NOMENCLATURE',
-    DELETE_NOMENCLATURE= 'nomenclature/DELETE_NOMENCLATURE',
+export const ACTION_TYPES = {
+    FETCH_NOMENCLATURE_TEACHING_CATEGORIES: 'nomenclature/FETCH_NOMENCLATURE_TEACHING_CATEGORIES',
+    FETCH_NOMENCLATURE_SCIENTIFIC_DEGREES: 'nomenclature/FETCH_NOMENCLATURE_SCIENTIFIC_DEGREES',
+    FETCH_NOMENCLATURE_STUDY_CENTERS: 'nomenclature/FETCH_NOMENCLATURE_STUDY_CENTERS',
+    FETCH_NOMENCLATURE_SPECIALTIES: 'nomenclature/FETCH_NOMENCLATURE_SPECIALTIES',
+    FETCH_NOMENCLATURE_PROFESSIONS: 'nomenclature/FETCH_NOMENCLATURE_PROFESSIONS',
+    FETCH_NOMENCLATURE_CATEGORIES: 'nomenclature/FETCH_NOMENCLATURE_CATEGORIES',
+    FETCH_NOMENCLATURE_DISTRICTS: 'nomenclature/FETCH_NOMENCLATURE_DISTRICTS',
+    FETCH_NOMENCLATURE_KINDS: 'nomenclature/FETCH_NOMENCLATURE_KINDS',
+    FETCH_NOMENCLATURE_CHARGES: 'nomenclature/FETCH_NOMENCLATURE_CHARGES',
+    FETCH_NOMENCLATURE_FILTERED: 'nomenclature/FETCH_NOMENCLATURE_FILTERED',
+    FETCH_NOMENCLATURE_LIST: 'nomenclature/FETCH_NOMENCLATURE_LIST',
+    FETCH_NOMENCLATURE: 'nomenclature/FETCH_NOMENCLATURE',
+    CREATE_NOMENCLATURE: 'nomenclature/CREATE_NOMENCLATURE',
+    UPDATE_NOMENCLATURE: 'nomenclature/UPDATE_NOMENCLATURE',
+    DELETE_NOMENCLATURE: 'nomenclature/DELETE_NOMENCLATURE',
+    RESET: 'nomenclature/RESET',
 }
 
 const initialState = {
@@ -194,6 +195,10 @@ const nomenclatureReducer = (state: NomenclatureStateType = initialState, {type,
                 updateSuccess: false,
                 errorMessage: payload.data
             }
+        case ACTION_TYPES.RESET:
+            return {
+                ...initialState,
+            };
         default:
             return state;
     }
@@ -307,5 +312,9 @@ export const deleteNomenclature: ICrudDeleteAction<INomenclature> = id => async 
         payload: axios.delete(`${apiUrl}/${id}`)
     })
 }
+
+export const reset = () => ({
+    type: ACTION_TYPES.RESET,
+});
 
 export default nomenclatureReducer;

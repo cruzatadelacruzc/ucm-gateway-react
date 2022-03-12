@@ -44,35 +44,35 @@ const MenuItems = () => {
                 {
                     id: 'nomenclature',
                     title: t("common:entities.directoryNomenclature"),
-                    url: "/nomenclature",
+                    url: "/dashboard/nomenclature",
                     icon: AppsIcon,
                     breadcrumbs: false
                 },
                 {
                     id: 'student',
                     title: t("common:entities.directoryStudent"),
-                    url: "/student",
+                    url: "/dashboard/student",
                     icon: SchoolIcon,
                     breadcrumbs: false
                 },
                 {
                     id: 'employee',
                     title: t("common:entities.directoryEmployee"),
-                    url: "/employee",
+                    url: "/dashboard/employee",
                     icon: EngineeringIcon,
                     breadcrumbs: false
                 },
                 {
                     id: 'phone',
                     title: t("common:entities.directoryPhone"),
-                    url: "/phone",
+                    url: "/dashboard/phone",
                     icon: ContactPhoneIcon,
                     breadcrumbs: false
                 },
                 {
                     id: 'workplace',
                     title: t("common:entities.directoryWorkPlace"),
-                    url: "/workplace",
+                    url: "/dashboard/workplace",
                     icon: BusinessIcon,
                     breadcrumbs: false
                 }

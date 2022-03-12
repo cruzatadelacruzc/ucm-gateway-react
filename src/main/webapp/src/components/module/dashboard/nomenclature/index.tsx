@@ -1,13 +1,14 @@
 import React from 'react'
+import {Route, Routes} from 'react-router-dom';
+import Nomenclature from "./nomenclature";
+import NomenclatureManage from "./nomenclature-create-update";
 
-export default function Routes() {
+export default function NomenclatureRouter() {
     return (
-        <>
-            {/*<Switch>*/}
-            {/*    <ErrorBoundaryRoute exact path={`${match.url}/add`} component={NomenclatureManage}/>*/}
-            {/*    <ErrorBoundaryRoute exact path={`${match.url}/edit/:id`} component={NomenclatureManage}/>*/}
-            {/*    <ErrorBoundaryRoute path={`${match.url}`} component={Nomenclature}/>*/}
-            {/*</Switch>*/}
-        </>
+        <Routes>
+            <Route path='/' element={<Nomenclature/>}/>
+            <Route path='add' element={<NomenclatureManage/>}/>
+            <Route path='edit/:id' element={<NomenclatureManage/>}/>
+        </Routes>
     )
 }

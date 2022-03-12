@@ -5,6 +5,11 @@ import Loadable from "./components/shared/components/Loadable";
 
 const Logout = Loadable(lazy(() => import("./components/module/login/Logout")));
 const Dashboard = Loadable(lazy(() => import("./components/module/dashboard")));
+const Nomenclature = Loadable(lazy(() => import("./components/module/dashboard/nomenclature")));
+const Employee = Loadable(lazy(() => import("./components/module/dashboard/person/employee")));
+const Student = Loadable(lazy(() => import("./components/module/dashboard/person/student")));
+const Phone = Loadable(lazy(() => import("./components/module/dashboard/phone")));
+const WorkPlace = Loadable(lazy(() => import("./components/module/dashboard/workplace")));
 const Directory = Loadable(lazy(() => import("./components/module/directory/directory")));
 const PageNotFound = Loadable(lazy(() => import("./components/shared/error/page-not-found")));
 const LoginRedirect = Loadable(lazy(() => import("./components/shared/error/page-not-found")));
@@ -33,9 +38,15 @@ export default function AppRoute() {
         <Routes>
             <Route path='/' element={<Directory/>}/>
             <Route path='logout' element={<Logout/>}/>
-            <Route path='dashboard/*' element={<Dashboard/>}/>
+            <Route path='dashboard' element={<Dashboard/>}>
+                <Route path='nomenclature/*' element={<Nomenclature/>}/>
+                <Route path='phone/*' element={<Phone/>}/>
+                <Route path='workplace/*' element={<WorkPlace/>}/>
+                <Route path='employee/*' element={<Employee/>}/>
+                <Route path='student/*' element={<Student/>}/>
+            </Route>
             <Route path={CONFIG.LOGIN_URL} element={<LoginRedirect/>}/>
-            <Route path='*' element={<PageNotFound />}/>
+            <Route path='*' element={<PageNotFound/>}/>
         </Routes>
     )
 }

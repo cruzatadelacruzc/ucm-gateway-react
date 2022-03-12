@@ -8,32 +8,34 @@ import {IRootState} from "../../../shared/reducer";
 import Widget from "../../../shared/layout/widget";
 import {useDispatch, useSelector} from "react-redux";
 import {Box, Button, CircularProgress, MenuItem} from "@mui/material";
-import {Link, useParams} from 'react-router-dom'
+import {Link, useNavigate, useParams} from 'react-router-dom'
 import {defaultValue, DISCRIMINATOR, INomenclature} from "../../../shared/models/nomenclature.model";
-import {createNomenclature, updateNomenclature} from "./nomenclature.reducer";
+import {createNomenclature, getNomenclature, reset, updateNomenclature} from "./nomenclature.reducer";
 
 const NomenclatureManage = () => {
-    // let history = useHistory();
     const dispatch = useDispatch();
+    let navigate = useNavigate();
     const classes = formUpdateStyles();
-    let {id} = useParams<{id: string}>();
+    let {id} = useParams<{ id: string }>();
     const [isNew] = React.useState(!id);
     const {t} = useTranslation(['nomenclature']);
     const entity = useSelector((states: IRootState) => states.nomenclature.entity);
     const updating = useSelector((states: IRootState) => states.nomenclature.updating);
     const updateSuccess = useSelector((states: IRootState) => states.nomenclature.updateSuccess);
 
-    // React.useEffect(() => {
-    //     if (!isNew) {
-    //         dispatch(getNomenclature(id))
-    //     }
-    // }, [isNew, id]) // eslint-disable-line react-hooks/exhaustive-deps
+    React.useEffect(() => {
+        if (undefined === id) { // id undefined, then action is Create, otherwise Update
+            dispatch(reset())
+        } else {
+            dispatch(getNomenclature(id))
+        }
+    }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    // React.useEffect(() => {
-    //     if (updateSuccess) {
-    //         history.push('/nomenclature');
-    //     }
-    // }, [updateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
+    React.useEffect(() => {
+        if (updateSuccess) {
+            navigate(-1); // Pass the delta to go in the history stack, equivalent to hitting the back button.
+        }
+    }, [updateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
     return (
@@ -116,7 +118,7 @@ const NomenclatureManage = () => {
                                 color="secondary"
                                 variant="contained"
                                 component={Link}
-                                to='/nomenclature'
+                                to='/dashboard/nomenclature'
                                 disabled={updating}>
                                 {t('common:cancel')}
                             </Button>

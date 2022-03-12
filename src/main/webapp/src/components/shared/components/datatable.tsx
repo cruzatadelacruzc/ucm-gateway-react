@@ -182,7 +182,7 @@ export default function UCMDataBase(
                     <Tooltip title={t("common:edit") || "Editar"} aria-label={t("common:edit")} arrow>
                         <IconButton
                             component={Link}
-                            to={`${editRoute || '/edit'}/${id}`}
+                            to={`${editRoute || 'edit'}/${id}`}
                             aria-label={t("common:edit")}
                             color="primary"
                             size="small"
@@ -196,7 +196,7 @@ export default function UCMDataBase(
                     <Tooltip title={t("common:show") || "Mostrar"} aria-label={t("common:show")} arrow>
                         <IconButton
                             component={Link}
-                            to={`${showRoute || '/show'}/${id}`}
+                            to={`${showRoute || 'show'}/${id}`}
                             aria-label={t("common:show")}
                             color="primary"
                             size="small"
@@ -276,7 +276,7 @@ export default function UCMDataBase(
                     variant="contained"
                     className={classes.buttonAdd}
                     component={Link}
-                    to={`${addRoute || '/add'}`}
+                    to={`${addRoute || 'add'}`}
                     endIcon={<Add/>}
                 >
                     {t('common:add')}

@@ -1,14 +1,16 @@
 import React from 'react'
+import {Route, Routes} from 'react-router-dom';
+import Employees from "./employee";
+import EmployeeManage from "./employee-create-update";
+import EmployeeDetails from "./employee-details";
 
-export default function Routes() {
+export default function EmployeeRouter() {
     return (
-        <>
-            {/*<Switch>*/}
-            {/*    <ErrorBoundaryRoute exact path={`${match.url}/add`} component={EmployeeManage}/>*/}
-            {/*    <ErrorBoundaryRoute exact path={`${match.url}/edit/:id`} component={EmployeeManage}/>*/}
-            {/*    <ErrorBoundaryRoute exact path={`${match.url}/show/:id`} component={EmployeeDetails}/>*/}
-            {/*    <ErrorBoundaryRoute path={`${match.url}`} component={Employees}/>*/}
-            {/*</Switch>*/}
-        </>
+        <Routes>
+            <Route path='/' element={<Employees/>}/>
+            <Route path='add' element={<EmployeeManage/>}/>
+            <Route path='edit/:id' element={<EmployeeManage/>}/>
+            <Route path='show/:id' element={<EmployeeDetails/>}/>
+        </Routes>
     )
 }
