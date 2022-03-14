@@ -1,12 +1,16 @@
 import React from "react";
+import {Route, Routes} from 'react-router-dom';
+import PhoneDetails from "./phone-details";
+import PhoneManage from "./phone-create-update";
+import Phones from "./phones";
 
-export default function Routes() {
-    return (<></>
-        // <Switch>
-        //     <ErrorBoundaryRoute exact path={`${match.url}/show/:id`} component={PhoneDetails}/>
-        //     <ErrorBoundaryRoute exact path={`${match.url}/edit/:id`} component={PhoneManage}/>
-        //     <ErrorBoundaryRoute exact path={`${match.url}/add`} component={PhoneManage}/>
-        //     <ErrorBoundaryRoute path={match.url} component={Phones}/>
-        // </Switch>
+export default function PhoneRouter() {
+    return (
+        <Routes>
+            <Route path='/' element={<Phones/>}/>
+            <Route path='add' element={<PhoneManage/>}/>
+            <Route path='edit/:id' element={<PhoneManage/>}/>
+            <Route path='show/:id' element={<PhoneDetails/>}/>
+        </Routes>
     )
 };

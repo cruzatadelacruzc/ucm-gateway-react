@@ -2,8 +2,8 @@ import React from 'react';
 import Widget from "../../../shared/layout/widget";
 import {useDispatch, useSelector} from "react-redux";
 import {detailsStyles} from "../style";
-import {deletePhone} from "./phone.reducer";
-import {Link, useParams} from "react-router-dom";
+import {deletePhone, getPhone} from "./phone.reducer";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {IRootState} from "../../../shared/reducer";
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
@@ -32,7 +32,7 @@ const Root = styled("div")(({theme}) => ({
 
 const PhoneDetails = () => {
     const theme = useTheme();
-    // let history = useHistory();
+    let navigate = useNavigate();
     const dispatch = useDispatch();
     const classes = detailsStyles();
     let {id} = useParams<{ id: string }>();
@@ -42,15 +42,19 @@ const PhoneDetails = () => {
     const updating = useSelector((states: IRootState) => states.phone.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.phone.updateSuccess);
 
-    // React.useEffect(() => {
-    //     dispatch(getPhone(id))
-    // }, [id])// eslint-disable-line react-hooks/exhaustive-deps
-    //
-    // React.useEffect(() => {
-    //     if (isUpdateSuccess) {
-    //         history.push('/phone');
-    //     }
-    // }, [isUpdateSuccess, history])
+    React.useEffect(() => {
+        if (undefined !== id) {
+            dispatch(getPhone(id))
+        } else {
+            navigate(-1); // Pass the delta to go in the history stack, equivalent to hitting the back button.
+        }
+    }, [id])// eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (isUpdateSuccess) {
+            navigate(-1); // Pass the delta to go in the history stack, equivalent to hitting the back button.
+        }
+    }, [isUpdateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Widget disableWidgetMenu>
@@ -103,7 +107,7 @@ const PhoneDetails = () => {
                                 <HomeWorkIcon fontSize='large' style={{marginRight: theme.spacing(1)}}/>
                             }
                             <Button variant="text" color='primary' component={Link} sx={{textTransform: 'uppercase'}}
-                                    to={`/workplace/show/${_entity.workPlace?.id}`}>
+                                    to={`/dashboard/workplace/show/${_entity.workPlace?.id}`}>
                                 <Typography variant="subtitle1" style={{borderBottom: '2px dotted red'}}>
                                     {_entity.workPlace?.name}
                                 </Typography>
@@ -114,8 +118,9 @@ const PhoneDetails = () => {
                     <Box className={classes.buttons}>
                         <Button
                             component={Link}
+                            color="warning"
                             variant="contained"
-                            to={'/phone'}
+                            to={'/dashboard/phone'}
                             className={classes.button}>
                             {t('common:close')}
                         </Button>
@@ -124,7 +129,7 @@ const PhoneDetails = () => {
                             color="success"
                             variant="contained"
                             className={classes.button}
-                            to={`/phone/edit/${id}`}>
+                            to={`/dashboard/phone/edit/${id}`}>
                             {t('common:edit')}
                         </Button>
                         <Button

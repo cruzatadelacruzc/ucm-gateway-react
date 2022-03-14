@@ -1,9 +1,9 @@
 import React from 'react'
-import {Link as RouterLink, useParams} from "react-router-dom";
+import {Link as RouterLink, useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {IRootState} from "../../../../shared/reducer";
-import {deleteEmployee} from "./employee.reducer";
+import {deleteEmployee, getEmployee} from "./employee.reducer";
 import {
     Avatar,
     Box,
@@ -30,7 +30,7 @@ import Widget from "../../../../shared/layout/widget";
 import DialogDelete from "../../../../shared/components/dialog-delete";
 
 function EmployeeDetails() {
-    // let history = useHistory();
+    let navigate = useNavigate();
     const dispatch = useDispatch();
     const classes = detailsStyles();
     let {id} = useParams<{ id: string }>();
@@ -40,15 +40,19 @@ function EmployeeDetails() {
     const updating = useSelector((states: IRootState) => states.employee.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.employee.updateSuccess);
 
-    // React.useEffect(() => {
-    //     dispatch(getEmployee(id))
-    // }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
-    //
-    // React.useEffect(() => {
-    //     if (isUpdateSuccess) {
-    //         history.push('/employee');
-    //     }
-    // }, [isUpdateSuccess, history])
+    React.useEffect(() => {
+        if (undefined !== id) {
+            dispatch(getEmployee(id))
+        } else {
+            navigate(-1); // Pass the delta to go in the history stack, equivalent to hitting the back button.
+        }
+    }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (isUpdateSuccess) {
+            navigate(-1) // Pass the delta to go in the history stack, equivalent to hitting the back button.
+        }
+    }, [isUpdateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Widget disableWidgetMenu>
@@ -149,7 +153,7 @@ function EmployeeDetails() {
                                 <FormLabel component="legend">{t("workPlace")}</FormLabel>
                                 {_entity.workPlaceId && <Button variant="text" color='primary' component={RouterLink}
                                                                 sx={{textTransform: 'uppercase'}}
-                                                                to={`/workplace/show/${_entity.workPlaceId}`}
+                                                                to={`/dashboard/workplace/show/${_entity.workPlaceId}`}
                                                                 startIcon={<Business fontSize='large'/>}>
                                     <Typography variant="subtitle1">{_entity.workPlaceName}</Typography>
                                 </Button>}
@@ -160,7 +164,7 @@ function EmployeeDetails() {
                             <List sx={{py: 1}}>
                                 {_entity.phones?.map((phone, index) => (
                                     <IconButton key={index} size="large" sx={{p: 0, borderRadius: 0}}>
-                                        <ListItem component={RouterLink} to={`/phone/show/${phone.id}`} sx={{pl: 0}}>
+                                        <ListItem component={RouterLink} to={`/dashboard/phone/show/${phone.id}`} sx={{pl: 0}}>
                                             <ListItemAvatar>
                                                 <Avatar>
                                                     <LocalPhone/>
@@ -177,8 +181,9 @@ function EmployeeDetails() {
                         <Grid item xs={12}>
                             <Button
                                 component={RouterLink}
+                                color="warning"
                                 variant="contained"
-                                to={'/employee'}
+                                to={'/dashboard/employee'}
                                 className={classes.button}>
                                 {t('common:close')}
                             </Button>
@@ -187,7 +192,7 @@ function EmployeeDetails() {
                                 color="success"
                                 variant="contained"
                                 className={classes.button}
-                                to={`/employee/edit/${id}`}>
+                                to={`/dashboard/employee/edit/${id}`}>
                                 {t('common:edit')}
                             </Button>
                             <Button

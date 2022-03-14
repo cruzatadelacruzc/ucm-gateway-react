@@ -10,7 +10,14 @@ import {setMenu} from "../../shared/reducer/customization.reducer";
 import {drawerWidth} from "../../../config/constants";
 
 const Main = styled('main', {shouldForwardProp: open => open !== 'open'})<{open: boolean}>(({ theme, open }) => ({
-    ...theme.typography.mainContent,
+    flexGrow: 1,
+    width: '100%',
+    borderRadius: 8,
+    padding: '20px',
+    marginTop: '88px',
+    marginRight: '20px',
+    minHeight: 'calc(100vh - 88px)',
+    backgroundColor: theme.palette.primary.light,
     ...(!open && {
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,

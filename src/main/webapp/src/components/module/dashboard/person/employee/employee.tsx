@@ -70,7 +70,7 @@ const Employees = () => {
                 customBodyRender: (value, tableMeta) => {
                     const _workplaceId = tableMeta.rowData?.length > 0 && tableMeta.rowData[9]
                     return _workplaceId ?
-                        <Button variant="text" component={Link} to={`/workplace/show/${_workplaceId}`}>{value}</Button> :
+                        <Button variant="text" component={Link} to={`/dashboard/workplace/show/${_workplaceId}`}>{value}</Button> :
                         ''
                 }
             }

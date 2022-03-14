@@ -13,7 +13,7 @@ export default function PersonDetails(_entity: IPerson) {
         if (_entity.avatarUrl) {
             return buildAvatarURL(_entity.avatarUrl)
         } else {
-            return "../../user.svg"
+            return "../../../user.svg"
         }
     }
 
@@ -25,7 +25,7 @@ export default function PersonDetails(_entity: IPerson) {
                         <CardActionArea>
                             <CardMedia
                                 component="img"
-                                style={{padding: 5, height: 250}}
+                                sx={{ p:'5px', height: '250px' }}
                                 image={getAvatarUrl()}
                                 alt={`${_entity.name} ${_entity.firstLastName} ${_entity.secondLastName}`}
                             />

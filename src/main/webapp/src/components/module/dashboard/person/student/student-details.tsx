@@ -1,17 +1,17 @@
 import React from 'react';
 import {detailsStyles} from "../../style";
 import {useTranslation} from "react-i18next";
-import {deleteStudent} from './student.reducer'
+import {deleteStudent, getStudent} from './student.reducer'
 import {useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../../../shared/reducer";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import Widget from "../../../../shared/layout/widget";
 import {Box, Button, Chip, CircularProgress, Divider, FormControl, FormLabel, Grid} from "@mui/material";
 import PersonDetails from "../person-details";
 import DialogDelete from "../../../../shared/components/dialog-delete";
 
 const StudentDetails = () => {
-    // let history = useHistory();
+    let navigate = useNavigate();
     const dispatch = useDispatch();
     const classes = detailsStyles();
     let {id} = useParams<{ id: string }>();
@@ -21,15 +21,19 @@ const StudentDetails = () => {
     const updating = useSelector((states: IRootState) => states.student.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.student.updateSuccess);
 
-    // React.useEffect(() => {
-    //     dispatch(getStudent(id))
-    // }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
-    //
-    // React.useEffect(() => {
-    //     if (isUpdateSuccess) {
-    //         history.push('/student');
-    //     }
-    // }, [isUpdateSuccess, history])
+    React.useEffect(() => {
+        if (undefined !== id){
+            dispatch(getStudent(id))
+        } else {
+            navigate(-1); // Pass the delta to go in the history stack, equivalent to hitting the back button.
+        }
+    }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (isUpdateSuccess) {
+            navigate(-1) // Pass the delta to go in the history stack, equivalent to hitting the back button.
+        }
+    }, [isUpdateSuccess])
 
     return (
         <Widget disableWidgetMenu>
@@ -87,7 +91,7 @@ const StudentDetails = () => {
                             <Button
                                 component={Link}
                                 variant="contained"
-                                to={'/student'}
+                                to={'/dashboard/student'}
                                 className={classes.button}>
                                 {t('common:close')}
                             </Button>
@@ -96,7 +100,7 @@ const StudentDetails = () => {
                                 color="success"
                                 variant="contained"
                                 className={classes.button}
-                                to={`/student/edit/${id}`}>
+                                to={`/dashboard/student/edit/${id}`}>
                                 {t('common:edit')}
                             </Button>
                             <Button

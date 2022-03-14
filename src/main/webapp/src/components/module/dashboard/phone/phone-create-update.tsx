@@ -1,13 +1,13 @@
 import React from 'react';
 import Widget from "../../../shared/layout/widget";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {batch, useDispatch, useSelector} from "react-redux";
 import {formUpdateStyles, MenuProps} from "../style";
 import {useTranslation} from "react-i18next";
 import {Field, Form, Formik} from "formik";
 import {defaultValue, IPhone} from "../../../shared/models/phone.model";
 import {IRootState} from "../../../shared/reducer";
-import {createPhone, updatePhone} from "./phone.reducer";
+import {createPhone, getPhone, reset, updatePhone} from "./phone.reducer";
 import * as yup from "yup";
 import {Box, Button, CircularProgress, MenuItem} from "@mui/material";
 import {CheckboxWithLabel, TextField} from "formik-mui";
@@ -15,7 +15,7 @@ import {geEmployees} from "../person/employee/employee.reducer";
 import {getWorkPlaces} from "../workplace/workplace.reducer";
 
 const PhoneManage = () => {
-    // let history = useHistory();
+    let navigate = useNavigate();
     const dispatch = useDispatch();
     const classes = formUpdateStyles();
     let {id} = useParams<{id: string}>();
@@ -47,17 +47,19 @@ const PhoneManage = () => {
         })
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-    // React.useEffect( () => {
-    //     if (!isNew) {
-    //      dispatch(getPhone(id))
-    //     }
-    // }, [isNew, id])// eslint-disable-line react-hooks/exhaustive-deps
-    //
-    // React.useEffect(() => {
-    //     if (isUpdateSuccess) {
-    //         history.push('/phone');
-    //     }
-    // }, [isUpdateSuccess])// eslint-disable-line react-hooks/exhaustive-deps
+    React.useEffect( () => {
+        if (undefined === id) {
+         dispatch(reset())
+        } else {
+            dispatch(getPhone(id))
+        }
+    }, [isNew, id])// eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (isUpdateSuccess) { // Pass the delta to go in the history stack, equivalent to hitting the back button.
+            navigate(-1); // Pass the delta to go in the history stack, equivalent to hitting the back button.
+        }
+    }, [isUpdateSuccess])// eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Widget title={t('title.manage')} disableWidgetMenu>
@@ -158,15 +160,16 @@ const PhoneManage = () => {
                         <Box className={classes.buttons}>
                             <Button
                                 className={classes.button}
+                                color="warning"
                                 variant="contained"
                                 component={Link}
-                                to='/phone'
+                                to='/dashboard/phone'
                                 disabled={updating}>
                                 {t('common:cancel')}
                             </Button>
                             <Button
                                 className={classes.button}
-                                color="primary"
+                                color="success"
                                 variant="contained"
                                 disabled={updating}
                                 endIcon={updating ? <CircularProgress size="1rem" /> : null}

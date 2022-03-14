@@ -91,6 +91,10 @@ const phoneReducer = (state: PhoneStateType = initialState, {type, payload}: Any
                 updateSuccess: false,
                 errorMessage: payload.data
             }
+        case ACTION_TYPES.RESET:
+            return {
+                ...initialState,
+            };
         default:
             return state;
     }
@@ -133,5 +137,9 @@ export const deletePhone: ICrudDeleteAction<IPhone> = id => async dispatch => {
         payload: axios.delete(`${apiUrl}/${id}`)
     })
 }
+
+export const reset = () => ({
+    type: ACTION_TYPES.RESET,
+});
 
 export default phoneReducer;
