@@ -4,8 +4,16 @@ import {FiberManualRecord, SvgIconComponent} from "@mui/icons-material";
 import {useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../reducer";
 import {Link as LinkRouter, LinkProps as LinkRouterProps} from "react-router-dom";
-import {Link, LinkBaseProps, ListItemButton, ListItemIcon, ListItemText, Typography} from "@mui/material";
-import {menuOpen} from "../../reducer/customization.reducer";
+import {
+    Link,
+    LinkBaseProps,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Typography,
+    useMediaQuery
+} from "@mui/material";
+import {menuOpen, setMenu} from "../../reducer/customization.reducer";
 
 export interface IItem {
     id: string,
@@ -32,6 +40,7 @@ const NavItem = ({item, level} : NavItem) => {
     const Icon = item?.icon
     const theme = useTheme();
     const dispatch = useDispatch();
+    const matchesSM = useMediaQuery(theme.breakpoints.down('lg'));
     const isOpen = useSelector((state: IRootState) => state.customization.isOpen);
 
     const itemIcon = Icon ?
@@ -71,6 +80,13 @@ const NavItem = ({item, level} : NavItem) => {
         }
     }
 
+    const itemHandler = (id) => {
+        dispatch(menuOpen(id));
+        if (matchesSM){
+            dispatch(setMenu(false));
+        }
+    };
+
     // active menu item on page load
     React.useEffect(() => {
         const currentIndex = document.location.pathname
@@ -86,13 +102,17 @@ const NavItem = ({item, level} : NavItem) => {
     return (
         <ListItemButton
             {...listItemProps}
+            disabled={item.disabled}
             sx={{
                 mb: 0.5,
+                borderRadius: '4px',
                 alignItems: 'flex-start',
                 backgroundColor: level > 1 ? 'transparent !important' : 'inherit',
                 py: level > 1 ? 1 : 1.25,
                 pl: `${level * 24}px`
             }}
+            selected={isOpen.findIndex((id) => id === item.id) > -1}
+            onClick={() => itemHandler(item.id)}
         >
             <ListItemIcon sx={{ my: 'auto', minWidth: !item?.icon ? 18 : 36 }}>{itemIcon}</ListItemIcon>
             <ListItemText
