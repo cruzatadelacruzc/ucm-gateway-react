@@ -4,7 +4,7 @@
  */
 import {PaletteOptions} from "@mui/material";
 
-export default function themePalette(theme): PaletteOptions {
+export default function themePalette(): PaletteOptions {
     return {
         mode: 'light',
         common: {

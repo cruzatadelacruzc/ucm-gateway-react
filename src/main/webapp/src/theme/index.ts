@@ -4,6 +4,7 @@ import componentStyleOverrides from "./component-style-override";
 import themeTypography from "./typography";
 import themePalette from "./pelette";
 import {CustomizationType} from "../components/shared/reducer/customization.reducer";
+import createTypography from "@mui/material/styles/createTypography";
 
 // export default createTheme(adaptV4Theme({
 //     palette: {
@@ -36,23 +37,11 @@ import {CustomizationType} from "../components/shared/reducer/customization.redu
 //     },
 // }));
 
-export const theme = (customization: CustomizationType): Theme => {
-    const themeOption = {
-        color: 'ad',
-        heading: 'dasa',
-        background: 'color.primaryLight',
-        darkTextPrimary: 'color.grey700',
-        darkTextSecondary: 'color.grey500',
-        textDark: 'color.grey900',
-        menuSelected: 'color.secondaryDark',
-        menuSelectedBack: 'color.secondaryLight',
-        divider: 'color.grey200',
-        customization
-    }
 
+export const theme = (customization: CustomizationType): Theme => {
     const themeOptions: ThemeOptions = {
         direction: 'ltr',
-        palette: themePalette(themeOption),
+        palette: themePalette(),
         mixins: {
             toolbar: {
                 minHeight: '48px',
@@ -62,11 +51,11 @@ export const theme = (customization: CustomizationType): Theme => {
                 }
             }
         },
-        typography: themeTypography(themeOption)
     };
 
     const themes = createTheme(themeOptions);
-    themes.components = componentStyleOverrides(themeOption)
+    themes.components = componentStyleOverrides(themes.palette)
+    themes.typography = createTypography(themes.palette, themeTypography(themes.palette))
     return themes;
 }
 

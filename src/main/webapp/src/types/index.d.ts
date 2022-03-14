@@ -88,19 +88,25 @@ export interface ITableState {
 
 declare module '@mui/material/styles/createTypography' {
     interface Typography {
-        mainContent: React.CSSProperties,
-        commonAvatar:  React.CSSProperties,
         mediumAvatar:  React.CSSProperties,
         menuCaption: React.CSSProperties
         subMenuCaption: React.CSSProperties,
     }
     // allow configuration using `createTheme`
     interface TypographyOptions {
-        mainContent?: React.CSSProperties,
         menuCaption?: React.CSSProperties
-        commonAvatar?: React.CSSProperties,
         mediumAvatar?: React.CSSProperties,
         subMenuCaption?: React.CSSProperties
+    }
+}
+
+declare module '@mui/material/styles' {
+    interface Theme {
+        mainContent: React.CSSProperties,
+    }
+    // allow configuration using `createTheme`
+    interface ThemeOptions {
+        mainContent?: React.CSSProperties,
     }
 }
 

@@ -1,55 +1,56 @@
 import {TypographyOptions} from "@mui/material/styles/createTypography";
+import {Palette} from "@mui/material";
 
 /**
  * Typography used in theme
- * @param theme customization object
+ * @param palette
  */
-export default function themeTypography(theme): TypographyOptions {
+export default function themeTypography(palette: Palette): TypographyOptions {
     return {
-        fontFamily: theme?.customization?.fontFamily,
+        fontFamily: ['"Lato"', 'sans-serif'].join(','),
         h6: {
             fontWeight: 500,
-            color: theme.heading,
+            color: palette.grey["900"],
             fontSize: '0.75rem'
         },
         h5: {
             fontSize: '0.875rem',
-            color: theme.heading,
+            color: palette.grey["900"],
             fontWeight: 500
         },
         h4: {
             fontSize: '1rem',
-            color: theme.heading,
+            color:  palette.grey['900'],
             fontWeight: 600
         },
         h3: {
             fontSize: '1.25rem',
-            color: theme.heading,
+            color:  palette.grey['900'],
             fontWeight: 600
         },
         h2: {
             fontSize: '1.5rem',
-            color: theme.heading,
+            color:  palette.grey['900'],
             fontWeight: 700
         },
         h1: {
             fontSize: '2.125rem',
-            color: theme.heading,
+            color:  palette.grey['900'],
             fontWeight: 700
         },
         subtitle1: {
             fontSize: '0.875rem',
             fontWeight: 500,
-            color: theme.textDark
+            color:  palette.grey['900'],
         },
         subtitle2: {
             fontSize: '0.75rem',
             fontWeight: 400,
-            color: theme.darkTextSecondary
+            color:  palette.grey['500']
         },
         caption: {
             fontSize: '0.75rem',
-            color: theme.darkTextSecondary,
+            color:  palette.grey['500'],
             fontWeight: 400
         },
         body1: {
@@ -61,21 +62,7 @@ export default function themeTypography(theme): TypographyOptions {
             letterSpacing: '0em',
             fontWeight: 400,
             lineHeight: '1.5em',
-            color: theme.darkTextPrimary
-        },
-        mainContent: {
-            backgroundColor: theme.background,
-            width: '100%',
-            minHeight: 'calc(100vh - 88px)',
-            flexGrow: 1,
-            padding: '20px',
-            marginTop: '88px',
-            marginRight: '20px',
-            borderRadius: 8
-        },
-        commonAvatar: {
-            cursor: 'pointer',
-            borderRadius: '8px'
+            color:  palette.grey['700'],
         },
         mediumAvatar: {
             width: '34px',
@@ -85,13 +72,13 @@ export default function themeTypography(theme): TypographyOptions {
         subMenuCaption: {
             fontSize: '0.6875rem',
             fontWeight: 500,
-            color: theme.darkTextSecondary,
+            color:  palette.grey['500'],
             textTransform: 'capitalize'
         },
         menuCaption: {
             fontSize: '0.875rem',
             fontWeight: 500,
-            color: theme.heading,
+            color:  palette.grey['500'],
             padding: '6px',
             textTransform: 'capitalize',
             marginTop: '10px'
