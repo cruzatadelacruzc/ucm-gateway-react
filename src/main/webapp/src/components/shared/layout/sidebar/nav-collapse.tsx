@@ -61,6 +61,7 @@ const NavCollapse = ({menu, level}: INavCollapse) => {
             <ListItemButton
                 sx={{
                     mb: 0.5,
+                    borderRadius: '4px',
                     alignItems: 'flex-start',
                     backgroundColor: level > 1 ? 'transparent !important' : 'inherit',
                     py: level > 1 ? 1 : 1.25,
