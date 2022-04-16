@@ -89,7 +89,7 @@ const PhoneDetails = () => {
                                 src={_entity.employee.avatarUrl ? buildAvatarURL(_entity.employee.avatarUrl) : ""}
                             />
                             <Button variant="text" color='primary' component={Link}
-                                    to={`/employee/show/${_entity.employee.id}`}>
+                                    to={`/dashboard/employee/show/${_entity.employee.id}`}>
                                 <Typography variant="subtitle1" style={{borderBottom: '2px dotted red'}}>
                                     {`${_entity.employee?.name} ${_entity.employee?.firstLastName} ${_entity.employee?.secondLastName}`}
                                 </Typography>
