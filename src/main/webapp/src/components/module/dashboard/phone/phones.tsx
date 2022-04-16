@@ -72,7 +72,7 @@ const Phones = () => {
                 customBodyRender: (value, tableMeta) => {
                     const _employeeId = tableMeta.rowData?.length > 0 && tableMeta.rowData[6]
                     return _employeeId ?
-                        <Button variant="text" component={Link} to={`/employee/show/${_employeeId}`}>{value}</Button> :
+                        <Button variant="text" component={Link} to={`/dashboard/employee/show/${_employeeId}`}>{value}</Button> :
                         ''
                 }
             }
@@ -84,7 +84,7 @@ const Phones = () => {
                 customBodyRender: (value, tableMeta) => {
                     const _workplaceId = tableMeta.rowData?.length > 0 && tableMeta.rowData[7]
                     return _workplaceId ?
-                        <Button variant="text" component={Link} to={`/workplace/show/${_workplaceId}`}>{value}</Button> :
+                        <Button variant="text" component={Link} to={`/dashboard/workplace/show/${_workplaceId}`}>{value}</Button> :
                         ''
                 }
             }
