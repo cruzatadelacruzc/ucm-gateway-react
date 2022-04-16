@@ -5,19 +5,20 @@ import {useTranslation} from "react-i18next";
 import {IRootState} from "../../../shared/reducer";
 import Widget from "../../../shared/layout/widget";
 import {formUpdateStyles, MenuProps} from "../style";
-import {useDispatch, useSelector} from "react-redux";
-import {Link, useParams} from "react-router-dom";
+import {batch, useDispatch, useSelector} from "react-redux";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {CheckboxWithLabel, Select, TextField} from "formik-mui";
 import {Box, Button, CircularProgress, Grid, InputLabel, MenuItem} from "@mui/material";
 import {defaultValue, IWorkPlace} from "../../../shared/models/workplace.model";
-import {createWorkPlace, deleteAvatar, updateWorkPlace} from "./workplace.reducer";
+import {createWorkPlace, deleteAvatar, getWorkPlace, reset, updateWorkPlace} from "./workplace.reducer";
 import {createDeepEqualSelector} from "../../../shared/util/function-utils";
 import {IEmployee} from "../../../shared/models/employee.model";
 import UCMAvatar from "../../../shared/components/avatar";
+import {geEmployees, getFilterEmployees} from "../person/employee/employee.reducer";
 
 
 const WorkPlaceManage = () => {
-    // let history = useHistory();
+    let navigate = useNavigate();
     const dispatch = useDispatch();
     const classes = formUpdateStyles();
     let {id} = useParams<{ id: string }>();
@@ -35,23 +36,25 @@ const WorkPlaceManage = () => {
     );
     const employeesToUpdate = useSelector((states: IRootState) => selector(states));
 
-    // React.useEffect(() => {
-    //     if (isNew) {
-    //         dispatch(reset())
-    //         dispatch(getFilterEmployees(`workPlaceId.specified=false`))
-    //     } else {
-    //         batch( () => {
-    //             dispatch(geEmployees())
-    //             dispatch(getWorkPlace(id))
-    //         })
-    //     }
-    // }, [isNew, id]) // eslint-disable-line react-hooks/exhaustive-deps
-    //
-    // React.useEffect(() => {
-    //     if (isUpdateSuccess) {
-    //         history.push('/workplace');
-    //     }
-    // }, [isUpdateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
+    React.useEffect(() => {
+        if (undefined === id) { // id undefined, then action is Create, otherwise Update
+            dispatch(reset())
+            dispatch(getFilterEmployees(`workPlaceId.specified=false`))
+        } else {
+            batch( () => {
+                if (undefined !== id) {
+                    dispatch(geEmployees())
+                    dispatch(getWorkPlace(id))
+                }
+            })
+        }
+    }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (isUpdateSuccess) {
+            navigate(-1); // Pass the delta to go in the history stack, equivalent to hitting the back button.
+        }
+    }, [isUpdateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
 
@@ -159,15 +162,16 @@ const WorkPlaceManage = () => {
                             <Box className={classes.buttons}>
                                 <Button
                                     className={classes.button}
+                                    color="warning"
                                     variant="contained"
                                     component={Link}
-                                    to='/workplace'
+                                    to='/dashboard/workplace'
                                     disabled={updating}>
-                                    {t('common:close')}
+                                    {t('common:cancel')}
                                 </Button>
                                 <Button
                                     className={classes.button}
-                                    color="primary"
+                                    color="success"
                                     variant="contained"
                                     disabled={updating}
                                     endIcon={updating ? <CircularProgress size="1rem"/> : null}
