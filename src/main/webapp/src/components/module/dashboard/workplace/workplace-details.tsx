@@ -3,8 +3,8 @@ import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {detailsStyles} from "../style";
 import {IRootState} from "../../../shared/reducer";
-import {Link, useParams} from "react-router-dom";
-import {deleteWorkPlace} from "./workplace.reducer";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import {deleteWorkPlace, getWorkPlace} from "./workplace.reducer";
 import {
     Avatar,
     Box,
@@ -31,7 +31,7 @@ import {buildAvatarURL} from "../../../shared/util/function-utils";
 import DialogDelete from "../../../shared/components/dialog-delete";
 
 const WorkplaceDetails = () => {
-    // let history = useHistory();
+    let navigate = useNavigate();
     const dispatch = useDispatch();
     const classes = detailsStyles();
     let {id} = useParams<{ id: string }>();
@@ -41,15 +41,19 @@ const WorkplaceDetails = () => {
     const updating = useSelector((states: IRootState) => states.workPlace.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.workPlace.updateSuccess);
 
-    // React.useEffect(() => {
-    //     dispatch(getWorkPlace(id))
-    // }, [id])// eslint-disable-line react-hooks/exhaustive-deps
-    //
-    // React.useEffect(() => {
-    //     if (isUpdateSuccess) {
-    //         history.push('/workplace');
-    //     }
-    // }, [isUpdateSuccess, history])
+    React.useEffect(() => {
+        if (undefined !== id) {
+            dispatch(getWorkPlace(id))
+        } else {
+            navigate(-1); // Pass the delta to go in the history stack, equivalent to hitting the back button.
+        }
+    }, [id])// eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (isUpdateSuccess) {
+            navigate(-1); // Pass the delta to go in the history stack, equivalent to hitting the back button.
+        }
+    }, [isUpdateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
 
     const getAvatarUrl = (): string => {
         if (_entity.avatarUrl) {
@@ -108,9 +112,9 @@ const WorkplaceDetails = () => {
                             </Grid>
                         </Grid>
                         <Grid item xs={12} sx={{mt: 3}}>
-                            <Typography variant="h6">{t("phones")}:</Typography>
+                            <Typography variant="h3">{t("phones")}</Typography>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} sx={{mb: 1}}>
                             <List sx={{py: 1}}>
                                 {_entity.phones?.map((phone, index) => {
                                     return (
@@ -125,14 +129,14 @@ const WorkplaceDetails = () => {
                                 }
                             </List>
                         </Grid>
-                        <Grid item xs={12}><Typography variant="h6">{t("members")}:</Typography></Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12}><Typography variant="h3">{t("members")}</Typography></Grid>
+                        <Grid item xs={12} sx={{mb: 1}}>
                             <List sx={{py: 1}}>
                                 {_entity.employees?.map((employee, index) => {
                                     return (
                                         <IconButton key={index} size="large" sx={{p: 0, borderRadius: 0, mr: 1}}>
                                             <ListItem alignItems="flex-start" component={Link}
-                                                      to={`/employee/show/${employee.id}`} sx={{pl: 0}}>
+                                                      to={`/dashboard/employee/show/${employee.id}`} sx={{pl: 0}}>
                                                 <ListItemAvatar>
                                                     <Avatar alt={employee.name}
                                                             src={employee.avatarUrl ? buildAvatarURL(employee.avatarUrl) : ''}/>
@@ -150,8 +154,9 @@ const WorkplaceDetails = () => {
                         <Grid item xs={12}>
                             <Button
                                 component={Link}
+                                color="warning"
                                 variant="contained"
-                                to={'/workplace'}
+                                to={'/dashboard/workplace'}
                                 className={classes.button}>
                                 {t('common:close')}
                             </Button>
@@ -160,7 +165,7 @@ const WorkplaceDetails = () => {
                                 color="success"
                                 variant="contained"
                                 className={classes.button}
-                                to={`/workplace/edit/${id}`}>
+                                to={`/dashboard/workplace/edit/${id}`}>
                                 {t('common:edit')}
                             </Button>
                             <Button
