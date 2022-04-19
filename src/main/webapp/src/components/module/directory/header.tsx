@@ -1,7 +1,7 @@
 import React from 'react';
 import {KeyboardArrowUp as KeyboardArrowUpIcon, Search as SearchIcon} from '@mui/icons-material';
 import ScrollTop from '../../shared/components/scroll-top';
-import {AppBar, Avatar, Fab, IconButton, InputBase, Paper, Toolbar, useScrollTrigger} from '@mui/material';
+import {AppBar, Avatar, ButtonBase, Fab, IconButton, InputBase, Paper, Toolbar, useScrollTrigger} from '@mui/material';
 import {Link} from 'react-router-dom';
 import {IDirectoryProps} from './directory';
 import {headerStyles} from './style';
@@ -10,6 +10,7 @@ import ProfileSection from '../../shared/layout/header/profile-section';
 import MoreIcon from "@mui/icons-material/MoreVert";
 import {useSelector} from "react-redux";
 import {IRootState} from "../../shared/reducer";
+import SvgLogo from "../../shared/components/svg-logo";
 
 
 export default function Header(props: IDirectoryProps) {
@@ -39,11 +40,9 @@ export default function Header(props: IDirectoryProps) {
         <div className={classes.grow}>
             <AppBar elevation={trigger ? 5 : 0} className={classes.appBar}>
                 <Toolbar>
-                    <div className={classes.logo}>
-                    <Link to='/' className={classes.link}>
-                        <img alt='logo' src='./oficial-logo.svg' className={classes.large}/>
-                    </Link>
-                    </div>
+                    <ButtonBase disableRipple component={Link} to="/">
+                        <SvgLogo sx={{fontSize: '3.5rem'}}/>
+                    </ButtonBase>
                     <div className={classes.grow}/>
                     <Paper elevation={trigger ? 0 : 2} className={classes.paper}
                            style={trigger ? {border: '1px solid #e0e2e6'} : undefined}>
