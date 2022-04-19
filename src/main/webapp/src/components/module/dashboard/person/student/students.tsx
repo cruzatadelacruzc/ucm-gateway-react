@@ -6,7 +6,7 @@ import UCMDataBase from "../../../../shared/components/datatable";
 const Students = () => {
     const {t} = useTranslation(['student']);
 
-    const _columns = [
+    const _columns = React.useMemo(() => [
         {
             name: "id",
             options: {
@@ -72,7 +72,7 @@ const Students = () => {
                 display: false
             }
         },
-    ];
+    ], []);  // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <UCMDataBase

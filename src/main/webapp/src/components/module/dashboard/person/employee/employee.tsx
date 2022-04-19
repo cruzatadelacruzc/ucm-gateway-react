@@ -8,7 +8,7 @@ import {Link} from "react-router-dom";
 const Employees = () => {
     const {t} = useTranslation(['employee']);
 
-    const _columns = [
+    const _columns = React.useMemo(() => [
         {
             name: "id",
             options: {
@@ -85,7 +85,7 @@ const Employees = () => {
                 searchable: false
             }
         },
-    ];
+    ], []);  // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <>

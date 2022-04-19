@@ -6,7 +6,7 @@ import {ACTION_TYPES} from "./nomenclature.reducer";
 const Nomenclature = () => {
     const {t} = useTranslation(['nomenclature']);
 
-    const _columns = [
+    const _columns = React.useMemo(() => [
         {
             name: "id",
             options: {
@@ -29,7 +29,7 @@ const Nomenclature = () => {
             name: 'description',
             label: t("description")
         },
-    ];
+    ], []);  // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <UCMDataBase
