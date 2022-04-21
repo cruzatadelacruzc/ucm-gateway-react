@@ -115,7 +115,7 @@ const NomenclatureManage = () => {
                         <Box className={classes.buttons}>
                             <Button
                                 className={classes.button}
-                                color="secondary"
+                                color="warning"
                                 variant="contained"
                                 component={Link}
                                 to='/dashboard/nomenclature'
@@ -124,7 +124,7 @@ const NomenclatureManage = () => {
                             </Button>
                             <Button
                                 className={classes.button}
-                                color="primary"
+                                color="success"
                                 variant="contained"
                                 disabled={updating}
                                 endIcon={updating ? <CircularProgress size="1rem" /> : null}
