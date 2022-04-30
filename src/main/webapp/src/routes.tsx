@@ -1,7 +1,8 @@
 import React, {lazy} from 'react';
 import {Route, Routes} from 'react-router-dom';
-import {CONFIG} from './config/constants';
+import {AUTHORITIES, CONFIG} from './config/constants';
 import Loadable from "./components/shared/components/Loadable";
+import RequireAuth from "./components/shared/auth/private-route";
 
 const Logout = Loadable(lazy(() => import("./components/module/login/Logout")));
 const Dashboard = Loadable(lazy(() => import("./components/module/dashboard")));
@@ -12,7 +13,7 @@ const Phone = Loadable(lazy(() => import("./components/module/dashboard/phone"))
 const WorkPlace = Loadable(lazy(() => import("./components/module/dashboard/workplace")));
 const Directory = Loadable(lazy(() => import("./components/module/directory/directory")));
 const PageNotFound = Loadable(lazy(() => import("./components/shared/error/page-not-found")));
-const LoginRedirect = Loadable(lazy(() => import("./components/shared/error/page-not-found")));
+const LoginRedirect = Loadable(lazy(() => import("./components/module/login/login-redirect")));
 
 /**
  *The LoginRedirect component always comes before the Dashboard component.
@@ -24,28 +25,19 @@ const LoginRedirect = Loadable(lazy(() => import("./components/shared/error/page
 export default function AppRoute() {
     // let location = useLocation<RouteComponentProps>();
     // React.useEffect(() => window.scrollTo(0, 0), [location.pathname]);
-    // return (
-    //   <Switch>
-    //     <ErrorBoundaryRoute path='/logout' component={Logout} />
-    //     <ErrorBoundaryRoute path='/' exact component={Directory} />
-    //       {/*Read the explanation above the component*/}
-    //     <ErrorBoundaryRoute path={CONFIG.LOGIN_URL} component={LoginRedirect} />
-    //     <PrivateRoute path='/' hasAnyAuthorities={[AUTHORITIES.ADMIN]} component={Dashboard} />
-    //     <ErrorBoundaryRoute component={PageNotFound} />
-    //   </Switch>
-    // );
     return (
         <Routes>
             <Route path='/' element={<Directory/>}/>
             <Route path='logout' element={<Logout/>}/>
-            <Route path='dashboard' element={<Dashboard/>}>
-                <Route path='nomenclature/*' element={<Nomenclature/>}/>
-                <Route path='phone/*' element={<Phone/>}/>
-                <Route path='workplace/*' element={<WorkPlace/>}/>
-                <Route path='employee/*' element={<Employee/>}/>
-                <Route path='student/*' element={<Student/>}/>
-            </Route>
             <Route path={CONFIG.LOGIN_URL} element={<LoginRedirect/>}/>
+            <Route path='dashboard' element={<RequireAuth hasAnyAuthorities={[AUTHORITIES.ADMIN]} children={<Dashboard/>}/>}>
+               <Route path='nomenclature/*' element={<Nomenclature/>}/>
+               <Route path='phone/*' element={<Phone/>}/>
+               <Route path='workplace/*' element={<WorkPlace/>}/>
+               <Route path='employee/*' element={<Employee/>}/>
+               <Route path='student/*' element={<Student/>}/>
+            </Route>
+
             <Route path='*' element={<PageNotFound/>}/>
         </Routes>
     )
