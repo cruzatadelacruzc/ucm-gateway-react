@@ -6,6 +6,7 @@ import {
     ClickAwayListener,
     Divider,
     Grow,
+    IconButton,
     List,
     ListItemButton,
     ListItemIcon,
@@ -13,6 +14,7 @@ import {
     Paper,
     Popper,
     Typography,
+    useMediaQuery,
     useTheme
 } from '@mui/material';
 import {
@@ -21,15 +23,17 @@ import {
     LoginOutlined,
     LogoutOutlined,
     ManageAccountsOutlined,
+    MoreVert,
     Settings
 } from '@mui/icons-material';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {useTranslation} from 'react-i18next';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../reducer";
 import {getLoginUrl} from "../../util/url-util";
 import MainCard from "../../components/main-card";
+import {menuOpen} from "../../reducer/customization.reducer";
 
 export interface IProfile {
     anchorEl: HTMLElement | null,
@@ -39,14 +43,18 @@ export interface IProfile {
 }
 
 export default function ProfileSection() {
-    const {isAuthenticated, account} = useSelector((states: IRootState) => states.auth);
-    const {t} = useTranslation(['common']);
     const theme = useTheme();
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useDispatch();
+    const DASHBOARD_ROUTE = '/dashboard';
+    const {t} = useTranslation(['common']);
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef<HTMLDivElement>(null);
+    const displaySM = useMediaQuery(theme.breakpoints.down('sm'));
     const [selectedIndex, setSelectedIndex] = React.useState(-1);
+    const account = useSelector((states: IRootState) => states.auth.account);
+    const isAuthenticated = useSelector((states: IRootState) => states.auth.isAuthenticated);
 
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
@@ -62,24 +70,17 @@ export default function ProfileSection() {
         setSelectedIndex(index);
         handleClose(event);
 
+        if ( route === DASHBOARD_ROUTE) {
+            dispatch(menuOpen('dashboard'));
+        }
         if (route && route !== '') {
-            navigate(route);
+            navigate(route, { replace: true });
         }
     };
 
     const PrivateMenu = function () {
         return (
             <div>
-                {/*<MenuItem component={RouterLink} to={"profile"}*/}
-                {/*          className={classNames(classes.profileMenuItem, classes.headerMenuItem)}>*/}
-                {/*    <AccountCircleOutlinedIcon className={classes.profileMenuIcon}/>*/}
-                {/*    {t('common:profile')}*/}
-                {/*</MenuItem>*/}
-                {/*<MenuItem component={RouterLink} to={"dashboard"}*/}
-                {/*          className={classNames(classes.profileMenuItem, classes.headerMenuItem)}>*/}
-                {/*    <DashboardOutlined className={classes.profileMenuIcon}/>*/}
-                {/*    {t('common:dashboard')}*/}
-                {/*</MenuItem>*/}
                 <ListItemButton
                     selected={selectedIndex === 1}
                     onClick={(event) => handleListItemClick(event, 1, '/profile')}
@@ -94,7 +95,7 @@ export default function ProfileSection() {
                 </ListItemButton>
                 {location.pathname !== '/dashboard' && <ListItemButton
                     selected={selectedIndex === 2}
-                    onClick={(event) => handleListItemClick(event, 2, '/dashboard')}
+                    onClick={(event) => handleListItemClick(event, 2, DASHBOARD_ROUTE)}
                 >
                     <ListItemIcon>
                         <DashboardOutlined/>
@@ -110,71 +111,64 @@ export default function ProfileSection() {
     }
 
     return (
-        // <Menu
-        //     id={props.menuId}
-        //     open={props.isMenuOpen}
-        //     anchorEl={props.anchorEl}
-        //     onClose={props.handleMenuClose}
-        //     className={classes.headerMenu}
-        //     classes={{paper: classes.profileMenu}}
-        //     disableAutoFocusItem
-        // >
-        //     <div className={classes.profileMenuUser}>
-        //         <Typography variant='overline' display='block'>
-        //             {account.login ? account.login : t('common:anonymous')}
-        //         </Typography>
-        //     </div>
-        //     <MenuItem component={RouterLink} to={"/"}
-        //               className={classNames(classes.profileMenuItem, classes.headerMenuItem)}>
-        //         <BallotOutlined className={classes.profileMenuIcon}/>
-        //         {t('common:directory')}
-        //     </MenuItem>
-        //     {isAuthenticated && <PrivateMenu/>}
-        //     <LogInOut/>
-        // </Menu>
         <>
-            <Chip
-                variant="outlined"
-                ref={anchorRef}
-                aria-haspopup="true"
-                color="primary"
-                onClick={handleToggle}
-                sx={{
-                    height: '48px',
-                    alignItems: 'center',
-                    borderRadius: '27px',
-                    transition: 'all .2s ease-in-out',
-                    borderColor: theme.palette.primary.light,
-                    backgroundColor: theme.palette.primary.light,
-                    '&[aria-controls="menu-list-grow"], &:hover': {
-                        borderColor: theme.palette.primary.main,
-                        background: `${theme.palette.primary.main}!important`,
-                        color: theme.palette.primary.light,
-                        '& svg': {
-                            stroke: theme.palette.primary.light
-                        }
-                    },
-                    '& .MuiChip-label': {
-                        lineHeight: 0
-                    }
-                }}
-                icon={
+            {displaySM ?
+                <IconButton size="large">
                     <Avatar
-                        alt={account.login ? account.login : t('common:anonymous')}
-                        sx={{
-                            ...theme.typography.mediumAvatar,
-                            margin: '8px 0 8px 8px !important',
-                            cursor: 'pointer'
-                        }}
                         ref={anchorRef}
                         aria-controls={open ? 'menu-list-grow' : undefined}
                         aria-haspopup="true"
-                        color="inherit"
-                    />
-                }
-                label={<Settings/>}
-                aria-controls={open ? 'menu-list-grow' : undefined}
-            />
+                        onClick={handleToggle}
+                        sx={{width: 15, backgroundColor: '#ffff'}}
+                    >
+                        <MoreVert sx={{color: theme.palette.grey["700"]}}/>
+                    </Avatar>
+                </IconButton>
+                :
+                <Chip
+                    variant="outlined"
+                    ref={anchorRef}
+                    aria-haspopup="true"
+                    color="primary"
+                    onClick={handleToggle}
+                    sx={{
+                        height: '48px',
+                        alignItems: 'center',
+                        borderRadius: '27px',
+                        transition: 'all .2s ease-in-out',
+                        borderColor: theme.palette.primary.light,
+                        backgroundColor: theme.palette.primary.light,
+                        '&[aria-controls="menu-list-grow"], &:hover': {
+                            borderColor: theme.palette.primary.main,
+                            background: `${theme.palette.primary.main}!important`,
+                            color: theme.palette.primary.light,
+                            '& svg': {
+                                stroke: theme.palette.primary.light
+                            }
+                        },
+                        '& .MuiChip-label': {
+                            lineHeight: 0
+                        },
+
+                    }}
+                    icon={
+                        <Avatar
+                            alt={account.login ? account.login : t('common:anonymous')}
+                            sx={{
+                                ...theme.typography.mediumAvatar,
+                                margin: '8px 0 8px 8px !important',
+                                cursor: 'pointer'
+                            }}
+                            ref={anchorRef}
+                            aria-controls={open ? 'menu-list-grow' : undefined}
+                            aria-haspopup="true"
+                            color="inherit"
+                        />
+                    }
+                    label={<Settings/>}
+                    aria-controls={open ? 'menu-list-grow' : undefined}
+                />
+            }
             <Popper
                 placement="bottom-end"
                 open={open}
@@ -196,7 +190,25 @@ export default function ProfileSection() {
                 {({TransitionProps}) => (
                     <Grow  {...TransitionProps}>
                         <Box sx={{transformOrigin: '0 0 0'}}>
-                            <Paper>
+                            <Paper
+                            sx={{
+                                '&:before': {
+                                    content: '""',
+                                    display: 'block',
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 15,
+                                    [theme.breakpoints.down('sm')]: {
+                                        right: 8,
+                                    },
+                                    width: 10,
+                                    height: 10,
+                                    bgcolor: 'background.paper',
+                                    transform: 'translateY(-50%) rotate(45deg)',
+                                    zIndex: 0,
+                                }
+                            }}
+                            >
                                 <ClickAwayListener onClickAway={handleClose}>
                                     <MainCard elevation={16} boxShadow shadow={theme.shadows[16]}>
                                         <PerfectScrollbar style={{

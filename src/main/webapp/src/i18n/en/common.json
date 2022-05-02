@@ -35,5 +35,6 @@
   "finish": "Finished",
   "save_finished": "Save & Finished",
   "close": "Close",
-  "photo_crop": "Crop photo"
+  "photo_crop": "Crop photo",
+  "manage": "Manage"
 }
