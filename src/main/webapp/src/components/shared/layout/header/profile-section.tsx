@@ -93,7 +93,7 @@ export default function ProfileSection() {
                     >
                     </ListItemText>
                 </ListItemButton>
-                {location.pathname !== '/dashboard' && <ListItemButton
+                {!location.pathname.includes(DASHBOARD_ROUTE) && <ListItemButton
                     selected={selectedIndex === 2}
                     onClick={(event) => handleListItemClick(event, 2, DASHBOARD_ROUTE)}
                 >
