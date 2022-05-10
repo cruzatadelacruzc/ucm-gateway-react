@@ -1,24 +1,34 @@
 import React from 'react';
 import Widget from "../../../shared/layout/widget";
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {batch, useDispatch, useSelector} from "react-redux";
-import {formUpdateStyles, MenuProps} from "../style";
+import {useDispatch, useSelector} from "react-redux";
+import {formUpdateStyles} from "../style";
 import {useTranslation} from "react-i18next";
 import {Field, Form, Formik} from "formik";
 import {defaultValue, IPhone} from "../../../shared/models/phone.model";
 import {IRootState} from "../../../shared/reducer";
 import {createPhone, getPhone, reset, updatePhone} from "./phone.reducer";
 import * as yup from "yup";
-import {Box, Button, CircularProgress, MenuItem} from "@mui/material";
+import {
+    Autocomplete as MUIAutocomplete,
+    AutocompleteRenderInputParams,
+    Box,
+    Button,
+    CircularProgress,
+    TextField as MUITextField
+} from "@mui/material";
 import {CheckboxWithLabel, TextField} from "formik-mui";
-import {geEmployees} from "../person/employee/employee.reducer";
-import {getWorkPlaces} from "../workplace/workplace.reducer";
+import {geEmployees, getFilteredEmployees} from "../person/employee/employee.reducer";
+import {IEmployee} from "../../../shared/models/employee.model";
+import throttle from 'lodash/throttle'
+import {IWorkPlace} from "../../../shared/models/workplace.model";
+import {getFilteredWorkPlace, getWorkPlaces} from "../workplace/workplace.reducer";
 
 const PhoneManage = () => {
     let navigate = useNavigate();
     const dispatch = useDispatch();
     const classes = formUpdateStyles();
-    let {id} = useParams<{id: string}>();
+    let {id} = useParams<{ id: string }>();
     const [isNew] = React.useState(!id);
     const {t} = useTranslation(['phone']);
     const entity = useSelector((states: IRootState) => states.phone.entity);
@@ -27,36 +37,76 @@ const PhoneManage = () => {
     const workPlaces = useSelector((states: IRootState) => states.workPlace.entities);
     const isUpdateSuccess = useSelector((states: IRootState) => states.phone.updateSuccess);
 
+    const [openEmployee, setOpenEmployee] = React.useState(false);
+    const [inputValueEmployee, setInputValueEmployee] = React.useState('');
+    const loadingEmployees = useSelector((states: IRootState) => states.employee.loading);
+    const [valueEmployee, setValueEmployee] = React.useState<IEmployee | null>(entity.employee || null);
+
+    const [openWorkPlace, setOpenWorkPlace] = React.useState(false);
+    const [inputValueWorkPlace, setInputValueWorkPlace] = React.useState('');
+    const loadingWorkPlaces = useSelector((states: IRootState) => states.workPlace.loading);
+    const [valueWorkPlace, setValueWorkPlace] = React.useState<IWorkPlace | null>(entity.workPlace || null);
+
     const handleSelect = React.useCallback((handleChange, setFieldValue, name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.value !== "") {
             if (name === "employeeId") {
                 setFieldValue("employeeId", event.target.value);
-                setFieldValue("workPlaceId","");
+                setFieldValue("workPlaceId", "");
             } else {
                 setFieldValue("workPlaceId", event.target.value);
-                setFieldValue("employeeId","");
+                setFieldValue("employeeId", "");
             }
         }
         handleChange(event);
     }, [])
 
-    React.useEffect(() => {
-        batch( () => {
-            dispatch(geEmployees())
-            dispatch(getWorkPlaces())
-        })
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    const fetch = React.useMemo(
+        () => throttle((input: string, callback: (input: string) => void) => {
+                    if (input !== '') {
+                        callback(input);
+                    }
+                },
+                300,
+            ),
+        []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    React.useEffect( () => {
+    React.useEffect(() => {
+        if (openEmployee) {
+            if (inputValueEmployee === '') {
+                dispatch(geEmployees('name,ASC'))
+            }
+            if (inputValueEmployee !== '') {
+                fetch(inputValueEmployee, (inputValueEmployee) => {
+                    const filter = `name.contains=${inputValueEmployee}&firstLastName.contains=${inputValueEmployee}&secondLastName.contains=${inputValueEmployee}`
+                    dispatch(getFilteredEmployees(filter, 'name,ASC', 'OR'))
+                })
+            }
+        }
+    }, [openEmployee, inputValueEmployee]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (openWorkPlace) {
+            if (inputValueWorkPlace === '') {
+                dispatch(getWorkPlaces('name,ASC'))
+            }
+            if (inputValueWorkPlace !== '') {
+                fetch(inputValueWorkPlace, (inputValueWorkPlace) => {
+                    dispatch(getFilteredWorkPlace(`name.contains=${inputValueWorkPlace}`, 'name,ASC', 'OR'))
+                })
+            }
+        }
+    }, [openWorkPlace, inputValueWorkPlace]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
         if (undefined === id) {
-         dispatch(reset())
+            dispatch(reset())
         } else {
             dispatch(getPhone(id))
         }
-    }, [isNew, id])// eslint-disable-line react-hooks/exhaustive-deps
+    }, [id])// eslint-disable-line react-hooks/exhaustive-deps
 
     React.useEffect(() => {
-        if (isUpdateSuccess) { // Pass the delta to go in the history stack, equivalent to hitting the back button.
+        if (isUpdateSuccess) {
             navigate(-1); // Pass the delta to go in the history stack, equivalent to hitting the back button.
         }
     }, [isUpdateSuccess])// eslint-disable-line react-hooks/exhaustive-deps
@@ -66,7 +116,7 @@ const PhoneManage = () => {
             <Formik
                 initialValues={isNew ? defaultValue : entity}
                 enableReinitialize={!isNew}
-                onSubmit={(values : IPhone, {setSubmitting}) => {
+                onSubmit={(values: IPhone, {setSubmitting}) => {
                     if (isNew) {
                         dispatch(createPhone(values))
                     } else {
@@ -81,7 +131,7 @@ const PhoneManage = () => {
                     description: yup.string().max(255, t("error:form.maxlength", {max: 255}))
                 })}
             >
-                {({submitForm, handleChange, setFieldValue}) => (
+                {({submitForm, handleChange, setFieldValue, touched, errors, values}) => (
                     <Form autoComplete="off" noValidate={true}>
                         <Box className={classes.form_group}>
                             <Box className={classes.input}>
@@ -105,42 +155,96 @@ const PhoneManage = () => {
                         </Box>
                         <Box className={classes.form_group}>
                             <Box className={classes.input}>
-                                <Field
-                                    select
-                                    fullWidth
-                                    name="employeeId"
-                                    variant="outlined"
-                                    component={TextField}
-                                    SelectProps={MenuProps}
-                                    label={t('employee')}
-                                    InputLabelProps={{shrink: true}}
-                                    onChange={handleSelect(handleChange, setFieldValue, "employeeId")}
-                                    onBlur={handleSelect(handleChange,setFieldValue,  "employeeId")}
-                                >
-                                    <MenuItem value=""><em>-- {t('common:empty')} --</em></MenuItem>
-                                    {employees.map((option, index) => (
-                                        <MenuItem key={index} value={option.id}>{option.name}</MenuItem>
-                                    ))}
-                                </Field>
+                                <MUIAutocomplete
+                                    id="employeeId"
+                                    open={openEmployee}
+                                    options={employees}
+                                    value={valueEmployee}
+                                    loading={loadingEmployees}
+                                    onOpen={() => setOpenEmployee(true)}
+                                    filterOptions={(x) => x}
+                                    onClose={() => setOpenEmployee(false)}
+                                    loadingText={t('common:loading')}
+                                    noOptionsText={t('common:no_option')}
+                                    isOptionEqualToValue={(option: IEmployee, value: IEmployee) => option.id === value.id}
+                                    onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                        if (newInputValue === '') {
+                                            setFieldValue('employeeId', "")
+                                        }
+                                        setInputValueEmployee(newInputValue);
+                                    }}
+                                    onChange={(event: React.SyntheticEvent, value) => {
+                                        setFieldValue('employeeId', value?.id || "")
+                                        setValueEmployee(value)
+                                    }}
+                                    getOptionLabel={(option: IEmployee) => `${option.name} ${option.firstLastName} ${option.secondLastName}` || ''}
+                                    renderInput={(params: AutocompleteRenderInputParams) => (
+                                        <MUITextField
+                                            {...params}
+                                            variant="outlined"
+                                            label={t('employee')}
+                                            InputLabelProps={{shrink: true}}
+                                            helperText={errors['employeeId']}
+                                            error={touched['employeeId'] && !!errors['employeeId']}
+                                            InputProps={{
+                                                ...params.InputProps,
+                                                endAdornment: (
+                                                    <React.Fragment>
+                                                        {loadingEmployees ?
+                                                            <CircularProgress color="inherit" size={20}/> : null}
+                                                        {params.InputProps.endAdornment}
+                                                    </React.Fragment>
+                                                ),
+                                            }}
+                                        />
+                                    )}
+                                />
                             </Box>
                             <Box className={classes.input}>
-                                <Field
-                                    select
-                                    fullWidth
-                                    name="workPlaceId"
-                                    variant="outlined"
-                                    component={TextField}
-                                    SelectProps={MenuProps}
-                                    label={t('workplace')}
-                                    InputLabelProps={{shrink: true}}
-                                    onChange={handleSelect(handleChange,setFieldValue, "workplaceId")}
-                                    onBlur={handleSelect(handleChange, setFieldValue,"workplaceId")}
-                                >
-                                    <MenuItem value=""><em>-- {t('common:empty')} --</em></MenuItem>
-                                    {workPlaces.map((option, index) => (
-                                        <MenuItem key={index} value={option.id}>{option.name}</MenuItem>
-                                    ))}
-                                </Field>
+                                <MUIAutocomplete
+                                    id="workPlaceId"
+                                    open={openWorkPlace}
+                                    options={workPlaces}
+                                    value={valueWorkPlace}
+                                    loading={loadingWorkPlaces}
+                                    filterOptions={(x) => x}
+                                    onOpen={() => setOpenWorkPlace(true)}
+                                    onClose={() => setOpenWorkPlace(false)}
+                                    loadingText={t('common:loading')}
+                                    noOptionsText={t('common:no_option')}
+                                    isOptionEqualToValue={(option: IWorkPlace, value: IWorkPlace) => option.id === value.id}
+                                    onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                        if (newInputValue === '') {
+                                            setFieldValue('workPlaceId', "")
+                                        }
+                                        setInputValueWorkPlace(newInputValue);
+                                    }}
+                                    onChange={(event: React.SyntheticEvent, value) => {
+                                        setFieldValue('workPlaceId', value?.id || "")
+                                        setValueWorkPlace(value)
+                                    }}
+                                    getOptionLabel={(option: IWorkPlace) => option.name || ''}
+                                    renderInput={(params: AutocompleteRenderInputParams) => (
+                                        <MUITextField
+                                            {...params}
+                                            variant="outlined"
+                                            label={t('workPlace')}
+                                            InputLabelProps={{shrink: true}}
+                                            helperText={errors['workPlaceId']}
+                                            error={touched['workPlaceId'] && !!errors['workPlaceId']}
+                                            InputProps={{
+                                                ...params.InputProps,
+                                                endAdornment: (
+                                                    <React.Fragment>
+                                                        {loadingWorkPlaces ?
+                                                            <CircularProgress color="inherit" size={20}/> : null}
+                                                        {params.InputProps.endAdornment}
+                                                    </React.Fragment>
+                                                ),
+                                            }}
+                                        />
+                                    )}
+                                />
                             </Box>
                         </Box>
                         <Box className={classes.form_group}>
@@ -172,7 +276,7 @@ const PhoneManage = () => {
                                 color="success"
                                 variant="contained"
                                 disabled={updating}
-                                endIcon={updating ? <CircularProgress size="1rem" /> : null}
+                                endIcon={updating ? <CircularProgress size="1rem"/> : null}
                                 onClick={submitForm}>
                                 {t('common:submit')}
                             </Button>

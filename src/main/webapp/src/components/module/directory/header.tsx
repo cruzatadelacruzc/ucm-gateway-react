@@ -1,46 +1,43 @@
 import React from 'react';
 import {KeyboardArrowUp as KeyboardArrowUpIcon, Search as SearchIcon} from '@mui/icons-material';
 import ScrollTop from '../../shared/components/scroll-top';
-import {AppBar, Avatar, ButtonBase, Fab, IconButton, InputBase, Paper, Toolbar, useScrollTrigger} from '@mui/material';
+import {
+    AppBar,
+    ButtonBase,
+    Fab,
+    IconButton,
+    InputBase,
+    Paper,
+    Toolbar,
+    useScrollTrigger,
+    useTheme
+} from '@mui/material';
 import {Link} from 'react-router-dom';
 import {IDirectoryProps} from './directory';
 import {headerStyles} from './style';
 import {useTranslation} from 'react-i18next';
 import ProfileSection from '../../shared/layout/header/profile-section';
-import MoreIcon from "@mui/icons-material/MoreVert";
-import {useSelector} from "react-redux";
-import {IRootState} from "../../shared/reducer";
 import SvgLogo from "../../shared/components/svg-logo";
 
 
 export default function Header(props: IDirectoryProps) {
+    const theme = useTheme();
     const classes = headerStyles();
     const {t} = useTranslation(['header']);
     const {handleSearchValue, searchValue, startSearching} = props;
-    const { account } = useSelector((states: IRootState) => states.auth);
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-
-    const isMenuOpen = Boolean(anchorEl);
-
-    const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-    };
 
     const trigger = useScrollTrigger({
         disableHysteresis: true,
         threshold: 0,
     });
 
-    const menuId = 'account-menu';
     return (
         <div className={classes.grow}>
             <AppBar elevation={trigger ? 5 : 0} className={classes.appBar}>
                 <Toolbar>
-                    <ButtonBase disableRipple component={Link} to="/">
+                    <ButtonBase disableRipple component={Link} to="/"
+                                sx={{[theme.breakpoints.down('sm')]: {display: 'none'}}}
+                    >
                         <SvgLogo sx={{fontSize: '3.5rem'}}/>
                     </ButtonBase>
                     <div className={classes.grow}/>
@@ -66,28 +63,6 @@ export default function Header(props: IDirectoryProps) {
                         </form>
                     </Paper>
                     <div className={classes.grow}/>
-                    <div className={classes.sectionDesktop}>
-                        <IconButton
-                            aria-haspopup='true'
-                            aria-controls={menuId}
-                            aria-label="account of current user"
-                            onClick={handleProfileMenuOpen}
-                            size="large">
-                            <Avatar alt={ account.login?.toUpperCase() }
-                                    src='/broken-image.jpg'
-                                    className={classes.avatar} />
-                        </IconButton>
-                    </div>
-                    <div className={classes.sectionMobile}>
-                        <IconButton
-                            aria-haspopup='true'
-                            aria-controls={menuId}
-                            aria-label="account of current user"
-                            onClick={handleProfileMenuOpen}
-                            size="large">
-                            <MoreIcon />
-                        </IconButton>
-                    </div>
                     <ProfileSection />
                 </Toolbar>
             </AppBar>

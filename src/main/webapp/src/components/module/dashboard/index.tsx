@@ -59,30 +59,6 @@ const Main = styled('main', {shouldForwardProp: open => open !== 'open'})<{open:
     })
 }))
 const Dashboard = () => {
-    // const classes = dashboardStyles();
-    // const [isSidebarOpened, setIsSidebarOpened] = React.useState(true);
-    // const toggleSidebar = () => {
-    //     setIsSidebarOpened( prevIsSidebarOpened => !prevIsSidebarOpened);
-    // };
-    // return <div className={classes.root}>
-    //     <Header {...{ toggleSidebar, isSidebarOpened }}/>
-    //     <Sidebar {...{ toggleSidebar, isSidebarOpened }}/>
-    //     <div
-    //         className={classnames(classes.content, {
-    //             [classes.contentShift]: isSidebarOpened,
-    //         })}
-    //     >
-    //         <div className={classes.fakeToolbar} />
-    //         <Switch>
-    //             <ErrorBoundaryRoute path={`${match.url}home`} component={Home}/>
-    //             <ErrorBoundaryRoute path={`${match.url}phone`} component={Phones}/>
-    //             <ErrorBoundaryRoute path={`${match.url}student`} component={Students}/>
-    //             <ErrorBoundaryRoute path={`${match.url}employee`} component={Employees}/>
-    //             <ErrorBoundaryRoute path={`${match.url}workplace`} component={WorkPlaces}/>
-    //             <ErrorBoundaryRoute path={`${match.url}nomenclature`} component={Nomenclature}/>
-    //         </Switch>
-    //     </div>
-    // </div>
 
     const theme = useTheme();
     const matchDownMd = useMediaQuery(theme.breakpoints.down('lg'));
@@ -131,7 +107,6 @@ const Dashboard = () => {
                 {/*<Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign/>*/}
                 <Outlet/>
             </Main>
-            {/*<Customization/>*/}
         </Box>
     )
 };

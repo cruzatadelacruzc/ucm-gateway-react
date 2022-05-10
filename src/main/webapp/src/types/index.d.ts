@@ -25,15 +25,16 @@ export type IPayloadResult<T> = ((
 
 export declare type ICrudSearchAction<T> = (
     search: string,
+    sort?: string,
+    operator?: 'AND' | 'OR',
     page?: number,
-    size?: number,
-    sort?: string
+    size?: number
 ) => IPayload<T> | ((dispatch: any) => AxiosPromise<IPayload<T>>)
 
 export declare type ICrudGetAllAction<T> = (
+    sort?: string,
     page?: number,
-    size?: number,
-    sort?: string
+    size?: number
 ) => IPayload<T> | ((dispatch: any) =>  AxiosPromise<IPayload<T>>);
 
 export declare type ICrudGetAllByParamAction<T> = (

@@ -91,8 +91,7 @@ const UCMAvatar = ({setResultAvatar, avatarUrl, deleteAvatar, ...props}: IUCMAva
                     style={{width: props.frameWidth ?? 250, height: props.frameHeight ?? 250}}
                 >
                     <img alt={selectedFile ? selectedFile.name : "avatar"}
-                         className={classes.picture}
-                         style={{width : "100%", height: "100%"}}
+                         style={{width: '100%', height: '100%'}}
                          src={getAvatarSrc()}/>
 
                 </Paper>

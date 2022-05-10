@@ -26,7 +26,7 @@ export const ACTION_TYPES =  {
 }
 
 const initialState = {
-    loading: true,
+    loading: false,
     errorMessage: null,
     entities: [] as ReadonlyArray<IEmployee>,
     entity: defaultValue,
@@ -145,17 +145,17 @@ export const getEmployee : ICrudGetAction<IEmployee> = id => async dispatch =>  
     })
 }
 
-export const geEmployees: ICrudGetAllAction<IEmployee> = (page, size, sort) => async dispatch => {
+export const geEmployees: ICrudGetAllAction<IEmployee> = ( sort, page, size) => async dispatch => {
     return await dispatch({
         type: ACTION_TYPES.FETCH_EMPLOYEE_LIST,
         payload: axios.get<Array<IEmployee>>(`${apiUrl}?${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
     })
 }
 
-export const getFilterEmployees: ICrudSearchAction<IEmployee> = (search,page, size, sort) => async dispatch => {
+export const getFilteredEmployees: ICrudSearchAction<IEmployee> = (search, sort, operator = 'AND', page, size) => async dispatch => {
     return await dispatch({
         type: ACTION_TYPES.FETCH_EMPLOYEE_FILTERED,
-        payload: axios.get<Array<IEmployee>>(`${apiUrl}/filtered/and?${search}&${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
+        payload: axios.get<Array<IEmployee>>(`${apiUrl}/filtered/${operator}?${search}&${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
     })
 }
 
