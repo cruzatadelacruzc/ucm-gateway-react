@@ -9,15 +9,8 @@ import {defaultValue, IPhone} from "../../../shared/models/phone.model";
 import {IRootState} from "../../../shared/reducer";
 import {createPhone, getPhone, reset, updatePhone} from "./phone.reducer";
 import * as yup from "yup";
-import {
-    Autocomplete as MUIAutocomplete,
-    AutocompleteRenderInputParams,
-    Box,
-    Button,
-    CircularProgress,
-    TextField as MUITextField
-} from "@mui/material";
-import {CheckboxWithLabel, TextField} from "formik-mui";
+import {AutocompleteRenderInputParams, Box, Button, CircularProgress, TextField as MUITextField} from "@mui/material";
+import {Autocomplete, CheckboxWithLabel, TextField} from "formik-mui";
 import {geEmployees, getFilteredEmployees} from "../person/employee/employee.reducer";
 import {IEmployee} from "../../../shared/models/employee.model";
 import throttle from 'lodash/throttle'
@@ -40,24 +33,24 @@ const PhoneManage = () => {
     const [openEmployee, setOpenEmployee] = React.useState(false);
     const [inputValueEmployee, setInputValueEmployee] = React.useState('');
     const loadingEmployees = useSelector((states: IRootState) => states.employee.loading);
-    const [valueEmployee, setValueEmployee] = React.useState<IEmployee | null>(entity.employee || null);
+
 
     const [openWorkPlace, setOpenWorkPlace] = React.useState(false);
     const [inputValueWorkPlace, setInputValueWorkPlace] = React.useState('');
     const loadingWorkPlaces = useSelector((states: IRootState) => states.workPlace.loading);
-    const [valueWorkPlace, setValueWorkPlace] = React.useState<IWorkPlace | null>(entity.workPlace || null);
 
-    const handleSelect = React.useCallback((handleChange, setFieldValue, name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.value !== "") {
-            if (name === "employeeId") {
-                setFieldValue("employeeId", event.target.value);
+    const handleSelect = React.useCallback((setFieldValue, name: string) => (event: React.SyntheticEvent, value) => {
+           if (name === "employeeId") {
+                setFieldValue("employeeId", value?.id || '');
+                setFieldValue("employee", value);
                 setFieldValue("workPlaceId", "");
+                setFieldValue("workPlace", null);
             } else {
-                setFieldValue("workPlaceId", event.target.value);
+                setFieldValue("workPlaceId", value?.id || '');
+                setFieldValue("workPlace", value);
                 setFieldValue("employeeId", "");
+                setFieldValue("employee", null);
             }
-        }
-        handleChange(event);
     }, [])
 
     const fetch = React.useMemo(
@@ -155,11 +148,11 @@ const PhoneManage = () => {
                         </Box>
                         <Box className={classes.form_group}>
                             <Box className={classes.input}>
-                                <MUIAutocomplete
-                                    id="employeeId"
+                                <Field
+                                    name="employee"
+                                    component={Autocomplete}
                                     open={openEmployee}
                                     options={employees}
-                                    value={valueEmployee}
                                     loading={loadingEmployees}
                                     onOpen={() => setOpenEmployee(true)}
                                     filterOptions={(x) => x}
@@ -173,19 +166,17 @@ const PhoneManage = () => {
                                         }
                                         setInputValueEmployee(newInputValue);
                                     }}
-                                    onChange={(event: React.SyntheticEvent, value) => {
-                                        setFieldValue('employeeId', value?.id || "")
-                                        setValueEmployee(value)
-                                    }}
+                                    onChange={handleSelect(setFieldValue,'employeeId')}
                                     getOptionLabel={(option: IEmployee) => `${option.name} ${option.firstLastName} ${option.secondLastName}` || ''}
                                     renderInput={(params: AutocompleteRenderInputParams) => (
                                         <MUITextField
                                             {...params}
+                                            name="employee"
                                             variant="outlined"
                                             label={t('employee')}
                                             InputLabelProps={{shrink: true}}
-                                            helperText={errors['employeeId']}
-                                            error={touched['employeeId'] && !!errors['employeeId']}
+                                            helperText={errors['employee']}
+                                            error={touched['employee'] && !!errors['employee']}
                                             InputProps={{
                                                 ...params.InputProps,
                                                 endAdornment: (
@@ -201,11 +192,11 @@ const PhoneManage = () => {
                                 />
                             </Box>
                             <Box className={classes.input}>
-                                <MUIAutocomplete
-                                    id="workPlaceId"
+                                <Field
+                                    name="workPlace"
+                                    component={Autocomplete}
                                     open={openWorkPlace}
                                     options={workPlaces}
-                                    value={valueWorkPlace}
                                     loading={loadingWorkPlaces}
                                     filterOptions={(x) => x}
                                     onOpen={() => setOpenWorkPlace(true)}
@@ -219,19 +210,17 @@ const PhoneManage = () => {
                                         }
                                         setInputValueWorkPlace(newInputValue);
                                     }}
-                                    onChange={(event: React.SyntheticEvent, value) => {
-                                        setFieldValue('workPlaceId', value?.id || "")
-                                        setValueWorkPlace(value)
-                                    }}
+                                    onChange={handleSelect(setFieldValue, 'workPlaceId')}
                                     getOptionLabel={(option: IWorkPlace) => option.name || ''}
                                     renderInput={(params: AutocompleteRenderInputParams) => (
                                         <MUITextField
                                             {...params}
+                                            name='workPlace'
                                             variant="outlined"
                                             label={t('workPlace')}
                                             InputLabelProps={{shrink: true}}
-                                            helperText={errors['workPlaceId']}
-                                            error={touched['workPlaceId'] && !!errors['workPlaceId']}
+                                            helperText={errors['workPlace']}
+                                            error={touched['workPlace'] && !!errors['workPlace']}
                                             InputProps={{
                                                 ...params.InputProps,
                                                 endAdornment: (
@@ -261,6 +250,7 @@ const PhoneManage = () => {
                                 />
                             </Box>
                         </Box>
+                        {JSON.stringify(values,null,2)}
                         <Box className={classes.buttons}>
                             <Button
                                 className={classes.button}

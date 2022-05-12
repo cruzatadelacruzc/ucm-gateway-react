@@ -10,8 +10,8 @@ export interface IPhone {
   employeeId?: string;
   employeeName?: string
   workPlaceName?: string,
-  employee?: IEmployee
-  workPlace?: IWorkPlace,
+  employee: IEmployee | null
+  workPlace: IWorkPlace | null,
 }
 
 export const defaultValue: Readonly<IPhone> = {
@@ -21,5 +21,7 @@ export const defaultValue: Readonly<IPhone> = {
   employeeId: '',
   workPlaceId: '',
   employeeName:'',
-  workPlaceName: ''
+  workPlaceName: '',
+  employee: null,
+  workPlace: null
 };
