@@ -124,7 +124,7 @@ const PhoneManage = () => {
                     description: yup.string().max(255, t("error:form.maxlength", {max: 255}))
                 })}
             >
-                {({submitForm, handleChange, setFieldValue, touched, errors, values}) => (
+                {({submitForm, setFieldValue, touched, errors}) => (
                     <Form autoComplete="off" noValidate={true}>
                         <Box className={classes.form_group}>
                             <Box className={classes.input}>
@@ -250,7 +250,6 @@ const PhoneManage = () => {
                                 />
                             </Box>
                         </Box>
-                        {JSON.stringify(values,null,2)}
                         <Box className={classes.buttons}>
                             <Button
                                 className={classes.button}
