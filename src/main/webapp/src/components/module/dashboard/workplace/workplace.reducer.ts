@@ -1,12 +1,18 @@
 import {defaultValue, IWorkPlace} from "../../../shared/models/workplace.model";
 import {AnyAction} from "redux";
 import {FAILURE, REQUEST, SUCCESS} from "../../../shared/reducer/action-type.util";
-import {ICrudDeleteAction, ICrudGetAction, ICrudGetAllAction, ICrudPutAction} from "../../../../types";
+import {
+    ICrudDeleteAction,
+    ICrudGetAction,
+    ICrudGetAllAction,
+    ICrudPutAction,
+    ICrudSearchAction
+} from "../../../../types";
 import axios from "axios";
 import {buildFormData} from "../../../shared/util/entity-util";
 
 export const ACTION_TYPES = {
-    FETCH_WORKPLACE_FILTERED: "employee/FETCH_WORKPLACE_FILTERED",
+    FETCH_WORKPLACE_FILTERED: "workplace/FETCH_WORKPLACE_FILTERED",
     FETCH_WORKPLACE_LIST: 'workplace/FETCH_WORKPLACE_LIST',
     FETCH_WORKPLACE: 'workplace/FETCH_WORKPLACE',
     CREATE_WORKPLACE: 'workplace/CREATE_WORKPLACE',
@@ -150,6 +156,13 @@ export const deleteAvatar: ICrudDeleteAction<IWorkPlace> = id => async dispatch 
     return await dispatch({
         type: ACTION_TYPES.DELETE_AVATAR,
         payload: axios.delete(`${apiUrl}/avatar/${id}`)
+    })
+}
+
+export const getFilteredWorkPlace: ICrudSearchAction<IWorkPlace> = (search, sort, operator = 'AND', page, size) => async dispatch => {
+    return await dispatch({
+        type: ACTION_TYPES.FETCH_WORKPLACE_FILTERED,
+        payload: axios.get<Array<IWorkPlace>>(`${apiUrl}/filtered/${operator}?${search}&${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)
     })
 }
 

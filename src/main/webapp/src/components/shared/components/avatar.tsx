@@ -6,6 +6,7 @@ import toast from "../util/notification-snackbar.util";
 import {IconButton, Paper} from "@mui/material";
 import {buildAvatarURL} from "../util/function-utils";
 import {DeleteOutline, EditOutlined} from "@mui/icons-material";
+import {getDataURISchema} from "./svg-user";
 
 interface IUCMAvatar {
     setResultAvatar: React.Dispatch<React.SetStateAction<File| undefined>>
@@ -39,7 +40,7 @@ const UCMAvatar = ({setResultAvatar, avatarUrl, deleteAvatar, ...props}: IUCMAva
         } else if (preview && (selectedFile || croppedImage)) {
             return preview;
         } else {
-            return props.backgroundUrl || "../../user.svg";
+            return props.backgroundUrl || getDataURISchema();
         }
     }
 
@@ -90,8 +91,7 @@ const UCMAvatar = ({setResultAvatar, avatarUrl, deleteAvatar, ...props}: IUCMAva
                     style={{width: props.frameWidth ?? 250, height: props.frameHeight ?? 250}}
                 >
                     <img alt={selectedFile ? selectedFile.name : "avatar"}
-                         className={classes.picture}
-                         style={{width : "100%", height: "100%"}}
+                         style={{width: '100%', height: '100%'}}
                          src={getAvatarSrc()}/>
 
                 </Paper>

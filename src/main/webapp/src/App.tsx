@@ -25,7 +25,7 @@ export default function App() {
     const customization = useSelector((state: IRootState) => state.customization);
     useEffect(() => {
         dispatch(getSession())
-    }, [dispatch]);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <BrowserRouter>

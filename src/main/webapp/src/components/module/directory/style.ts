@@ -66,10 +66,6 @@ export const headerStyles = makeStyles((theme: Theme) => ({
   iconButton: {
     padding: 10,
   },
-  link: {
-    textDecoration: 'none',
-    color: 'inherit',
-  },
   large: {
     width: theme.spacing(7),
     height: theme.spacing(7),
@@ -87,12 +83,6 @@ export const headerStyles = makeStyles((theme: Theme) => ({
   sectionMobile: {
     display: 'flex',
     [theme.breakpoints.up('sm')]: {
-      display: 'none',
-    },
-  },
-  logo: {
-    display: 'flex',
-    [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
   }

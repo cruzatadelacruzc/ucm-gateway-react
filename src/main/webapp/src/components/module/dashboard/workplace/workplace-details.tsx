@@ -29,6 +29,7 @@ import Widget from "../../../shared/layout/widget";
 import {LocalPhone} from "@mui/icons-material";
 import {buildAvatarURL} from "../../../shared/util/function-utils";
 import DialogDelete from "../../../shared/components/dialog-delete";
+import {CONFIG} from "../../../../config/constants";
 
 const WorkplaceDetails = () => {
     let navigate = useNavigate();
@@ -59,7 +60,7 @@ const WorkplaceDetails = () => {
         if (_entity.avatarUrl) {
             return buildAvatarURL(_entity.avatarUrl)
         } else {
-            return "../../workplace.jpg"
+            return `${CONFIG.DEFAULT_PATH}/workplace.svg`
         }
     }
 

@@ -27,7 +27,7 @@ export interface IItem {
     icon?: SvgIconComponent,
 }
 
-interface NavItem {
+interface INavItem {
     key: string,
     item: IItem,
     level: number
@@ -36,7 +36,7 @@ interface NavItem {
 /**
  * SIDEBAR MENU ITEM
  */
-const NavItem = ({item, level} : NavItem) => {
+const NavItem = ({item, level} : INavItem) => {
     const Icon = item?.icon
     const theme = useTheme();
     const dispatch = useDispatch();

@@ -1,4 +1,5 @@
 export const CONFIG = {
+  DEFAULT_PATH: process.env.PUBLIC_URL,
   ES_USER: process.env.REACT_APP_ES_USER,
   FONT_FAMILY: process.env.REACT_FONT_FAMILY,
   ES_API_URL: process.env.REACT_APP_ES_API_URL,

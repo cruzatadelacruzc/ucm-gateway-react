@@ -20,7 +20,7 @@ export const ACTION_TYPES =  {
 }
 
 const initialState = {
-    loading: true,
+    loading: false,
     errorMessage: null,
     entities: [] as ReadonlyArray<IStudent>,
     entity: defaultValue,

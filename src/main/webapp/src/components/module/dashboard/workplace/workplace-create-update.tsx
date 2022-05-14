@@ -14,7 +14,8 @@ import {createWorkPlace, deleteAvatar, getWorkPlace, reset, updateWorkPlace} fro
 import {createDeepEqualSelector} from "../../../shared/util/function-utils";
 import {IEmployee} from "../../../shared/models/employee.model";
 import UCMAvatar from "../../../shared/components/avatar";
-import {geEmployees, getFilterEmployees} from "../person/employee/employee.reducer";
+import {geEmployees, getFilteredEmployees} from "../person/employee/employee.reducer";
+import {CONFIG} from "../../../../config/constants";
 
 
 const WorkPlaceManage = () => {
@@ -39,7 +40,7 @@ const WorkPlaceManage = () => {
     React.useEffect(() => {
         if (undefined === id) { // id undefined, then action is Create, otherwise Update
             dispatch(reset())
-            dispatch(getFilterEmployees(`workPlaceId.specified=false`))
+            dispatch(getFilteredEmployees(`workPlaceId.specified=false`))
         } else {
             batch( () => {
                 if (undefined !== id) {
@@ -85,7 +86,7 @@ const WorkPlaceManage = () => {
                                     width={300}
                                     avatarUrl={entity.avatarUrl}
                                     setResultAvatar={setAvatar}
-                                    backgroundUrl="../../workplace.jpg"
+                                    backgroundUrl={`${CONFIG.DEFAULT_PATH}/workplace.svg`}
                                     deleteAvatar={() => dispatch(deleteAvatar(entity.id))}
                                 />
                             </Grid>

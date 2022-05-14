@@ -26,11 +26,11 @@ const MenuItems = () => {
     const {t} = useTranslation(['error', 'common'])
     const menuItems: Array<IMenuItems> = [
         {
-            id: 'dashboard',
+            id: 'home',
             title: t("common:dashboard"),
             children: [
                 {
-                id: 'home',
+                id: 'dashboard',
                 title: t("common:dashboard"),
                 url: "/dashboard",
                 icon: DashboardIcon
@@ -39,7 +39,7 @@ const MenuItems = () => {
         },
         {
             id: 'manage',
-            title: 'Manage',
+            title: t("common:manage"),
             children: [
                 {
                     id: 'nomenclature',

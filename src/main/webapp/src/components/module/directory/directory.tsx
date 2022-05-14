@@ -23,13 +23,13 @@ export interface IDirectoryProps {
 
 export default function Directory() {
     const {t} = useTranslation();
+    const dispatch = useDispatch();
     const [tabValue, setTabValue] = useState<number>(0);
     const [searchValue, setSearchValue] = useState<string>('Cesar');
-    const {search, auth } = useSelector((states: IRootState) => states);
-    const dispatch = useDispatch();
+    const search = useSelector((states: IRootState) => states.search);
 
-    // Flow: user wants access private route, he is redirect to login page an save in localStorage
-    // the route private , after successful hi is redirect to public route / and if REDIRECT_URL exists in localStorage
+    // Flow: user wants access private route, he is redirect to login page and save in localStorage the route private,
+    // after successful flow login, hi is redirect to public route(/) and if REDIRECT_URL exists in localStorage
     // redirect to route
     useEffect(() => {
         const redirectURL = localStorage.getItem(REDIRECT_URL);

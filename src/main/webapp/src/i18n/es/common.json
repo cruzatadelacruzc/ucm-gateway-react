@@ -35,5 +35,7 @@
   "finish": "Finalizar",
   "save_finished": "Guardar y Finalizar",
   "close": "Cerrar",
-  "photo_crop": "Recortar foto"
+  "photo_crop": "Recortar foto",
+  "manage": "Gestionar",
+  "no_option": "No hay opciones"
 }
