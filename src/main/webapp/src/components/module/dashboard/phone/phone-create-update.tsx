@@ -109,14 +109,11 @@ const PhoneManage = () => {
             <Formik
                 initialValues={isNew ? defaultValue : entity}
                 enableReinitialize={!isNew}
-                onSubmit={(values: IPhone, {setSubmitting}) => {
+                onSubmit={async (values: IPhone) => {
                     if (isNew) {
-                        dispatch(createPhone(values))
+                      return  dispatch(createPhone(values))
                     } else {
-                        dispatch(updatePhone(values))
-                    }
-                    if (!updating && !isUpdateSuccess) {
-                        setSubmitting(false)
+                      return   dispatch(updatePhone(values))
                     }
                 }}
                 validationSchema={yup.object().shape({
