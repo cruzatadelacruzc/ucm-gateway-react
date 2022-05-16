@@ -4,18 +4,26 @@ import {Field, Form, Formik} from "formik";
 import {useTranslation} from "react-i18next";
 import {IRootState} from "../../../shared/reducer";
 import Widget from "../../../shared/layout/widget";
-import {formUpdateStyles, MenuProps} from "../style";
-import {batch, useDispatch, useSelector} from "react-redux";
+import {formUpdateStyles} from "../style";
+import {useDispatch, useSelector} from "react-redux";
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {CheckboxWithLabel, Select, TextField} from "formik-mui";
-import {Box, Button, CircularProgress, Grid, InputLabel, MenuItem} from "@mui/material";
+import {Autocomplete, CheckboxWithLabel, TextField} from "formik-mui";
+import {
+    AutocompleteRenderInputParams,
+    Box,
+    Button,
+    CircularProgress,
+    Grid,
+    TextField as MUITextField
+} from "@mui/material";
 import {defaultValue, IWorkPlace} from "../../../shared/models/workplace.model";
 import {createWorkPlace, deleteAvatar, getWorkPlace, reset, updateWorkPlace} from "./workplace.reducer";
 import {createDeepEqualSelector} from "../../../shared/util/function-utils";
 import {IEmployee} from "../../../shared/models/employee.model";
 import UCMAvatar from "../../../shared/components/avatar";
-import {geEmployees, getFilteredEmployees} from "../person/employee/employee.reducer";
+import {getFilteredEmployees, reset as ResetEmp} from "../person/employee/employee.reducer";
 import {CONFIG} from "../../../../config/constants";
+import throttle from "lodash/throttle";
 
 
 const WorkPlaceManage = () => {
@@ -29,27 +37,48 @@ const WorkPlaceManage = () => {
     const entity = useSelector((states: IRootState) => states.workPlace.entity);
     const updating = useSelector((states: IRootState) => states.workPlace.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.workPlace.updateSuccess);
-    const selector = createDeepEqualSelector(
+    const employeesToUpdate = useSelector(createDeepEqualSelector(
         (states: IRootState) => states.employee.entities,
         (states: IRootState) => states.workPlace.entity.employeeIds,
-        (entities: ReadonlyArray<IEmployee>, employeeIds) => entities
-            .filter(emp => emp.id && (employeeIds?.includes(emp.id) || !emp.workPlaceId))
-    );
-    const employeesToUpdate = useSelector((states: IRootState) => selector(states));
+        (states: IRootState) => states.workPlace.entity.employees,
+        (entities: ReadonlyArray<IEmployee>, employeeIds, employees) => entities.concat(employees)
+            .filter(emp => emp.id && (employeeIds.includes(emp.id) || !emp.workPlaceId))
+    ));
+
+    const [openEmployee, setOpenEmployee] = React.useState(false);
+    const [inputValueEmployee, setInputValueEmployee] = React.useState('');
+    const loadingEmployees = useSelector((states: IRootState) => states.employee.loading);
 
     React.useEffect(() => {
+        dispatch(ResetEmp()) // avoid duplicate employees in employeesToUpdate
         if (undefined === id) { // id undefined, then action is Create, otherwise Update
             dispatch(reset())
-            dispatch(getFilteredEmployees(`workPlaceId.specified=false`))
         } else {
-            batch( () => {
-                if (undefined !== id) {
-                    dispatch(geEmployees())
-                    dispatch(getWorkPlace(id))
-                }
-            })
+            dispatch(getWorkPlace(id))
         }
     }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    const fetch = React.useMemo(
+        () => throttle((input: string) => {
+                if (input !== '') {
+                    const filter = `name.contains=${input}&firstLastName.contains=${input}&secondLastName.contains=${input}`
+                    dispatch(getFilteredEmployees(filter, 'name,ASC', 'OR'))
+                }
+             },
+             300,
+            ),
+        []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (openEmployee) {
+            if (inputValueEmployee === '') {
+                dispatch(getFilteredEmployees(`workPlaceId.specified=false`, 'name,ASC'))
+            }
+            if (inputValueEmployee !== '') {
+                fetch(inputValueEmployee)
+            }
+        }
+    }, [openEmployee, inputValueEmployee]) // eslint-disable-line react-hooks/exhaustive-deps
 
     React.useEffect(() => {
         if (isUpdateSuccess) {
@@ -57,19 +86,17 @@ const WorkPlaceManage = () => {
         }
     }, [isUpdateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
 
-
-
     return (
         <Widget title={t('title.manage')} disableWidgetMenu>
             <Formik
                 initialValues={isNew ? defaultValue : entity}
                 enableReinitialize={!isNew}
                 onSubmit={async (values: IWorkPlace) => {
-                    if (isNew) {
-                        return dispatch(createWorkPlace({workplace: values, avatar: avatar}))
-                    } else {
-                        return dispatch(updateWorkPlace({workplace: values, avatar: avatar}))
-                    }
+                        if (isNew) {
+                            return dispatch(createWorkPlace({workplace: values, avatar: avatar}))
+                        } else {
+                            return dispatch(updateWorkPlace({workplace: values, avatar: avatar}))
+                        }
                 }}
                 validationSchema={yup.object().shape({
                     email: yup.string().email(t("error:form.email")),
@@ -77,7 +104,7 @@ const WorkPlaceManage = () => {
                     description: yup.string().max(255, t("error:form.maxlength", {max: 255}))
                 })}
             >
-                {({submitForm}) => (
+                {({submitForm, setFieldValue, values}) => (
                     <Form autoComplete="off" noValidate={true}>
                         <Grid container>
                             <Grid container item md={5} sm={12} xs={12} lg={4} justifyContent="center">
@@ -129,20 +156,48 @@ const WorkPlaceManage = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Box className={classes.input}>
-                                        <InputLabel shrink={true} htmlFor="employeeIds">{t('employees')}</InputLabel>
                                         <Field
-                                            fullWidth
                                             multiple
-                                            name="employeeIds"
-                                            variant="outlined"
-                                            component={Select}
-                                            MenuProps={{...MenuProps.MenuProps}}
-                                        >
-                                            <MenuItem value=""><em>-- {t('common:empty')} --</em></MenuItem>
-                                            {employeesToUpdate.map((option, index) => (
-                                                <MenuItem key={index} value={option.id}>{option.name}</MenuItem>
-                                            ))}
-                                        </Field>
+                                            fullWidth
+                                            name="employees"
+                                            open={openEmployee}
+                                            component={Autocomplete}
+                                            filterOptions={(x) => x}
+                                            loading={loadingEmployees}
+                                            options={employeesToUpdate}
+                                            loadingText={t('common:loading')}
+                                            noOptionsText={t('common:no_option')}
+                                            onOpen={() => setOpenEmployee(true)}
+                                            onClose={() => setOpenEmployee(false)}
+                                            onInputChange={(event: React.SyntheticEvent, newInputValue: string) => {
+                                                setInputValueEmployee(newInputValue);
+                                            }}
+                                            onChange={(event: React.SyntheticEvent, values: Array<IEmployee>) => {
+                                                    setFieldValue("employeeIds", values.map(emp => emp.id));
+                                                    setFieldValue("employees", values);
+                                            }}
+                                            isOptionEqualToValue={(option: IEmployee, value: IEmployee) => option.id === value.id}
+                                            getOptionLabel={(option: IEmployee) => `${option.name} ${option.firstLastName} ${option.secondLastName}` || ''}
+                                            renderInput={(params: AutocompleteRenderInputParams) => (
+                                                <MUITextField
+                                                    {...params}
+                                                    name="employees"
+                                                    variant="outlined"
+                                                    label={t('employees')}
+                                                    InputLabelProps={{shrink: true}}
+                                                    InputProps={{
+                                                        ...params.InputProps,
+                                                        endAdornment: (
+                                                            <React.Fragment>
+                                                                {loadingEmployees ?
+                                                                    <CircularProgress color="inherit" size={20}/> : null}
+                                                                {params.InputProps.endAdornment}
+                                                            </React.Fragment>
+                                                        ),
+                                                    }}
+                                                />
+                                            )}
+                                        />
                                     </Box>
                                 </Grid>
                             </Grid>

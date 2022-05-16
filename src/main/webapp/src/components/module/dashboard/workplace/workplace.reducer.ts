@@ -75,7 +75,7 @@ const workPlaceReducer = (state: WorkplaceStateType = initialState, {type, paylo
                 ...state,
                 updating: false,
                 updateSuccess: true,
-                entity: payload.data
+                entity: payload.data.employees === null ? { ...payload.data, employees: [] }: payload.data
             }
         case SUCCESS(ACTION_TYPES.DELETE_AVATAR):
             return {
