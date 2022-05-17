@@ -11,11 +11,11 @@ import {createPhone, getPhone, reset, updatePhone} from "./phone.reducer";
 import * as yup from "yup";
 import {AutocompleteRenderInputParams, Box, Button, CircularProgress, TextField as MUITextField} from "@mui/material";
 import {Autocomplete, CheckboxWithLabel, TextField} from "formik-mui";
-import {geEmployees, getFilteredEmployees} from "../person/employee/employee.reducer";
+import {geEmployees, getFilteredEmployees, reset as resetEmployee} from "../person/employee/employee.reducer";
 import {IEmployee} from "../../../shared/models/employee.model";
 import throttle from 'lodash/throttle'
 import {IWorkPlace} from "../../../shared/models/workplace.model";
-import {getFilteredWorkPlace, getWorkPlaces} from "../workplace/workplace.reducer";
+import {getFilteredWorkPlace, getWorkPlaces, reset as resetWorkPlace} from "../workplace/workplace.reducer";
 
 const PhoneManage = () => {
     let navigate = useNavigate();
@@ -93,6 +93,8 @@ const PhoneManage = () => {
     React.useEffect(() => {
         if (undefined === id) {
             dispatch(reset())
+            dispatch(resetEmployee())
+            dispatch(resetWorkPlace())
         } else {
             dispatch(getPhone(id))
         }
