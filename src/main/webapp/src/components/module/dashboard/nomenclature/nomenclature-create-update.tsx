@@ -1,13 +1,13 @@
 import React from "react";
 import * as yup from 'yup';
-import {formUpdateStyles, MenuProps} from "../style";
-import {TextField} from 'formik-mui'
+import {formUpdateStyles} from "../style";
+import {Autocomplete, TextField} from 'formik-mui'
 import {Field, Form, Formik} from "formik";
 import {useTranslation} from "react-i18next";
 import {IRootState} from "../../../shared/reducer";
 import Widget from "../../../shared/layout/widget";
 import {useDispatch, useSelector} from "react-redux";
-import {Box, Button, CircularProgress, MenuItem} from "@mui/material";
+import {AutocompleteRenderInputParams, Box, Button, CircularProgress, TextField as MUITextField} from "@mui/material";
 import {Link, useNavigate, useParams} from 'react-router-dom'
 import {defaultValue, DISCRIMINATOR, INomenclature} from "../../../shared/models/nomenclature.model";
 import {createNomenclature, getNomenclature, reset, updateNomenclature} from "./nomenclature.reducer";
@@ -22,6 +22,18 @@ const NomenclatureManage = () => {
     const entity = useSelector((states: IRootState) => states.nomenclature.entity);
     const updating = useSelector((states: IRootState) => states.nomenclature.updating);
     const updateSuccess = useSelector((states: IRootState) => states.nomenclature.updateSuccess);
+
+    const discriminators = [
+        DISCRIMINATOR.CHARGE,
+        DISCRIMINATOR.CATEGORY,
+        DISCRIMINATOR.TEACHING_CATEGORY,
+        DISCRIMINATOR.DISTRICT,
+        DISCRIMINATOR.STUDY_CENTER,
+        DISCRIMINATOR.SPECIALTY,
+        DISCRIMINATOR.SCIENTIFIC_DEGREE,
+        DISCRIMINATOR.PROFESSION,
+        DISCRIMINATOR.KIND
+    ]
 
     React.useEffect(() => {
         if (undefined === id) { // id undefined, then action is Create, otherwise Update
@@ -43,15 +55,12 @@ const NomenclatureManage = () => {
             <Formik
                 initialValues={isNew ? defaultValue : entity}
                 enableReinitialize={!isNew}
-                onSubmit={(values: INomenclature, {setSubmitting, setFieldValue}) => {
+                onSubmit={async (values: INomenclature, {setFieldValue}) => {
                     if (isNew) {
-                        dispatch(createNomenclature(values))
+                        return dispatch(createNomenclature(values))
                     } else {
                         setFieldValue("discriminator", entity.discriminator)
-                        dispatch(updateNomenclature(values))
-                    }
-                    if (!updating && !updateSuccess) {
-                        setSubmitting(false);
+                        return dispatch(updateNomenclature(values))
                     }
                 }}
                 validationSchema={yup.object().shape({
@@ -59,7 +68,7 @@ const NomenclatureManage = () => {
                     description: yup.string().max(255, t("error:form.maxlength", {max: 255}))
                 })}
             >
-                {({submitForm}) => (
+                {({submitForm, errors, touched}) => (
                     <Form autoComplete="off" noValidate={true}>
                         <Box className={classes.form_group}>
                             <Box className={classes.input}>
@@ -73,29 +82,26 @@ const NomenclatureManage = () => {
                                 />
                             </Box>
                            <Box className={classes.input}>
-                                <Field
-                                    select
-                                    fullWidth
-                                    variant="outlined"
-                                    name="discriminator"
-                                    component={TextField}
-                                    disabled={!isNew}
-                                    SelectProps={MenuProps}
-                                    InputLabelProps={{shrink: true}}
-                                    label={t('discriminator')}
-                                >
-                                    <MenuItem value={DISCRIMINATOR.CHARGE}>{t("charge")}</MenuItem>
-                                    <MenuItem value={DISCRIMINATOR.CATEGORY}>{t("category")}</MenuItem>
-                                    <MenuItem
-                                        value={DISCRIMINATOR.TEACHING_CATEGORY}>{t("teaching_category")}</MenuItem>
-                                    <MenuItem value={DISCRIMINATOR.STUDY_CENTER}>{t("study_center")}</MenuItem>
-                                    <MenuItem value={DISCRIMINATOR.DISTRICT}>{t("district")}</MenuItem>
-                                    <MenuItem value={DISCRIMINATOR.SPECIALTY}>{t("specialty")}</MenuItem>
-                                    <MenuItem
-                                        value={DISCRIMINATOR.SCIENTIFIC_DEGREE}>{t("scientific_degree")}</MenuItem>
-                                    <MenuItem value={DISCRIMINATOR.PROFESSION}>{t("profession")}</MenuItem>
-                                    <MenuItem value={DISCRIMINATOR.KIND}>{t("kind")}</MenuItem>
-                                </Field>
+                               <Field
+                                   fullWidth
+                                   disabled={!isNew}
+                                   disableClearable
+                                   name="discriminator"
+                                   options={discriminators}
+                                   component={Autocomplete}
+                                   isOptionEqualToValue={(option, value) => option === value}
+                                   renderInput={(params: AutocompleteRenderInputParams) => (
+                                       <MUITextField
+                                           {...params}
+                                           variant="outlined"
+                                           name="discriminator"
+                                           label={t('discriminator')}
+                                           InputLabelProps={{shrink: true}}
+                                           helperText={errors['discriminator']}
+                                           error={touched['discriminator'] && !!errors['discriminator']}
+                                       />
+                                   )}
+                               />
                            </Box>
                         </Box>
                         <Box className={classes.form_group}>
