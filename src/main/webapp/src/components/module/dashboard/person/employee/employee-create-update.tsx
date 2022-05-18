@@ -22,7 +22,7 @@ import {DatePicker} from "formik-mui-lab";
 import AdapterDayjs from '@mui/lab/AdapterDayjs'
 import {CheckboxWithLabel, TextField} from 'formik-mui';
 import {defaultValue, IEmployee} from "../../../../shared/models/employee.model";
-import FormStepper, {FormStep} from "../../../../shared/components/FormStepper";
+import FormStepper, {FormStep} from "../../../../shared/components/form-stepper";
 import {createEmployee, getEmployee, partialUpdateEmployee, reset, updateEmployee} from "./employee.reducer";
 import {LocalizationProvider} from "@mui/lab";
 

@@ -6,6 +6,7 @@ import {useTranslation} from "react-i18next";
 import {FormikHelpers} from "formik/dist/types";
 import {Form, Formik, FormikConfig, FormikValues} from "formik";
 import {Box, CircularProgress, Step, StepLabel, Stepper} from "@mui/material";
+import isEmpty from "lodash/isEmpty"
 
 
 interface IFormStepProps extends Pick<FormikConfig<FormikValues>, 'children' | 'validationSchema'> {
@@ -29,14 +30,38 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
     const isLastStep = step === childrenArray.length - 1;
     const [completed, setCompleted] = React.useState(false);
     const buttonSubmitName = () => {
-        let message = t("continue");
         if (currentChild.props.operationKind && currentChild.props.operationKind === "UPDATE") {
-            message = t("save_finished")
+            return t("save_finished")
         }
         if (currentChild.props.operationKind && currentChild.props.operationKind === "DELETE") {
-            message = t("delete")
+            return t("delete")
         }
-        return message;
+        return "No name";
+    }
+
+    const getTouchedFieldsFromObjectError = (errors: any) => {
+        if (Array.isArray(errors)) {
+            const touched: any = []
+            errors.forEach((val: any) => {
+                touched.push(getTouchedFieldsFromObjectError(val))
+            })
+            return touched
+        }
+        const touched: any = {}
+        Object.keys(errors).forEach(key => {
+            if (Array.isArray(errors[key])) {
+                errors[key].forEach((val: any, index: any) => {
+                    if (index === 0) touched[key] = []
+                    const ret = getTouchedFieldsFromObjectError(val)
+                    touched[key].push(ret)
+                })
+            } else if (typeof errors[key] !== 'string') {
+                touched[key] = getTouchedFieldsFromObjectError(errors[key])
+            } else {
+                touched[key] = true
+            }
+        })
+        return touched
     }
     return (
         <Formik
@@ -45,8 +70,7 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
             onSubmit={async (values, action) => {
                 if (currentChild.props.onSubmit && !isLastStep) {
                     await currentChild.props.onSubmit(values, action).then(() => setStep(prevStep => prevStep + 1))
-                }
-                else if (isLastStep) {
+                } else if (isLastStep) {
                     setCompleted(true)
                     return props.onSubmit(values, action)
                 } else {
@@ -63,15 +87,15 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
                 }
             }}
         >
-            {({isSubmitting}) => (
+            {({isSubmitting, validateForm, setTouched, touched}) => (
                 <Form autoComplete="off" noValidate={true}>
-                        <Stepper activeStep={step}>
-                            {childrenArray.map((child, index) => (
-                                <Step key={child.props.label} completed={step > index || completed}>
-                                    <StepLabel>{child.props.label}</StepLabel>
-                                </Step>
-                            ))}
-                        </Stepper>
+                    <Stepper activeStep={step}>
+                        {childrenArray.map((child, index) => (
+                            <Step key={child.props.label} completed={step > index || completed}>
+                                <StepLabel>{child.props.label}</StepLabel>
+                            </Step>
+                        ))}
+                    </Stepper>
 
                     {currentChild}
 
@@ -79,26 +103,36 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
                         {<Button
                             className={classes.button}
                             component={Link}
-                            to={props.cancelRoute}
+                            color='warning'
+                            to={`/dashboard${props.cancelRoute}`}
                             disabled={isSubmitting}
                             variant="contained">
                             {currentChild.props.operationKind && currentChild.props.operationKind === "CREATE"
                                 ? t('cancel') : t('close')}
                         </Button>}
 
-                        {step > 0 && <Button className={classes.button} color="secondary" variant="contained"
-                                             onClick={() => setStep(prevStep => prevStep - 1)} disabled={isSubmitting}>
+                        {step > 0 &&
+                        <Button className={classes.button} color="secondary" variant="contained"
+                                onClick={() => setStep(prevStep => prevStep - 1)} disabled={isSubmitting}>
                             {t('back')}
                         </Button>}
-                        {<Button className={classes.button} type="submit" disabled={isSubmitting}
-                                 endIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
-                                 color="primary" variant="contained">
+                        {(currentChild.props.operationKind && currentChild.props.operationKind === "CREATE" && !isLastStep) ||
+                        <Button className={classes.button} type="submit" disabled={isSubmitting}
+                                endIcon={isSubmitting ? <CircularProgress size="1rem"/> : null}
+                                color="success" variant="contained">
                             {isLastStep ? t('finish') : buttonSubmitName()}
                         </Button>}
-                        {!isLastStep && currentChild.props.operationKind && <Button className={classes.button} color="primary"
-                               variant="contained"
-                               disabled={isSubmitting}
-                               onClick={() => setStep(prevStep => prevStep + 1)}
+                        {!isLastStep && currentChild.props.operationKind &&
+                        <Button className={classes.button} color="primary"
+                                variant="contained"
+                                disabled={isSubmitting}
+                                onClick={() => validateForm().then((errors) => {
+                                    if (isEmpty(errors)) {
+                                        setStep(prevStep => prevStep + 1)
+                                    } else {
+                                        setTouched(getTouchedFieldsFromObjectError(errors))
+                                    }
+                                })}
                         >
                             {t('continue')}
                         </Button>}

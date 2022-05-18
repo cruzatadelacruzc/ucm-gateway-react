@@ -28,10 +28,10 @@ export const _validationSchema = yup.object().shape({
     ci: yup.string().required(i18n.t("error:form.required")),
     name: yup.string().required(i18n.t("error:form.required")),
     race: yup.string().required(i18n.t("error:form.required")),
-    gender: yup.string().required(i18n.t("error:form.required")),
+    // gender: yup.string().required(i18n.t("error:form.required")),
     address: yup.string().required(i18n.t("error:form.required")),
     districtId: yup.string().required(i18n.t("error:form.required")),
-    birthdate: yup.string().required(i18n.t("error:form.required")),
+    // birthdate: yup.string().required(i18n.t("error:form.required")),
 })
 
 interface IPersonStep {

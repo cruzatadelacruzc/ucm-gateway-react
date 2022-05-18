@@ -13,7 +13,7 @@ import PersonalStep, {_validationSchema} from "../index";
 import {batch, useDispatch, useSelector} from "react-redux";
 import {createStudent, getStudent, partialUpdateStudent, reset, updateStudent} from "./student.reducer";
 import {defaultValue, IStudent} from "../../../../shared/models/student.model";
-import FormStepper, {FormStep} from "../../../../shared/components/FormStepper";
+import FormStepper, {FormStep} from "../../../../shared/components/form-stepper";
 import {getKinds, getStudyCenters} from "../../nomenclature/nomenclature.reducer";
 
 const StudentManage = () => {
