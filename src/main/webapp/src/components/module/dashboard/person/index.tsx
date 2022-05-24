@@ -1,15 +1,20 @@
 import * as yup from "yup";
-import React, {useEffect} from "react";
+import React from "react";
 import i18n from '../../../../config/i18n'
 import {useTranslation} from "react-i18next";
-import {batch, useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../../shared/reducer";
-import {Field} from 'formik';
-import {getDistricts, getSpecialties} from "../nomenclature/nomenclature.reducer";
+import {Field, useFormikContext} from 'formik';
+import {
+    getDistricts,
+    getFilteredDistricts,
+    getFilteredSpecialties,
+    getSpecialties
+} from "../nomenclature/nomenclature.reducer";
 import {DatePicker} from 'formik-mui-lab';
-import {TextField} from 'formik-mui';
-import {Box, Grid, MenuItem} from "@mui/material";
-import {formUpdateStyles, MenuProps} from "../style";
+import {Autocomplete, TextField} from 'formik-mui';
+import {AutocompleteRenderInputParams, Box, CircularProgress, Grid, TextField as MUITextField} from "@mui/material";
+import {formUpdateStyles} from "../style";
 import AdapterDayjs from '@mui/lab/AdapterDayjs';
 import {LocalizationProvider} from "@mui/lab";
 import {IEmployee} from "../../../shared/models/employee.model";
@@ -17,6 +22,8 @@ import {IStudent} from "../../../shared/models/student.model";
 import {deleteAvatar as deleteEmployeeAvatar} from "./employee/employee.reducer";
 import {deleteAvatar as deleteStudentAvatar} from "./student/student.reducer";
 import UCMAvatar from "../../../shared/components/avatar";
+import {INomenclature} from "../../../shared/models/nomenclature.model";
+import throttle from "lodash/throttle";
 
 export const PERSON_GENDER = {
     FEMALE: "Femenino",
@@ -44,17 +51,50 @@ const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => 
     const dispatch = useDispatch();
     const classes = formUpdateStyles();
     const {t} = useTranslation(["person"]);
+    const {errors, touched, setFieldValue} = useFormikContext();
     const districts = useSelector((states: IRootState) => states.nomenclature.districts);
     const specialties = useSelector((states: IRootState) => states.nomenclature.specialties);
 
-    useEffect(() => {
-        batch(() => {
-            dispatch(getDistricts())
-            dispatch(getSpecialties())
-        })
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    const filter = `name.contains=inputValue&description.contains=inputValue`
 
-    const isEmployee = (person): person is IEmployee  => {
+    const [openDistrict, setOpenDistrict] = React.useState(false);
+    const [inputValueDistrict, setInputValueDistrict] = React.useState('');
+    const loadingDistricts = useSelector((states: IRootState) => states.nomenclature.loadingDistricts);
+
+    const [openSpecialty, setOpenSpecialty] = React.useState(false);
+    const [inputValueSpecialty, setInputValueSpecialty] = React.useState('');
+    const loadingSpecialties = useSelector((states: IRootState) => states.nomenclature.loadingSpecialties);
+
+    const fetch = React.useMemo(
+        () => throttle((input: string, callback: (input: string) => void) => {
+                if (input !== '') {
+                    callback(input);
+                }
+            },
+            300,
+        ),
+        []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (inputValueDistrict === '' && openDistrict) {
+            dispatch(getDistricts('name,ASC'))
+        }
+        if (inputValueSpecialty === '' && openSpecialty) {
+            dispatch(getSpecialties('name,ASC'))
+        }
+        if (inputValueDistrict !== '' && openDistrict) {
+            fetch(inputValueDistrict, (inputValueDistrict) => {
+                dispatch(getFilteredDistricts(filter.replaceAll('inputValue', inputValueDistrict), 'name,ASC', 'OR'))
+            })
+        }
+        if (inputValueSpecialty !== '' && openSpecialty) {
+            fetch(inputValueSpecialty, (inputValueSpecialty) => {
+                dispatch(getFilteredSpecialties(filter.replaceAll('inputValue', inputValueSpecialty), 'name,ASC', 'OR'))
+            })
+        }
+    }, [openDistrict, openSpecialty, inputValueDistrict, inputValueSpecialty]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    const isEmployee = (person): person is IEmployee => {
         return (person as IEmployee).registerNumber !== undefined
     }
 
@@ -62,7 +102,7 @@ const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Grid container>
                 <Grid container item md={4} sm={12} xs={12} lg={4} justifyContent="center">
-                        <UCMAvatar
+                    <UCMAvatar
                             height={250}
                             width={250}
                             avatarUrl={person.avatarUrl}
@@ -139,25 +179,24 @@ const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => 
                 {!isNew && <Grid item container md={12} sm={12} xs={12} lg={12}>
                 <Box className={classes.input}>
                     <Field
-                        select
                         fullWidth
+                        disableClearable
                         name="gender"
-                        variant="outlined"
-                        component={TextField}
-                        SelectProps={MenuProps}
-                        label={t('gender.label')}
-                        InputLabelProps={{shrink: true}}
-                    >
-                        <MenuItem value=""><em>-- {t('common:empty')} --</em></MenuItem>
-                        <MenuItem value={PERSON_GENDER.FEMALE}
-                                  selected={!isNew && person.gender !== undefined && person.gender === PERSON_GENDER.FEMALE}>
-                            {t("gender.female")}
-                        </MenuItem>
-                        <MenuItem value={PERSON_GENDER.MALE}
-                                  selected={!isNew && person.gender !== undefined && person.gender === PERSON_GENDER.MALE}>
-                            {t("gender.male")}
-                        </MenuItem>
-                    </Field>
+                        options={[PERSON_GENDER.FEMALE, PERSON_GENDER.MALE]}
+                        component={Autocomplete}
+                        isOptionEqualToValue={(option, value) => option === value}
+                        renderInput={(params: AutocompleteRenderInputParams) => (
+                            <MUITextField
+                                {...params}
+                                variant="outlined"
+                                name="gender"
+                                label={t('gender.label')}
+                                InputLabelProps={{shrink: true}}
+                                helperText={errors['gender']}
+                                error={touched['gender'] && !!errors['gender']}
+                            />
+                        )}
+                    />
                 </Box>
                 <Box className={classes.input}>
                     <Field
@@ -177,46 +216,99 @@ const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => 
                     <Field name="race" label={t('race')} fullWidth InputLabelProps={{shrink: true}}
                            variant="outlined" component={TextField}/>
                 </Box>
-
                 <Box className={classes.input}>
                     <Field
-                        select
-                        fullWidth
-                        name="districtId"
-                        variant="outlined"
-                        component={TextField}
-                        SelectProps={MenuProps}
-                        label={t('district')}
-                        InputLabelProps={{shrink: true}}
-                    >
-                        <MenuItem value=""><em>-- {t('common:empty')} --</em></MenuItem>
-                        {districts.map((option, index) => (
-                            <MenuItem key={index} value={option.id}
-                                      selected={!isNew && person.districtId !== undefined && person.districtId === option.id}>
-                                {option.name}
-                            </MenuItem>
-                        ))}
-                    </Field>
+                        name="district"
+                        component={Autocomplete}
+                        open={openDistrict}
+                        options={districts}
+                        filterOptions={(x) => x}
+                        loading={loadingDistricts}
+                        onOpen={() => setOpenDistrict(true)}
+                        onClose={() => setOpenDistrict(false)}
+                        loadingText={t('common:loading')}
+                        noOptionsText={t('common:no_option')}
+                        isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
+                        onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                            if (newInputValue === '') {
+                                setFieldValue('districtId', "")
+                            }
+                            setInputValueDistrict(newInputValue);
+                        }}
+                        onChange={(event: React.SyntheticEvent, value: INomenclature) => {
+                            setFieldValue('districtId', value?.id || '')
+                            setFieldValue('district', value)
+                        }}
+                        getOptionLabel={(option: INomenclature) => option.name || ''}
+                        renderInput={(params: AutocompleteRenderInputParams) => (
+                            <MUITextField
+                                {...params}
+                                name="district"
+                                variant="outlined"
+                                label={t('district')}
+                                InputLabelProps={{shrink: true}}
+                                helperText={errors['districtId']}
+                                error={touched['districtId'] && !!errors['districtId']}
+                                InputProps={{
+                                    ...params.InputProps,
+                                    endAdornment: (
+                                        <React.Fragment>
+                                            {loadingDistricts ?
+                                                <CircularProgress color="inherit" size={20}/> : null}
+                                            {params.InputProps.endAdornment}
+                                        </React.Fragment>
+                                    ),
+                                }}
+                            />
+                        )}
+                    />
                 </Box>
                 <Box className={classes.input}>
                     <Field
-                        select
-                        fullWidth
-                        name="specialtyId"
-                        variant="outlined"
-                        component={TextField}
-                        SelectProps={MenuProps}
-                        label={t('specialty')}
-                        InputLabelProps={{shrink: true}}
-                    >
-                        <MenuItem value=""><em>-- {t('common:empty')} --</em></MenuItem>
-                        {specialties.map((option, index) => (
-                            <MenuItem key={index} value={option.id}
-                                      selected={!isNew && person.specialtyId !== undefined && person.specialtyId === option.id}>
-                                {option.name}
-                            </MenuItem>
-                        ))}
-                    </Field>
+                        name="specialty"
+                        component={Autocomplete}
+                        open={openSpecialty}
+                        options={specialties}
+                        filterOptions={(x) => x}
+                        loading={loadingSpecialties}
+                        onOpen={() => setOpenSpecialty(true)}
+                        onClose={() => setOpenSpecialty(false)}
+                        loadingText={t('common:loading')}
+                        noOptionsText={t('common:no_option')}
+                        isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
+                        onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                            if (newInputValue === '') {
+                                setFieldValue('specialtyId', "")
+                            }
+                            setInputValueSpecialty(newInputValue);
+                        }}
+                        onChange={(event: React.SyntheticEvent, value: INomenclature) => {
+                            setFieldValue('specialtyId', value?.id || '')
+                            setFieldValue('specialty', value)
+                        }}
+                        getOptionLabel={(option: INomenclature) => option.name || ''}
+                        renderInput={(params: AutocompleteRenderInputParams) => (
+                            <MUITextField
+                                {...params}
+                                name="specialty"
+                                variant="outlined"
+                                label={t('specialty')}
+                                InputLabelProps={{shrink: true}}
+                                helperText={errors['specialtyId']}
+                                error={touched['specialtyId'] && !!errors['specialtyId']}
+                                InputProps={{
+                                    ...params.InputProps,
+                                    endAdornment: (
+                                        <React.Fragment>
+                                            {loadingDistricts ?
+                                                <CircularProgress color="inherit" size={20}/> : null}
+                                            {params.InputProps.endAdornment}
+                                        </React.Fragment>
+                                    ),
+                                }}
+                            />
+                        )}
+                    />
                 </Box>
             </Grid>
             </Grid>
