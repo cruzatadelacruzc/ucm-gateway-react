@@ -61,7 +61,6 @@ const phoneReducer = (state: PhoneStateType = initialState, {type, payload}: Any
                 ...state,
                 loading: false,
                 entity: payload.data,
-                totalItems: parseInt(payload.headers['x-total-count'], 10)
             }
         case SUCCESS(ACTION_TYPES.CREATE_PHONE):
         case SUCCESS(ACTION_TYPES.UPDATE_PHONE):
