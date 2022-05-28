@@ -91,10 +91,10 @@ const PhoneManage = () => {
     }, [openWorkPlace, inputValueWorkPlace]) // eslint-disable-line react-hooks/exhaustive-deps
 
     React.useEffect(() => {
+        dispatch(resetEmployee())
+        dispatch(resetWorkPlace())
         if (undefined === id) {
             dispatch(reset())
-            dispatch(resetEmployee())
-            dispatch(resetWorkPlace())
         } else {
             dispatch(getPhone(id))
         }
