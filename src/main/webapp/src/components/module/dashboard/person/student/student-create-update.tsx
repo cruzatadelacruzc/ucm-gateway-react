@@ -4,23 +4,32 @@ import {Field} from "formik";
 import {useTranslation} from "react-i18next";
 import {TextField} from "formik-mui";
 import i18n from "../../../../../config/i18n";
-import {Box, MenuItem} from "@mui/material";
+import {Box} from "@mui/material";
 import Widget from "../../../../shared/layout/widget";
 import {IRootState} from "../../../../shared/reducer";
 import {useNavigate, useParams} from "react-router-dom";
-import {formUpdateStyles, MenuProps} from "../../style";
+import {formUpdateStyles} from "../../style";
 import PersonalStep, {_validationSchema} from "../index";
-import {batch, useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {createStudent, getStudent, partialUpdateStudent, reset, updateStudent} from "./student.reducer";
 import {defaultValue, IStudent} from "../../../../shared/models/student.model";
 import FormStepper, {FormStep} from "../../../../shared/components/form-stepper";
-import {getKinds, getStudyCenters} from "../../nomenclature/nomenclature.reducer";
+import {
+    getFilteredKinds,
+    getFilteredStudyCenters,
+    getKinds,
+    getStudyCenters,
+    reset as nomenclatureReset
+} from "../../nomenclature/nomenclature.reducer";
+import throttle from "lodash/throttle";
+import UCMAutocomplete from "../../../../shared/components/autocomplete";
+import {INomenclature} from "../../../../shared/models/nomenclature.model";
 
 const StudentManage = () => {
     let navigate = useNavigate();
     const dispatch = useDispatch();
     const classes = formUpdateStyles();
-    let {id} = useParams<{id: string}>();
+    let {id} = useParams<{ id: string }>();
     const [isNew] = React.useState(!id);
     const {t} = useTranslation(['student']);
     const [avatar, setAvatar] = React.useState<File>();
@@ -29,7 +38,16 @@ const StudentManage = () => {
     const studyCenters = useSelector((states: IRootState) => states.nomenclature.studyCenters);
     const isUpdateSuccess = useSelector((states: IRootState) => states.student.updateSuccess);
 
+    const [openKind, setOpenKind] = React.useState(false);
+    const [inputValueKind, setInputValueKind] = React.useState('');
+    const loadingKinds = useSelector((states: IRootState) => states.nomenclature.loadingKinds);
+
+    const [openStudyCenter, setOpenStudyCenter] = React.useState(false);
+    const [inputValueStudyCenter, setInputValueStudyCenter] = React.useState('');
+    const loadingStudyCenters = useSelector((states: IRootState) => states.nomenclature.loadingStudyCenters);
+
     React.useEffect(() => {
+        dispatch(nomenclatureReset())
         if (undefined === id) {
             dispatch(reset())
         } else {
@@ -37,11 +55,34 @@ const StudentManage = () => {
         }
     }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
+    const fetch = React.useMemo(
+        () => throttle((input: string, callback: (input: string) => void) => {
+                if (input !== '') {
+                    callback(input);
+                }
+            },
+            300,
+        ),
+        []); // eslint-disable-line react-hooks/exhaustive-deps
+
     React.useEffect(() => {
-        batch( () => {
-            dispatch(getKinds())
-            dispatch(getStudyCenters())
-        })},[]) // eslint-disable-line react-hooks/exhaustive-deps
+        if (inputValueKind === '' && openKind) {
+            dispatch(getKinds('name,ASC'))
+        }
+        if (inputValueKind !== '' && openKind) {
+            fetch(inputValueKind, (inputValue) => {
+                dispatch(getFilteredKinds(`name.contains=${inputValue}`, 'name,ASC', 'OR'))
+            })
+        }
+        if (inputValueStudyCenter === '' && openStudyCenter) {
+            dispatch(getStudyCenters('name,ASC'))
+        }
+        if (inputValueStudyCenter !== '' && openStudyCenter) {
+            fetch(inputValueStudyCenter, (inputValue) => {
+                dispatch(getFilteredStudyCenters(`name.contains=${inputValue}`, 'name,ASC', 'OR'))
+            })
+        }
+    }, [inputValueKind, openKind, openStudyCenter, inputValueStudyCenter]) // eslint-disable-line react-hooks/exhaustive-deps
 
     React.useEffect(() => {
         if (isUpdateSuccess) {
@@ -54,10 +95,15 @@ const StudentManage = () => {
             initialValues={isNew ? defaultValue : _entity}
             enableReinitialize={!isNew}
             onSubmit={async (values: IStudent) => {
+                const transformedValues: IStudent = {
+                    ...values,
+                    kindId: values.kind?.id,
+                    studyCenterId: values.studyCenter?.id
+                }
                 if (isNew) {
-                   return dispatch(createStudent({student: values, avatar: avatar}));
+                    return dispatch(createStudent({student: transformedValues, avatar: avatar}));
                 } else {
-                  return dispatch(updateStudent({student: values, avatar: avatar}));
+                    return dispatch(updateStudent({student: transformedValues, avatar: avatar}));
                 }
             }}
             cancelRoute='/student'
@@ -104,38 +150,36 @@ const StudentManage = () => {
                 </Box>
                 <Box className={classes.form_group}>
                     <Box className={classes.input}>
-                        <Field
-                            select
-                            fullWidth
-                            name="kindId"
-                            variant="outlined"
-                            component={TextField}
-                            SelectProps={MenuProps}
-                            label={t('kind')}
-                            InputLabelProps={{shrink: true}}
-                        >
-                            <MenuItem value=""><em>-- {t('common:empty')} --</em></MenuItem>
-                            {kinds.map((option, index) => (
-                                <MenuItem key={index} value={option.id}>{option.name}</MenuItem>
-                            ))}
-                        </Field>
+                        <Field name='kind'
+                               open={openKind}
+                               options={kinds}
+                               component={UCMAutocomplete}
+                               loading={loadingKinds}
+                               onOpen={() => setOpenKind(true)}
+                               onClose={() => setOpenKind(false)}
+                               getOptionLabel={(option: INomenclature) => option.name || ''}
+                               textFieldProps={{label: t('kind')}}
+                               onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                   setInputValueKind(newInputValue);
+                               }}
+                               isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
+                        />
                     </Box>
                     <Box className={classes.input}>
-                        <Field
-                            select
-                            fullWidth
-                            name="studyCenterId"
-                            variant="outlined"
-                            component={TextField}
-                            SelectProps={MenuProps}
-                            label={t('studyCenter')}
-                            InputLabelProps={{shrink: true}}
-                        >
-                            <MenuItem value=""><em>-- {t('common:empty')} --</em></MenuItem>
-                            {studyCenters.map((option, index) => (
-                                <MenuItem key={index} value={option.id}>{option.name}</MenuItem>
-                            ))}
-                        </Field>
+                        <Field name='studyCenter'
+                               open={openStudyCenter}
+                               options={studyCenters}
+                               component={UCMAutocomplete}
+                               loading={loadingStudyCenters}
+                               onOpen={() => setOpenStudyCenter(true)}
+                               onClose={() => setOpenStudyCenter(false)}
+                               getOptionLabel={(option: INomenclature) => option.name || ''}
+                               textFieldProps={{label: t('studyCenter')}}
+                               onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                   setInputValueStudyCenter(newInputValue);
+                               }}
+                               isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
+                        />
                     </Box>
                 </Box>
             </FormStep>
