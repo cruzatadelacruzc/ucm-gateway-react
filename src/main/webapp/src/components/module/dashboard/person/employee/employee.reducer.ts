@@ -88,7 +88,7 @@ const employeeReducer = (state: EmployeeStateType = initialState, { type, payloa
                 ...state,
                 updating: false,
                 updateSuccess: true,
-                entity: {}
+                entity: defaultValue
             }
         case SUCCESS(ACTION_TYPES.DELETE_AVATAR):
             return {
@@ -126,7 +126,7 @@ export const createEmployee: ICrudPutAction<{employee: IEmployee, avatar?: File}
     const formData = buildFormData(data.employee,"employee", data.avatar)
     return await dispatch({
         type: ACTION_TYPES.CREATE_EMPLOYEE,
-        payload: axios.post(apiUrl, formData)
+        payload: axios.post<IEmployee>(apiUrl, formData)
     })
 }
 
@@ -134,7 +134,7 @@ export const updateEmployee: ICrudPutAction<{employee: IEmployee, avatar?: File}
     const formData = buildFormData(data.employee,"employee", data.avatar)
     return await dispatch({
         type: ACTION_TYPES.UPDATE_EMPLOYEE,
-        payload: axios.put(apiUrl, formData)
+        payload: axios.put<IEmployee>(apiUrl, formData)
     })
 }
 

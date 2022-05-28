@@ -1,3 +1,5 @@
+import {INomenclature} from "./nomenclature.model";
+
 export interface IPerson {
     id?: string;
     ci?: string;
@@ -12,6 +14,8 @@ export interface IPerson {
     race?: string;
     districtId?: string;
     specialtyId?: string,
+    district?: INomenclature | null;
+    specialty?: INomenclature | null,
     districtName?: string,
     specialtyName?: string,
 }
@@ -19,13 +23,16 @@ export interface IPerson {
 export const defaultValue: Readonly<IPerson> = {
     ci: '',
     name: '',
+    race: '',
     email: '',
+    gender: null,
     address: '',
     avatarUrl: '',
     firstLastName: '',
     secondLastName: '',
     birthdate: null,
-    race: '',
+    specialtyId: '',
     districtId: '',
-    specialtyId: ''
+    specialty: null,
+    district: null
 };
