@@ -25,7 +25,7 @@ export const defaultValue: Readonly<IPerson> = {
     name: '',
     race: '',
     email: '',
-    gender: '',
+    gender: null,
     address: '',
     avatarUrl: '',
     firstLastName: '',

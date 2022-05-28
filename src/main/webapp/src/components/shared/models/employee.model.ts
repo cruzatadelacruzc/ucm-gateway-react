@@ -1,5 +1,7 @@
 import {defaultValue as personModel, IPerson} from "./person.model";
 import {IPhone} from "./phone.model";
+import {IWorkPlace} from "./workplace.model";
+import {INomenclature} from "./nomenclature.model";
 
 export interface IEmployee extends IPerson {
   startDate?: string | null
@@ -25,6 +27,12 @@ export interface IEmployee extends IPerson {
   teachingCategoryName?: string
   chargeName?: string
   professionName?: string
+  workPlace?: IWorkPlace | null
+  category?: INomenclature | null
+  scientificDegree?: INomenclature | null
+  teachingCategory?: INomenclature | null
+  charge?: INomenclature | null
+  profession?: INomenclature | null
 }
 
 export const defaultValue: Readonly<IEmployee> = {
@@ -45,5 +53,11 @@ export const defaultValue: Readonly<IEmployee> = {
   serviceYears: 0,
   professionalNumber: '',
   phoneIds: [],
-  phones: []
+  phones: [],
+  workPlace: null,
+  category: null,
+  scientificDegree: null,
+  teachingCategory: null,
+  charge: null,
+  profession: null
 };
