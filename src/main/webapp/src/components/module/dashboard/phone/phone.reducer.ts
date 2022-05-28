@@ -103,7 +103,7 @@ const phoneReducer = (state: PhoneStateType = initialState, {type, payload}: Any
 //Actions
 export const apiUrl = 'services/directory/api/phones';
 
-export const getSearchPhones: ICrudSearchAction<IPhone> = (search,page, size, sort) => async dispatch => {
+export const getSearchPhones: ICrudSearchAction<IPhone> = (search, sort, operator = "AND", page, size) => async dispatch => {
     return await dispatch({
         type: ACTION_TYPES,
         payload: axios.get<Array<IPhone>>(`${apiUrl}/filtered/and?${search}&${sort ? `page=${page}&size=${size}&sort=${sort}` : 'unpaged=true'}`)

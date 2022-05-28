@@ -115,7 +115,7 @@ const workPlaceReducer = (state: WorkplaceStateType = initialState, {type, paylo
 // Actions
 export const apiUrl = 'services/directory/api/workplaces';
 
-export const getWorkPlaces: ICrudGetAllAction<IWorkPlace> = (page, size, sort) => async dispatch => {
+export const getWorkPlaces: ICrudGetAllAction<IWorkPlace> = (sort, page, size) => async dispatch => {
     return await dispatch({
         type: ACTION_TYPES.FETCH_WORKPLACE_LIST,
         payload: axios.get<Array<IWorkPlace>>(`${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : '?unpaged=true'}`)
