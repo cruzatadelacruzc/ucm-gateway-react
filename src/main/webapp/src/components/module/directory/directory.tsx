@@ -3,6 +3,7 @@ import Header from './header';
 import {Container, Grid, Tab, Tabs, Typography} from '@mui/material';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import PersonIcon from '@mui/icons-material/Person';
+import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import CardPerson from './card-person';
 import {getSearchPerson, getSearchPhone, getSearchWorkPlace} from './search-result.reducer';
 import {useTranslation} from 'react-i18next';
@@ -11,9 +12,11 @@ import {IRootState} from "../../shared/reducer";
 import {ISearchResultPerson} from "../../shared/models/search-result-person.model";
 import {ISearchResultWorkPlace} from "../../shared/models/search-result-workplace.model";
 import {ISearchResultPhone} from "../../shared/models/search-result-phone.model";
-import {INDICES} from "../../../config/constants";
+import {AUTHORITIES, INDICES} from "../../../config/constants";
 import CardWorkPlace from "./card-workplace";
 import {REDIRECT_URL} from "../../shared/util/url-util";
+import {hasAnyAuthority} from "../../shared/auth/private-route";
+import {useTheme} from "@mui/styles";
 
 export interface IDirectoryProps {
     searchValue: string;
@@ -22,11 +25,16 @@ export interface IDirectoryProps {
 }
 
 export default function Directory() {
-    const {t} = useTranslation();
+    const theme = useTheme();
     const dispatch = useDispatch();
-    const [tabValue, setTabValue] = useState<number>(0);
-    const [searchValue, setSearchValue] = useState<string>('Cesar');
+    const {t} = useTranslation('directory');
+    const [tabValue, setTabValue] = useState(0);
+    const [searchValue, setSearchValue] = useState('');
     const search = useSelector((states: IRootState) => states.search);
+    const isAuthenticated = useSelector((states: IRootState) => states.auth.isAuthenticated);
+    const authorities = useSelector((states: IRootState) => states.auth.account.authorities);
+
+    const canShowPhone = isAuthenticated && hasAnyAuthority(authorities, [AUTHORITIES.ADMIN])
 
     // Flow: user wants access private route, he is redirect to login page and save in localStorage the route private,
     // after successful flow login, hi is redirect to public route(/) and if REDIRECT_URL exists in localStorage
@@ -73,8 +81,8 @@ export default function Directory() {
                 {props.hits.total > 0 ? (
                     <Grid xs={12} container spacing={3} item>
                         <Grid item xs={12}>
-                            <Typography variant='subtitle2' display='inline' gutterBottom>
-                                {t('directory:result_announce', {
+                            <Typography variant='subtitle2' display='inline'>
+                                {t('result_announce', {
                                     count: props.hits.total,
                                     second: props.took / 1000,
                                     quality: props.hits.max_score,
@@ -108,20 +116,20 @@ export default function Directory() {
     return (
         <>
             <Header {...props} />
-            <Container>
-                <Grid container alignItems='flex-start' spacing={3}>
+            <Container sx={{mt: theme.spacing(4.5)}}>
+                <Grid container direction="column" alignItems='flex-start' spacing={3}>
                     <Grid xs={12} item>
                         <Tabs onChange={handleTabChange} indicatorColor='primary' textColor='primary' value={tabValue}>
-                            <Tab label={t('directory:tab.people')} icon={<PersonIcon/>}/>
-                            <Tab label={t('directory:tab.workplaces')} icon={<HomeWorkIcon/>}/>
-                            {/*{(auth.isAuthenticated && hasAnyAuthority(auth.account.authorities, [AUTHORITIES.ADMIN])) &&*/}
-                            {/*<Tab label={t('directory:tab.phones')} icon={<ContactPhoneIcon/>}/>}*/}
+                            <Tab label={t('tab.people')} icon={<PersonIcon/>}/>
+                            <Tab label={t('tab.workplaces')} icon={<HomeWorkIcon/>}/>
+                            {canShowPhone && <Tab label={t('tab.phones')} icon={<ContactPhoneIcon/>}/>}
                         </Tabs>
                     </Grid>
-                    {tabValue === 0 && <DisplayCardList {...search.resultPerson}/>}
-                    {tabValue === 1 && <DisplayCardList {...search.resultWorkPlace}/>}
-                    {/*{(auth.isAuthenticated && hasAnyAuthority(auth.account.authorities, [AUTHORITIES.ADMIN])) &&*/}
-                    {/*tabValue === 2 && <DisplayCardList {...search.resultPhone}/>}*/}
+                    <Grid xs={12} item>
+                        {tabValue === 0 && <DisplayCardList {...search.resultPerson}/>}
+                        {tabValue === 1 && <DisplayCardList {...search.resultWorkPlace}/>}
+                        {canShowPhone && tabValue === 2 && <DisplayCardList {...search.resultPhone}/>}
+                    </Grid>
                 </Grid>
             </Container>
         </>
