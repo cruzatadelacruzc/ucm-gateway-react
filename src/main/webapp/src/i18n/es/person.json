@@ -4,6 +4,8 @@
   "email": "Correo",
   "address": "Dirección",
   "firstLastName": "Primer apellido",
+  "surname": "Apellido",
+  "surname_plural": "Apellidos",
   "secondLastName": "Segundo apellido",
   "gender": {
     "label": "Género",

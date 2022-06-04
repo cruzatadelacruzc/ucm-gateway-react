@@ -14,5 +14,18 @@
   "employees": "Trabajador",
   "date_format": "D [de] MMM [de] YYYY",
   "description": "Descripción",
-  "email": "Correo"
+  "email": "Correo",
+  "profession": "Profesión",
+  "charge": "Cargo",
+  "bossWorkPlace": "¿Jefe de área?",
+  "category": "Categoría",
+  "positive": "SI",
+  "professionalNumber": "Número profesional",
+  "registerNumber": "Número de registro",
+  "workPlace": "Área laboral",
+  "kind": "Tipo",
+  "residence": "Residencia",
+  "classRoom": "Brigada",
+  "studyCenter": "Centro de estudio",
+  "universityYear": "Años universitarios"
 }
