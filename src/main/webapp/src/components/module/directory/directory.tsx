@@ -80,7 +80,7 @@ export default function Directory() {
         return (
             <>
                 {props.hits.total > 0 ? (
-                    <Grid xs={12} container spacing={3} item>
+                    <Grid container spacing={3} justifyContent="center" alignItems="center">
                         <Grid item xs={12}>
                             <Typography variant='subtitle2' display='inline'>
                                 {t('result_announce', {
@@ -90,26 +90,25 @@ export default function Directory() {
                                 })}
                             </Typography>
                         </Grid>
-                        {props.hits.total > 0 ?
-                            (
-                                props.hits.hits.map((result, index) => (
-                                    <Grid key={index} item xs={12}>
-                                        {(result._type === INDICES.EMPLOYEES || result._type === INDICES.STUDENTS) &&
-                                        <CardPerson {...result} />}
-                                        {result._type === INDICES.WORKPLACES && <CardWorkPlace {...result}/>}
-                                        {result._type === INDICES.PHONES && <CardPhone {...result}/>}
-                                    </Grid>
-                                ))
-                            ) : (
-                                <Typography variant='h4' component='h5'>
-                                    No hay Elementos que mostrar
-                                </Typography>
-                            )}
+                        {
+                            props.hits.hits.map((result, index) => (
+                                <Grid key={index} item xs={12}>
+                                    {(result._type === INDICES.EMPLOYEES || result._type === INDICES.STUDENTS) &&
+                                    <CardPerson {...result} />}
+                                    {result._type === INDICES.WORKPLACES && <CardWorkPlace {...result}/>}
+                                    {result._type === INDICES.PHONES && <CardPhone {...result}/>}
+                                </Grid>))
+                        }
                     </Grid>
                 ) : (
-                    <Typography variant='h4' component='h5'>
-                        Ordene mi amo
-                    </Typography>
+                    <Grid xs={12} item>
+                        <Typography variant='h2' sx={{
+                            textTransform: 'uppercase',
+                            textAlign: 'center'
+                        }} color="text.secondary">
+                            {t("no_result")}
+                        </Typography>
+                    </Grid>
                 )}
             </>
         )
@@ -119,7 +118,7 @@ export default function Directory() {
         <>
             <Header {...props} />
             <Container sx={{mt: theme.spacing(4.5)}}>
-                <Grid container direction="column" alignItems='flex-start' spacing={3}>
+                <Grid container spacing={3}>
                     <Grid xs={12} item>
                         <Tabs onChange={handleTabChange} indicatorColor='primary' textColor='primary' value={tabValue}>
                             <Tab label={t('tab.people')} icon={<PersonIcon/>}/>
