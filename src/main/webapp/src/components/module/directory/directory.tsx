@@ -17,6 +17,7 @@ import CardWorkPlace from "./card-workplace";
 import {REDIRECT_URL} from "../../shared/util/url-util";
 import {hasAnyAuthority} from "../../shared/auth/private-route";
 import {useTheme} from "@mui/styles";
+import CardPhone from "./card-phone";
 
 export interface IDirectoryProps {
     searchValue: string;
@@ -96,6 +97,7 @@ export default function Directory() {
                                         {(result._type === INDICES.EMPLOYEES || result._type === INDICES.STUDENTS) &&
                                         <CardPerson {...result} />}
                                         {result._type === INDICES.WORKPLACES && <CardWorkPlace {...result}/>}
+                                        {result._type === INDICES.PHONES && <CardPhone {...result}/>}
                                     </Grid>
                                 ))
                             ) : (

@@ -9,11 +9,12 @@
   "workPlace": "Área de trabajo",
   "employee": "Trabajador",
   "delete": {
-  "title": "Eliminar teléfono",
-  "question": "¿Estás segura qué quieres eliminar el Teléfono {{ param }}?"
-},
+    "title": "Eliminar teléfono",
+    "question": "¿Estás segura qué quieres eliminar el Teléfono {{ param }}?"
+  },
   "detail": {
     "title": "Detalles del teléfono"
   },
-  "positive": "SI"
+  "positive": "SI",
+  "owner": "Propietario"
 }

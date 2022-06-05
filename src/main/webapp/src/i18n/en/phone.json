@@ -9,11 +9,12 @@
   "workPlace": "WorkPlace",
   "employee": "Employee",
   "delete": {
-  "title": "Delete phone",
-  "question": "Are you sure you want to delete Phone {{ param }}?"
-},
+    "title": "Delete phone",
+    "question": "Are you sure you want to delete Phone {{ param }}?"
+  },
   "detail": {
     "title": "Phone details"
   },
-  "positive": "YES"
+  "positive": "YES",
+  "owner": "Owner"
 }
