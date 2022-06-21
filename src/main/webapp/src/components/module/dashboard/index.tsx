@@ -72,16 +72,15 @@ const Dashboard = () => {
 
     React.useEffect(() => {
         dispatch(setMenu(!matchDownMd));
-    }, [matchDownMd]); // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [matchDownMd]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const trigger = useScrollTrigger({
         disableHysteresis: true,
-        threshold: 0,
     });
 
-    return(
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
+    return (
+        <Box sx={{display: 'flex'}}>
+            <CssBaseline/>
             {/* header */}
             <AppBar
                 enableColorOnDark
