@@ -6,5 +6,7 @@
     "workplaces": "Departamentos",
     "phones": "Teléfonos"
   },
-  "no_result": "Nada que mostrar"
+  "no_result": "Nada que mostrar",
+  "placeholder": "¿Qué estás buscando?, SOLO ESCRIBE...",
+  "loading": "Cargando más..."
 }

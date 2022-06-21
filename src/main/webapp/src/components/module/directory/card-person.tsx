@@ -46,7 +46,8 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     })
 }))
 
-export default function CardPerson(props: ISearchResultPersonHit) {
+
+const cardPerson = React.forwardRef<HTMLDivElement, ISearchResultPersonHit>((props, ref) => {
     const theme = useTheme();
     const {t} = useTranslation(['person']);
     const isFullScreen = useMediaQuery(theme.breakpoints.up('sm'));
@@ -180,7 +181,7 @@ export default function CardPerson(props: ISearchResultPersonHit) {
     }
 
     return (
-        <Paper elevation={8} sx={{p: 2, borderTop: `3px solid ${theme.palette.primary.main}`}}>
+        <Paper elevation={8} sx={{p: 2, borderTop: `5px solid ${theme.palette.primary.main}`}} ref={ref}>
             <Stack direction={{xs: "column", sm: "row"}} justifyContent="space-between" spacing={{xs: 2, sm: 0}}>
                 <Box>
                     {props._type ? (
@@ -246,4 +247,6 @@ export default function CardPerson(props: ISearchResultPersonHit) {
             </Collapse>
         </Paper>
     );
-}
+})
+
+export default cardPerson

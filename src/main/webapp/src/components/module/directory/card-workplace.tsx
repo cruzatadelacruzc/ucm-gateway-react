@@ -11,7 +11,7 @@ import Chip from "@mui/material/Chip";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import Grid from "@mui/material/Grid";
 
-export default function CardWorkPlace(props: ISearchResultWorkPlaceHit) {
+const cardWorkPlace = React.forwardRef<HTMLDivElement, ISearchResultWorkPlaceHit>((props, ref) => {
     const {t} = useTranslation(['workplace']);
     const theme = useTheme();
 
@@ -28,9 +28,9 @@ export default function CardWorkPlace(props: ISearchResultWorkPlaceHit) {
         return 'broken.jpg';
     }
     return (
-        <Paper elevation={8} sx={{p: 2, borderTop: `3px solid ${theme.palette.primary.main}`, flexGrow: 1}}>
+        <Paper elevation={8} sx={{p: 2, borderTop: `5px solid ${theme.palette.primary.main}`, flexGrow: 1}} ref={ref}>
             <Grid container spacing={{xs: 2, sm: 0}}>
-                <Grid item>
+                <Grid item xs={12} sm={4} md={3}>
                     <Card sx={{maxWidth: 255, maxHeight: 255}}>
                         <CardActionArea>
                             <CardMedia
@@ -41,7 +41,7 @@ export default function CardWorkPlace(props: ISearchResultWorkPlaceHit) {
                         </CardActionArea>
                     </Card>
                 </Grid>
-                <Grid container item md={9} xs={12} sm rowSpacing={{xs: 1, md: 0}}>
+                <Grid container item xs={12} sm={8} md={9} rowSpacing={{xs: 1, md: 0}}>
                     <Grid item container md={6}>
                         <Grid item xs={12}>
                             <Typography component="div" color="text.secondary"
@@ -85,4 +85,6 @@ export default function CardWorkPlace(props: ISearchResultWorkPlaceHit) {
             </Grid>
         </Paper>
     );
-}
+});
+
+export default cardWorkPlace;

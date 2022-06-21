@@ -8,7 +8,7 @@ import {CONFIG} from "../../../config/constants";
 import {useTheme} from "@mui/styles";
 import Grid from "@mui/material/Grid";
 
-export default function CardPhone(props: ISearchResultPhoneHit) {
+const cardPhone = React.forwardRef<HTMLDivElement, ISearchResultPhoneHit>((props, ref) => {
     const theme = useTheme();
     const {t} = useTranslation(['phone']);
 
@@ -20,9 +20,9 @@ export default function CardPhone(props: ISearchResultPhoneHit) {
         return `${CONFIG.DEFAULT_PATH}/phone.jpg`
     }
     return (
-        <Paper elevation={8} sx={{p: 2, borderTop: `5px solid ${theme.palette.primary.main}`, flexGrow: 1}}>
+        <Paper elevation={8} sx={{p: 2, borderTop: `5px solid ${theme.palette.primary.main}`, flexGrow: 1}} ref={ref}>
             <Grid container spacing={{xs: 2, sm: 0}}>
-                <Grid item>
+                <Grid item xs={12} sm={4} md={3}>
                     <Card sx={{maxWidth: 255, maxHeight: 255}}>
                         <CardActionArea>
                             <CardMedia
@@ -33,7 +33,7 @@ export default function CardPhone(props: ISearchResultPhoneHit) {
                         </CardActionArea>
                     </Card>
                 </Grid>
-                <Grid container item md={9} xs={12} sm rowSpacing={{xs: 1, md: 0}}>
+                <Grid container item xs={12} sm={8} md={9} rowSpacing={{xs: 1, md: 0}}>
                     <Grid item xs={12} md={6}>
                         <Typography component="div" color="text.secondary"
                                     variant="h4">{t('number')}</Typography>
@@ -54,4 +54,6 @@ export default function CardPhone(props: ISearchResultPhoneHit) {
             </Grid>
         </Paper>
     );
-}
+});
+
+export default cardPhone;
