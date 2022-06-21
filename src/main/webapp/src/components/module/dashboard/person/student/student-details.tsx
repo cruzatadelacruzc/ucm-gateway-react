@@ -33,7 +33,7 @@ const StudentDetails = () => {
         if (isUpdateSuccess) {
             navigate(-1) // Pass the delta to go in the history stack, equivalent to hitting the back button.
         }
-    }, [isUpdateSuccess])
+    }, [isUpdateSuccess]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Widget disableWidgetMenu>

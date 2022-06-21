@@ -65,6 +65,13 @@ export interface ICustomToolbarSelectProps {
     selectedRows: { lookup: { dataIndex: boolean }, data: Array<{ index: number, dataIndex: number }> }
 }
 
+
+export declare type ISearchAction<T> = (
+    search: string,
+    from?: number,
+    size?: number
+) => ((dispatch: any) => AxiosPromise<IPayload<T>>);
+
 export interface ITableState {
     activeColumn: null | string
     announceText: null | string

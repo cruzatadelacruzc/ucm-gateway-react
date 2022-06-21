@@ -1,18 +1,4 @@
 {
-  "ID": "DNI",
-  "name": " Name",
-  "name_plural": " Names",
-  "lastName": "Lastname",
-  "lastName_plural": "Lastnames",
-  "gender": "Gender",
-  "race": "Race",
-  "specialty": "Specialty",
-  "birthdate": "Birthdate",
-  "district": "District",
-  "username": "Username",
-  "students": "Student",
   "employees": "Employee",
-  "date_format": "MMM D, YYYY",
-  "description": "Description",
-  "email": "Email"
+  "date_format": "MMM D, YYYY"
 }

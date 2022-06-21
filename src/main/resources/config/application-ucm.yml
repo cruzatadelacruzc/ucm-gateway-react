@@ -1,0 +1,70 @@
+# ===================================================================
+# Spring Boot configuration for the "dev" profile.
+#
+# This configuration overrides the application.yml file.
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+logging:
+  level:
+    sld.ucm.gateway: DEBUG
+    org.springframework.security: DEBUG
+    #    org.springframework.cloud.gateway: DEBUG
+    org.springframework.security.oauth2: DEBUG
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://admin:${application.registry-config.password}@172.16.0.13:8761/eureka/
+
+
+spring:
+  config:
+    activate:
+      on-profile: ucm
+  messages:
+    cache-duration: PT1S # 1 second, see the ISO 8601 standard
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+          login-client:
+            provider: keycloak
+            client-id: web_app
+            client-secret: web_app
+            scope: openid,profile,email
+        provider:
+          keycloak:
+            issuer-uri: http://keycloak.ucmgt.cu:9080/auth/realms/jhipster
+
+server:
+  port: 8080
+
+application:
+  registry-config:
+    password: admin
+  cors:
+    allowed-origins: 'http://localhost:3000'
+    allowed-methods: '*'
+    allowed-headers: '*'
+    exposed-headers: 'Authorization,Link,X-Total-Count,X-${application.clientApp.name}-alert,X-${application.clientApp.name}-error,X-${application.clientApp.name}-params'
+    allow-credentials: true
+    max-age: 1800
+  logging:
+    use-json-format: false # By default, logs are not in Json format
+    logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+      enabled: false
+      host: localhost
+      port: 5000
+      queue-size: 512
+  metrics:
+    logs: # Reports metrics in the logs
+      enabled: false
+      report-frequency: 60 # in seconds

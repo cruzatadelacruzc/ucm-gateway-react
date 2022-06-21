@@ -5,6 +5,7 @@ import {useTranslation} from "react-i18next";
 import {IPerson} from "../../../shared/models/person.model";
 import {Box, Card, CardActionArea, CardMedia, FormControl, FormLabel, Grid} from "@mui/material";
 import {buildAvatarURL} from "../../../shared/util/function-utils";
+import {CONFIG} from "../../../../config/constants";
 
 export default function PersonDetails(_entity: IPerson) {
     const {t} = useTranslation(['person']);
@@ -13,7 +14,7 @@ export default function PersonDetails(_entity: IPerson) {
         if (_entity.avatarUrl) {
             return buildAvatarURL(_entity.avatarUrl)
         } else {
-            return "../../../user.svg"
+            return `${CONFIG.DEFAULT_PATH}/user.svg`
         }
     }
 

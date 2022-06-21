@@ -1,33 +1,30 @@
 import {defaultDetailsValue as workplaceDetails, ISearchResultWorkPlaceDetails} from './search-result-workplace.model';
 
 export interface ISearchResultPersonDetails {
-  id: string;
-  profession?: string;
-  secondLastName: string;
-  specialty?: string;
-  address: string;
-  birthdate: string;
-  charge?: string;
-  gender: string;
-  race: string;
-  ci: string;
-  avatarUrl: string;
-  bossWorkPlace: boolean;
-  parentDistrict?: string;
-  firstLastName: string;
-  district?: string;
-  name: string;
-  professionalNumber?: string;
-  registerNumber?: string;
-  category?: string;
-  email: string;
-  age: number;
-  workPlace?: ISearchResultWorkPlaceDetails
+    id: string;
+    profession?: string;
+    secondLastName: string;
+    specialty?: string;
+    address: string;
+    birthdate: string;
+    charge?: string;
+    gender: string;
+    race: string;
+    ci: string;
+    avatarUrl: string | null;
+    bossWorkPlace: boolean;
+    firstLastName: string;
+    district?: string;
+    name: string;
+    professionalNumber?: string;
+    registerNumber?: string;
+    category?: string;
+    email: string;
+    age: number;
+    workPlace?: ISearchResultWorkPlaceDetails
   classRoom?: string;
   universityYear?: number;
   residence?: string;
-  kind?: string;
-  studyCenter?: string;
 }
 
 export interface ISearchResultPersonHit {
@@ -60,7 +57,6 @@ export const defaultDetailsValue: Readonly<ISearchResultPersonDetails> = {
       ci: '',
       avatarUrl: '',
       bossWorkPlace: false,
-      parentDistrict: '',
       firstLastName: '',
       district: '',
       name: '',
@@ -73,8 +69,6 @@ export const defaultDetailsValue: Readonly<ISearchResultPersonDetails> = {
       classRoom: '',
       universityYear: 1,
       residence: '',
-      kind: '',
-      studyCenter: '',
     }
 
 export const defaultHitValue: Readonly<ISearchResultPersonHit> =  {

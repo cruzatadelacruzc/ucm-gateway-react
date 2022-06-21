@@ -1,69 +1,70 @@
 import React from 'react';
 import {KeyboardArrowUp as KeyboardArrowUpIcon, Search as SearchIcon} from '@mui/icons-material';
 import ScrollTop from '../../shared/components/scroll-top';
-import {
-    AppBar,
-    ButtonBase,
-    Fab,
-    IconButton,
-    InputBase,
-    Paper,
-    Toolbar,
-    useScrollTrigger,
-    useTheme
-} from '@mui/material';
+import {AppBar, ButtonBase, Fab, IconButton, InputBase, Paper, Toolbar, useScrollTrigger} from '@mui/material';
 import {Link} from 'react-router-dom';
-import {IDirectoryProps} from './directory';
-import {headerStyles} from './style';
 import {useTranslation} from 'react-i18next';
 import ProfileSection from '../../shared/layout/header/profile-section';
 import SvgLogo from "../../shared/components/svg-logo";
+import styled from "@mui/material/styles/styled";
 
+const StyledPaper = styled(Paper, {shouldForwardProp: trigger => trigger !== 'trigger'})<{ trigger: boolean }>(({theme, trigger}) => ({
+    padding: "2px 4px",
+    width: "100%",
+    borderRadius: 50,
+    flexGrow: 1,
+    marginRight: theme.spacing(5),
+    [theme.breakpoints.down('sm')]: {
+        marginRight: theme.spacing(0),
+    },
+    ...(trigger && {border: '1px solid #e0e2e6'})
+}));
 
-export default function Header(props: IDirectoryProps) {
-    const theme = useTheme();
-    const classes = headerStyles();
-    const {t} = useTranslation(['header']);
-    const {handleSearchValue, searchValue, startSearching} = props;
+interface IHeader {
+    onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+    inputSearchRef: React.RefObject<HTMLInputElement>;
+}
 
-    const trigger = useScrollTrigger({
-        disableHysteresis: true,
-        threshold: 0,
-    });
+export default function Header(props: IHeader) {
+    const {t} = useTranslation(['directory']);
+    const {onSubmit, inputSearchRef} = props
+    const trigger = useScrollTrigger();
 
     return (
-        <div className={classes.grow}>
-            <AppBar elevation={trigger ? 5 : 0} className={classes.appBar}>
-                <Toolbar>
-                    <ButtonBase disableRipple component={Link} to="/"
-                                sx={{[theme.breakpoints.down('sm')]: {display: 'none'}}}
-                    >
+        <>
+            <AppBar elevation={trigger ? 5 : 0} sx={{backgroundColor: "#fff"}}>
+                <Toolbar disableGutters>
+                    <ButtonBase disableRipple component={Link} to="/" sx={{
+                        flexGrow: 1,
+                        mr: {xs: 0, sm: 5},
+                        display: {xs: 'none', sm: 'inline-flex'}
+                    }}>
                         <SvgLogo sx={{fontSize: '3.5rem'}}/>
                     </ButtonBase>
-                    <div className={classes.grow}/>
-                    <Paper elevation={trigger ? 0 : 2} className={classes.paper}
-                           style={trigger ? {border: '1px solid #e0e2e6'} : undefined}>
-                        <form onSubmit={startSearching} className={classes.form}>
+                    <StyledPaper elevation={trigger ? 0 : 2} trigger={trigger}>
+                        <form onSubmit={onSubmit} style={{width: "100%", display: "flex"}}>
                             <InputBase
-                                value={searchValue}
-                                onChange={handleSearchValue}
+                                inputRef={inputSearchRef}
                                 type='search'
                                 autoFocus
-                                className={classes.input}
-                                placeholder={t('header:placeholder')}
-                                inputProps={{'aria-label': t('header:placeholder').toLowerCase()}}
+                                sx={{
+                                    borderRadius: 50,
+                                    width: '100%',
+                                    ml: 1
+                                }}
+                                placeholder={t('placeholder')}
+                                inputProps={{'aria-label': t('placeholder').toLowerCase()}}
                             />
                             <IconButton
                                 type='submit'
-                                className={classes.iconButton}
+                                sx={{p: 1}}
                                 aria-label='search'
                                 size="large">
                                 <SearchIcon/>
                             </IconButton>
                         </form>
-                    </Paper>
-                    <div className={classes.grow}/>
-                    <ProfileSection />
+                    </StyledPaper>
+                    <ProfileSection/>
                 </Toolbar>
             </AppBar>
             <Toolbar id='back-to-top-anchor'/>
@@ -72,6 +73,6 @@ export default function Header(props: IDirectoryProps) {
                     <KeyboardArrowUpIcon/>
                 </Fab>
             </ScrollTop>
-        </div>
+        </>
     );
 }

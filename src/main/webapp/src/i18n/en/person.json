@@ -4,6 +4,8 @@
   "email": "E-mail",
   "address": "Address",
   "firstLastName": "First last name",
+  "surname": "Surname",
+  "surname_plural": "Surnames",
   "secondLastName": "Second last name",
   "gender": {
     "label": "Gender",
