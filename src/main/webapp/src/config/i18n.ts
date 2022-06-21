@@ -5,8 +5,6 @@ import card_es from '../i18n/es/card.json';
 import card_en from '../i18n/en/card.json';
 import directory_es from '../i18n/es/directory.json';
 import directory_en from '../i18n/en/directory.json';
-import header_es from '../i18n/es/header.json';
-import header_en from '../i18n/en/header.json';
 import common_en from '../i18n/en/common.json';
 import common_es from '../i18n/es/common.json';
 import error_en from '../i18n/en/error.json';
@@ -54,7 +52,6 @@ i18n
                 card: card_en,
                 error: error_en,
                 phone: phone_en,
-                header: header_en,
                 common: common_en,
                 person: person_en,
                 student: student_en,
@@ -69,7 +66,6 @@ i18n
                 card: card_es,
                 error: error_es,
                 phone: phone_es,
-                header: header_es,
                 common: common_es,
                 person: person_es,
                 student: student_es,
