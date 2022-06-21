@@ -113,12 +113,11 @@ export default function ProfileSection() {
     return (
         <>
             {displaySM ?
-                <IconButton size="large">
+                <IconButton onClick={handleToggle}>
                     <Avatar
                         ref={anchorRef}
                         aria-controls={open ? 'menu-list-grow' : undefined}
                         aria-haspopup="true"
-                        onClick={handleToggle}
                         sx={{width: 15, backgroundColor: '#ffff'}}
                     >
                         <MoreVert sx={{color: theme.palette.grey["700"]}}/>
