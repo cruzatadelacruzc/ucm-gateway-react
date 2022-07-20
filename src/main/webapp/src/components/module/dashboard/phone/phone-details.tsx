@@ -10,6 +10,9 @@ import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import {Avatar, Box, Button, Chip, CircularProgress, Divider, Stack, styled, Typography, useTheme} from "@mui/material";
 import DialogDelete from "../../../shared/components/dialog-delete";
 import {buildAvatarURL} from "../../../shared/util/function-utils";
+import CancelIcon from "@mui/icons-material/Cancel";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const Item = styled("div")(({theme}) => ({
     marginBottom: theme.spacing(1),
@@ -118,7 +121,8 @@ const PhoneDetails = () => {
                     <Box className={classes.buttons}>
                         <Button
                             component={Link}
-                            color="warning"
+                            color="secondary"
+                            startIcon={<CancelIcon/>}
                             variant="contained"
                             to={'/dashboard/phone'}
                             className={classes.button}>
@@ -126,19 +130,19 @@ const PhoneDetails = () => {
                         </Button>
                         <Button
                             component={Link}
-                            color="success"
+                            color="secondary"
+                            startIcon={<EditIcon/>}
                             variant="contained"
                             className={classes.button}
                             to={`/dashboard/phone/edit/${id}`}>
                             {t('common:edit')}
                         </Button>
                         <Button
-                            color="error"
                             variant="contained"
                             className={classes.button}
                             onClick={() => setModalOpen(true)}
                             disabled={updating}
-                            endIcon={updating ? <CircularProgress size="1rem"/> : null}
+                            startIcon={updating ? <CircularProgress size="1rem"/> : <DeleteIcon/>}
                         >
                             {t('common:delete')}
                         </Button>

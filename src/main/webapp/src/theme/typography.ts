@@ -41,16 +41,14 @@ export default function themeTypography(palette: Palette): TypographyOptions {
         subtitle1: {
             fontSize: '0.875rem',
             fontWeight: 500,
-            color:  palette.grey['900'],
         },
         subtitle2: {
             fontSize: '0.75rem',
             fontWeight: 400,
-            color:  palette.grey['500']
         },
         caption: {
             fontSize: '0.75rem',
-            color:  palette.grey['500'],
+            color: palette.grey['900'],
             fontWeight: 400
         },
         body1: {
@@ -62,26 +60,12 @@ export default function themeTypography(palette: Palette): TypographyOptions {
             letterSpacing: '0em',
             fontWeight: 400,
             lineHeight: '1.5em',
-            color:  palette.grey['700'],
-        },
-        mediumAvatar: {
-            width: '34px',
-            height: '34px',
-            fontSize: '1.2rem'
         },
         subMenuCaption: {
             fontSize: '0.6875rem',
             fontWeight: 500,
             color:  palette.grey['500'],
             textTransform: 'capitalize'
-        },
-        menuCaption: {
-            fontSize: '0.875rem',
-            fontWeight: 500,
-            color:  palette.grey['500'],
-            padding: '6px',
-            textTransform: 'capitalize',
-            marginTop: '10px'
         }
     }
 }

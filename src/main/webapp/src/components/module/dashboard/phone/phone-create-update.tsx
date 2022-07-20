@@ -16,6 +16,8 @@ import {IEmployee} from "../../../shared/models/employee.model";
 import throttle from 'lodash/throttle'
 import {IWorkPlace} from "../../../shared/models/workplace.model";
 import {getFilteredWorkPlace, getWorkPlaces, reset as resetWorkPlace} from "../workplace/workplace.reducer";
+import CancelIcon from "@mui/icons-material/Cancel";
+import SendIcon from "@mui/icons-material/Send";
 
 const PhoneManage = () => {
     let navigate = useNavigate();
@@ -252,19 +254,19 @@ const PhoneManage = () => {
                         <Box className={classes.buttons}>
                             <Button
                                 className={classes.button}
-                                color="warning"
+                                color="secondary"
                                 variant="contained"
                                 component={Link}
                                 to='/dashboard/phone'
+                                startIcon={<CancelIcon/>}
                                 disabled={updating}>
                                 {t('common:cancel')}
                             </Button>
                             <Button
                                 className={classes.button}
-                                color="success"
                                 variant="contained"
                                 disabled={updating}
-                                endIcon={updating ? <CircularProgress size="1rem"/> : null}
+                                startIcon={updating ? <CircularProgress size="1rem"/> : <SendIcon/>}
                                 onClick={submitForm}>
                                 {t('common:submit')}
                             </Button>

@@ -1,4 +1,5 @@
 {
+  "placeholder": "¿Qué buscas? SÓLO ESCRIBE...",
   "textLabels": {
     "body": {
       "noMatch": "Lo sentimos, no se encontraron registros coincidentes para la página {{ numberPage }}",

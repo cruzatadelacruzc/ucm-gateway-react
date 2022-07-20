@@ -9,6 +9,8 @@ import Widget from "../../../shared/layout/widget";
 import {useDispatch, useSelector} from "react-redux";
 import {AutocompleteRenderInputParams, Box, Button, CircularProgress, TextField as MUITextField} from "@mui/material";
 import {Link, useNavigate, useParams} from 'react-router-dom'
+import SendIcon from '@mui/icons-material/Send';
+import CancelIcon from '@mui/icons-material/Cancel';
 import {defaultValue, DISCRIMINATOR, INomenclature} from "../../../shared/models/nomenclature.model";
 import {createNomenclature, getNomenclature, reset, updateNomenclature} from "./nomenclature.reducer";
 
@@ -121,19 +123,20 @@ const NomenclatureManage = () => {
                         <Box className={classes.buttons}>
                             <Button
                                 className={classes.button}
-                                color="warning"
+                                color="secondary"
                                 variant="contained"
                                 component={Link}
                                 to='/dashboard/nomenclature'
-                                disabled={updating}>
+                                disabled={updating}
+                                startIcon={<CancelIcon/>}
+                            >
                                 {t('common:cancel')}
                             </Button>
                             <Button
                                 className={classes.button}
-                                color="success"
                                 variant="contained"
                                 disabled={updating}
-                                endIcon={updating ? <CircularProgress size="1rem" /> : null}
+                                startIcon={updating ? <CircularProgress size="1rem"/> : <SendIcon/>}
                                 onClick={submitForm}>
                                 {t('common:submit')}
                             </Button>

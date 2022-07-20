@@ -1,17 +1,21 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {formStepperStyles} from "./style";
 import Button from "@mui/material/Button";
 import {useTranslation} from "react-i18next";
 import {FormikHelpers} from "formik/dist/types";
 import {Form, Formik, FormikConfig, FormikValues} from "formik";
 import {Box, CircularProgress, Step, StepLabel, Stepper} from "@mui/material";
 import isEmpty from "lodash/isEmpty"
-
+import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
+import CancelIcon from '@mui/icons-material/Cancel';
+import SendIcon from '@mui/icons-material/Send';
+import SaveIcon from '@mui/icons-material/Save';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import useTheme from "@mui/material/styles/useTheme";
 
 interface IFormStepProps extends Pick<FormikConfig<FormikValues>, 'children' | 'validationSchema'> {
     label: string,
-    operationKind?: "CREATE"|"UPDATE"|"DELETE"
+    operationKind?: "CREATE" | "UPDATE" | "DELETE"
     onSubmit?: (values: FormikValues, formikHelpers: FormikHelpers<FormikValues>) => Promise<any>;
 }
 
@@ -22,13 +26,21 @@ interface IFormStepperProps extends FormikConfig<FormikValues> {
 }
 
 const FormStepper = ({children, ...props}: IFormStepperProps) => {
-    const classes = formStepperStyles();
+    const theme = useTheme();
     const {t} = useTranslation(['common']);
     const [step, setStep] = React.useState(0);
     const childrenArray = React.Children.toArray(children) as Array<React.ReactElement<IFormStepProps>>;
     const currentChild = childrenArray[step];
     const isLastStep = step === childrenArray.length - 1;
     const [completed, setCompleted] = React.useState(false);
+    const StyleButton = {
+        marginRight: 3,
+        [theme.breakpoints.down('sm')]: {
+            width: "100%",
+            marginRight: theme.spacing(0),
+            marginBottom: theme.spacing(1)
+        }
+    }
     const buttonSubmitName = () => {
         if (currentChild.props.operationKind && currentChild.props.operationKind === "UPDATE") {
             return t("save_finished")
@@ -89,7 +101,7 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
         >
             {({isSubmitting, validateForm, setTouched, touched}) => (
                 <Form autoComplete="off" noValidate={true}>
-                    <Stepper activeStep={step}>
+                    <Stepper activeStep={step} sx={{mb: 2}}>
                         {childrenArray.map((child, index) => (
                             <Step key={child.props.label} completed={step > index || completed}>
                                 <StepLabel>{child.props.label}</StepLabel>
@@ -99,40 +111,65 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
 
                     {currentChild}
 
-                    <Box className={classes.buttons}>
+                    <Box sx={{
+                        display: "flex",
+                        justifyContent: "space-start",
+                        marginTop: 1,
+                        marginBottom: 3,
+                        [theme.breakpoints.down('sm')]: {
+                            flexDirection: "column",
+                        }
+                    }}>
                         {<Button
-                            className={classes.button}
+                            sx={StyleButton}
                             component={Link}
-                            color='warning'
                             to={`/dashboard${props.cancelRoute}`}
                             disabled={isSubmitting}
-                            variant="contained">
+                            variant="contained"
+                            color="secondary"
+                            startIcon={<CancelIcon/>}
+                        >
                             {currentChild.props.operationKind && currentChild.props.operationKind === "CREATE"
                                 ? t('cancel') : t('close')}
                         </Button>}
 
                         {step > 0 &&
-                        <Button className={classes.button} color="secondary" variant="contained"
-                                onClick={() => setStep(prevStep => prevStep - 1)} disabled={isSubmitting}>
+                        <Button
+                            sx={{
+                                marginRight: 3,
+                                [theme.breakpoints.down('sm')]: {
+                                    width: "100%",
+                                    marginRight: theme.spacing(0),
+                                    marginBottom: theme.spacing(1)
+                                }
+                            }}
+                            color="secondary" variant="contained" startIcon={<KeyboardReturnIcon/>}
+                            onClick={() => setStep(prevStep => prevStep - 1)} disabled={isSubmitting}>
                             {t('back')}
                         </Button>}
                         {(currentChild.props.operationKind && currentChild.props.operationKind === "CREATE" && !isLastStep) ||
-                        <Button className={classes.button} type="submit" disabled={isSubmitting}
-                                endIcon={isSubmitting ? <CircularProgress size="1rem"/> : null}
-                                color="success" variant="contained">
+                        <Button
+                            sx={StyleButton}
+                            type="submit" disabled={isSubmitting}
+                            startIcon={isSubmitting ? <CircularProgress size="1rem"/> : isLastStep ? <SendIcon/> :
+                                <SaveIcon/>}
+                            color={isLastStep ? "primary" : "secondary"} variant="contained">
                             {isLastStep ? t('finish') : buttonSubmitName()}
                         </Button>}
                         {!isLastStep && currentChild.props.operationKind &&
-                        <Button className={classes.button} color="primary"
-                                variant="contained"
-                                disabled={isSubmitting}
-                                onClick={() => validateForm().then((errors) => {
-                                    if (isEmpty(errors)) {
-                                        setStep(prevStep => prevStep + 1)
-                                    } else {
-                                        setTouched(getTouchedFieldsFromObjectError(errors))
-                                    }
-                                })}
+                        <Button
+                            sx={StyleButton}
+                            color="primary"
+                            variant="contained"
+                            disabled={isSubmitting}
+                            startIcon={<ArrowForwardIosIcon/>}
+                            onClick={() => validateForm().then((errors) => {
+                                if (isEmpty(errors)) {
+                                    setStep(prevStep => prevStep + 1)
+                                } else {
+                                    setTouched(getTouchedFieldsFromObjectError(errors))
+                                }
+                            })}
                         >
                             {t('continue')}
                         </Button>}

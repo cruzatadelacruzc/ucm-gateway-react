@@ -1,4 +1,5 @@
 {
+  "placeholder": "What do you look for? JUST TYPE...",
   "textLabels": {
     "body": {
       "noMatch": "Sorry, no matching records were found for page {{ numberPage }}",

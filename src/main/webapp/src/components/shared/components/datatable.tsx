@@ -1,25 +1,11 @@
-import {
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    IconButton,
-    InputBase,
-    LinearProgress,
-    Paper,
-    Tooltip,
-    useMediaQuery
-} from "@mui/material";
+import {Box, Button, IconButton, InputBase, LinearProgress, Paper, Tooltip} from "@mui/material";
 import {Link} from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {Add, Close as CloseIcon, Search as SearchIcon} from "@mui/icons-material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
-import {dataTableStyles, managerSectionStyles} from "./style";
 import {useTranslation} from "react-i18next";
 import MUIDataTable from "mui-datatables";
 import {ITEMS_PER_PAGE} from "../../../config/constants";
@@ -28,6 +14,8 @@ import {useDispatch} from "react-redux";
 import {FAILURE, REQUEST, SUCCESS} from "../reducer/action-type.util";
 import toast from "../util/notification-snackbar.util";
 import useTheme from "@mui/material/styles/useTheme";
+import InputAdornment from "@mui/material/InputAdornment";
+import DialogDelete from "./dialog-delete";
 
 export interface IUCMDataBase {
     addRoute?: string,
@@ -78,10 +66,8 @@ export default function UCMDataBase(
     }: IUCMDataBase
 ) {
     const theme = useTheme();
-    const {t} = useTranslation();
+    const {t} = useTranslation(['datatable']);
     const dispatch = useDispatch();
-    const classes = managerSectionStyles();
-    const dataTableClasses = dataTableStyles();
     const [items, setItems] = React.useState([]);
     const [search, setSearch] = React.useState('');
     const [update, setUpdate] = React.useState(false);
@@ -133,10 +119,6 @@ export default function UCMDataBase(
         setModalOpen(true);
     };
 
-    const handleClose = () => {
-        setModalOpen(false);
-    };
-
     const removeItem = (id: string) => {
         axios.delete(`${deleteRoute ? deleteRoute : resourceURL}/${id}`)
             .then(() => {
@@ -173,21 +155,32 @@ export default function UCMDataBase(
     };
 
     const CustomToolbar = ({displayData, selectedRows}: ICustomToolbarSelectProps) => {
-        const isFullScreen = useMediaQuery(theme.breakpoints.down('md'));
         const id = displayData[parseInt(Object.keys(selectedRows.lookup)[0], 10)]?.data[0] || ''
         const param = displayData[parseInt(Object.keys(selectedRows.lookup)[0], 10)]?.data[modalDelete.columnIndex] || ''
         return <>
-            <Paper elevation={1} className={dataTableClasses.paper}>
+            <Paper elevation={1} sx={{
+                backgroundColor: theme.palette.background.default,
+                flex: '1 1 100%',
+                display: 'flex',
+                position: 'relative',
+                justifyContent: 'flex-end',
+                zIndex: 120,
+                paddingTop: theme.spacing(2),
+                paddingBottom: theme.spacing(2),
+                [theme.breakpoints.down('sm')]: {
+                    justifyContent: 'center',
+                }
+            }}>
                 {!disableEditButton &&
-                    <Tooltip title={t("common:edit") || "Editar"} aria-label={t("common:edit")} arrow>
-                        <IconButton
-                            component={Link}
-                            to={`${editRoute || 'edit'}/${id}`}
-                            aria-label={t("common:edit")}
-                            color="primary"
-                            size="small"
-                            className={dataTableClasses.iconButton}
-                        >
+                <Tooltip title={t("common:edit") || "Editar"} aria-label={t("common:edit")} arrow>
+                    <IconButton
+                        component={Link}
+                        to={`${editRoute || 'edit'}/${id}`}
+                        aria-label={t("common:edit")}
+                        color="primary"
+                        size="small"
+                        sx={{marginRight: '24px'}}
+                    >
                             <EditIcon/>
                         </IconButton>
                     </Tooltip>
@@ -200,7 +193,7 @@ export default function UCMDataBase(
                             aria-label={t("common:show")}
                             color="primary"
                             size="small"
-                            className={dataTableClasses.iconButton}
+                            sx={{marginRight: '24px'}}
                         >
                             <VisibilityIcon/>
                         </IconButton>
@@ -213,76 +206,82 @@ export default function UCMDataBase(
                             aria-label={t("common:delete")}
                             color="primary"
                             size="small"
-                            className={dataTableClasses.iconButton}
+                            sx={{marginRight: '24px'}}
                         >
                             <DeleteIcon/>
                         </IconButton>
                     </Tooltip>
                 }
             </Paper>
-            <Dialog
+            <DialogDelete
                 open={modalOpen}
-                onClose={handleClose}
-                fullScreen={isFullScreen}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title"> {t(modalDelete.keyDeleteTextTitle)}</DialogTitle>
-                <IconButton
-                    aria-label="close"
-                    className={dataTableClasses.closeButton}
-                    onClick={handleClose}
-                    size="large">
-                    <CloseIcon/>
-                </IconButton>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        {t(modalDelete.keyDeleteText, {param: param})}
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        {t('common:cancel')}
-                    </Button>
-                    <Button onClick={() => removeItem(id)} color="primary" autoFocus>
-                        {t('common:accept')}
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                setOpen={setModalOpen}
+                title={t(modalDelete.keyDeleteTextTitle)}
+                deleteItem={() => removeItem(id)}
+                content={t(modalDelete.keyDeleteText, {param: param})}
+            />
         </>;
     }
 
     return (
         <>
-            <div className={classes.container}>
-                <Paper elevation={1} className={classes.paper}>
-                    <div className={classes.form}>
+            <Box sx={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: "row",
+                flexWrap: 'wrap',
+                marginBottom: theme.spacing(3),
+                [theme.breakpoints.down('sm')]: {
+                    flexDirection: "column",
+                }
+            }}>
+                <Paper elevation={1} sx={{
+                    border: `1px solid ${theme.palette.grey.A200}`,
+                    paddingLeft: '8px',
+                    flex: '6 6 auto',
+                    borderRadius: 50,
+                    marginRight: theme.spacing(3),
+                    order: 1,
+                    [theme.breakpoints.down('sm')]: {
+                        order: 2,
+                        marginRight: theme.spacing(0),
+                        marginBottom: theme.spacing(1)
+                    }
+                }}>
+                    <Box sx={{display: 'flex', width: '100%'}}>
                         <InputBase
                             type='search'
                             autoFocus
-                            className={classes.input}
-                            placeholder={t('header:placeholder')}
+                            sx={{width: '100%', borderRadius: 50, padding: 1.5}}
+                            placeholder={t('placeholder')}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => setSearch(event.target.value)}
                             value={search}
-                            inputProps={{'aria-label': t('header:placeholder').toLowerCase()}}
+                            endAdornment={<InputAdornment position="start"><SearchIcon/></InputAdornment>}
+                            inputProps={{'aria-label': t('placeholder').toLowerCase()}}
                         />
-                        <div className={classes.iconButton} aria-label='search'>
-                            <SearchIcon/>
-                        </div>
-                    </div>
+                    </Box>
                 </Paper>
                 <Button
                     color="primary"
                     variant="contained"
-                    className={classes.buttonAdd}
+                    sx={{
+                        order: 2,
+                        flex: '1 1 auto',
+                        marginRight: theme.spacing(3),
+                        [theme.breakpoints.down('sm')]: {
+                            order: 1,
+                            marginRight: theme.spacing(0),
+                            marginBottom: theme.spacing(1)
+                        }
+                    }}
                     component={Link}
                     to={`${addRoute || 'add'}`}
-                    endIcon={<Add/>}
+                    startIcon={<AddCircleIcon/>}
                 >
                     {t('common:add')}
                 </Button>
-            </div>
-            <div>
+            </Box>
+            <Box>
                 {loading ?
                     <Box sx={{width: '100%'}}>
                         <LinearProgress/>
@@ -297,7 +296,7 @@ export default function UCMDataBase(
                         TableToolbarSelect: (!disableDeleteButton || !disableShowButton || !disableEditButton) && CustomToolbar
                     }}
                 />
-            </div>
+            </Box>
         </>
     );
 }

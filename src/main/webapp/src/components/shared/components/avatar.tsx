@@ -1,5 +1,4 @@
 import React from 'react';
-import {avatarStyles} from "./style";
 import CropImageDialog from "./crop-image";
 import {useTranslation} from "react-i18next";
 import toast from "../util/notification-snackbar.util";
@@ -27,7 +26,6 @@ const UCMAvatar = ({setResultAvatar, avatarUrl, deleteAvatar, ...props}: IUCMAva
     const [selectedFile, setSelectedFile] = React.useState<File>();
     const [croppedImage, setCroppedImage] = React.useState<File>();
     const {t} = useTranslation(["error"]);
-    const classes = avatarStyles();
 
     const onCropSave = (image: File) => {
         setCroppedImage(image)
@@ -87,8 +85,13 @@ const UCMAvatar = ({setResultAvatar, avatarUrl, deleteAvatar, ...props}: IUCMAva
                 />
                 <Paper
                     elevation={3}
-                    className={classes.cover}
-                    style={{width: props.frameWidth ?? 250, height: props.frameHeight ?? 250}}
+                    sx={{
+                        position: "relative",
+                        overflow: "hidden",
+                        cursor: "pointer",
+                        width: props.frameWidth ?? 250,
+                        height: props.frameHeight ?? 250
+                    }}
                 >
                     <img alt={selectedFile ? selectedFile.name : "avatar"}
                          style={{width: '100%', height: '100%'}}

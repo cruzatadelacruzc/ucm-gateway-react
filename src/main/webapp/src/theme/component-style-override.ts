@@ -5,33 +5,68 @@ export default function componentStyleOverrides(palette: Palette) {
         MuiButton: {
             styleOverrides: {
                 root: {
-                    fontWeight: 500,
-                    borderRadius: '4px',
-                    textTransform: 'none',
+                    textTransform: 'capitalize',
+                },
+                contained: {
+                    backgroundColor: palette.secondary["700"],
+                    color: palette.secondary.contrastText,
+                    '&:hover': {
+                        backgroundColor: palette.secondary["400"],
+                    }
+                },
+                containedPrimary: {
+                    backgroundColor: palette.secondary.main,
+                    color: palette.secondary.contrastText,
+                    '&:hover': {
+                        backgroundColor: palette.secondary.light,
+                    }
+                }, containedSecondary: {
+                    backgroundColor: palette.primary.main,
+                    color: palette.secondary.contrastText,
+                    '&:hover': {
+                        backgroundColor: palette.secondary.main,
+                    }
                 }
             }
         },
-        MuiListItemButton : {
+        MuiIconButton: {
             styleOverrides: {
                 root: {
-                    color: palette.grey["700"],
+                    '&:hover': {
+                        backgroundColor: `${palette.secondary["50"]}`
+                    }
+                }
+            }
+        },
+        MuiCheckbox: {
+            styleOverrides: {
+                root: {
+                    '&:hover': {
+                        backgroundColor: `${palette.secondary["50"]}`
+                    }
+                }
+            }
+        },
+        MuiListItemButton: {
+            styleOverrides: {
+                root: {
+                    color: palette.grey["900"],
                     paddingTop: '10px',
                     paddingBottom: '10px',
                     '&.Mui-selected': {
-                        color: palette.secondary.dark,
-                        backgroundColor: palette.secondary.light,
+                        backgroundColor: palette.secondary.main,
                         '&:hover': {
-                            backgroundColor: palette.secondary.light,
+                            backgroundColor: palette.secondary.main,
                         },
                         '& .MuiListItemIcon-root': {
-                            color: palette.secondary.dark
+                            color: palette.secondary.contrastText
                         }
                     },
                     '&:hover': {
-                        backgroundColor: palette.secondary.light,
-                        color: palette.secondary.dark,
+                        backgroundColor: palette.secondary.main,
+                        color: palette.secondary.contrastText,
                         '& .MuiListItemIcon-root': {
-                            color: palette.secondary.dark
+                            color: palette.secondary.contrastText
                         }
                     }
                 }

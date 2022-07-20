@@ -1,18 +1,7 @@
 import React from 'react';
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    IconButton,
-    useMediaQuery
-} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton} from "@mui/material";
 import {Close as CloseIcon} from "@mui/icons-material";
-import {dialogDeleteStyle} from "./style";
 import {useTranslation} from "react-i18next";
-import useTheme from "@mui/material/styles/useTheme";
 
 interface IDialogDelete {
     open: boolean
@@ -22,21 +11,22 @@ interface IDialogDelete {
     deleteItem: () => void
 }
 const DialogDelete = (props: IDialogDelete) => {
-    const theme = useTheme();
-    const classes = dialogDeleteStyle()
     const {t} = useTranslation(['common']);
     return (
         <Dialog
             open={props.open}
             onClose={() => props.setOpen(false)}
-            fullScreen={useMediaQuery(theme.breakpoints.down('md'))}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
             <DialogTitle id="alert-dialog-title"> {props.title}</DialogTitle>
             <IconButton
                 aria-label="close"
-                className={classes.closeButton}
+                sx={{
+                    position: 'absolute',
+                    right: 1,
+                    top: 1
+                }}
                 onClick={() => props.setOpen(false)}
                 size="large">
                 <CloseIcon/>

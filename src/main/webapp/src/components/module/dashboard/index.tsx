@@ -17,7 +17,7 @@ const Main = styled('main', {shouldForwardProp: open => open !== 'open'})<{open:
     marginTop: '88px',
     marginRight: '20px',
     minHeight: 'calc(100vh - 88px)',
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.primary.main,
     ...(!open && {
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,

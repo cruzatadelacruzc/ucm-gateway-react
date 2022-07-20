@@ -30,6 +30,9 @@ import {LocalPhone} from "@mui/icons-material";
 import {buildAvatarURL} from "../../../shared/util/function-utils";
 import DialogDelete from "../../../shared/components/dialog-delete";
 import {CONFIG} from "../../../../config/constants";
+import CancelIcon from "@mui/icons-material/Cancel";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const WorkplaceDetails = () => {
     let navigate = useNavigate();
@@ -155,7 +158,8 @@ const WorkplaceDetails = () => {
                         <Grid item xs={12}>
                             <Button
                                 component={Link}
-                                color="warning"
+                                color="secondary"
+                                startIcon={<CancelIcon/>}
                                 variant="contained"
                                 to={'/dashboard/workplace'}
                                 className={classes.button}>
@@ -163,19 +167,19 @@ const WorkplaceDetails = () => {
                             </Button>
                             <Button
                                 component={Link}
-                                color="success"
+                                color="secondary"
                                 variant="contained"
+                                startIcon={<EditIcon/>}
                                 className={classes.button}
                                 to={`/dashboard/workplace/edit/${id}`}>
                                 {t('common:edit')}
                             </Button>
                             <Button
-                                color="error"
                                 variant="contained"
                                 className={classes.button}
                                 onClick={() => setModalOpen(true)}
                                 disabled={updating}
-                                endIcon={updating ? <CircularProgress size="1rem"/> : null}
+                                startIcon={updating ? <CircularProgress size="1rem"/> : <DeleteIcon/>}
                             >
                                 {t('common:delete')}
                             </Button>

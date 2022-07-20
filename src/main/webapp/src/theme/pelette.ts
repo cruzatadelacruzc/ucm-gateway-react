@@ -11,18 +11,36 @@ export default function themePalette(): PaletteOptions {
             black: '#111936'
         },
         primary: {
-            main: '#2196f3',
-            light: '#e3f2fd',
-            dark: '#1e88e5',
-            "200": '#90caf9',
-            "800": '#1565c0'
+            main: '#0064B0',
+            light: '#5491e2',
+            dark: '#003b80',
+            contrastText: '#fff',
+            "50": '#e3f1fa',
+            "100": '#baddf5',
+            "200": '#8fc8ef',
+            "300": '#64b2e8',
+            "400": '#43a2e5',
+            "500": '#2093e1',
+            "600": '#1786d4',
+            "700": '#0081ca',
+            "800": '#0064B0',
+            "900": '#004791'
         },
         secondary: {
-            main: '#673ab7',
-            light: '#ede7f6',
-            dark: '#5e35b1',
-            "200": '#b39ddb',
-            "800": '#4527a0'
+            main: '#00aeef',
+            light: '#66e0ff',
+            dark: '#007fbc',
+            contrastText: '#000',
+            "50": '#e0f4fd',
+            "100": '#b0e2f9',
+            "200": '#7bd0f5',
+            "300": '#43bdf1',
+            "400": '#00afef',
+            "500": '#00a1ec',
+            "600": '#0094de',
+            "700": '#0081ca',
+            "800": '#0070b6',
+            "900": '#005195'
         },
         error: {
             main: '#f44336',
@@ -50,14 +68,10 @@ export default function themePalette(): PaletteOptions {
             "700": '#616161',
             "900": '#212121'
         },
-        text: {
-            primary: '#bdc8f0',
-            secondary: '#8492c4'
-        },
         background: {
             paper: '#ffffff',
             default: '#ffffff'
         },
-        divider: '#eeeeee'
+        divider: '#cdc7c7'
     }
 }

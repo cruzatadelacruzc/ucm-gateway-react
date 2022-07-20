@@ -72,49 +72,13 @@ export declare type ISearchAction<T> = (
     size?: number
 ) => ((dispatch: any) => AxiosPromise<IPayload<T>>);
 
-export interface ITableState {
-    activeColumn: null | string
-    announceText: null | string
-    columnOrder: Array<number>
-    columns: Array<{ name: string, label?: string, options?: {} }>
-    count: number
-    data: Array<any>
-    displayData: Array<any>
-    expandedRows: { lookup: { dataIndex: boolean }, data: Array<{ index: number, dataIndex: number }> }
-    filterData: Array<Array<any>>
-    filterList: Array<Array<any>>
-    page: number
-    previousSelectedRow: null| string
-    rowsPerPage: number
-    rowsPerPageOptions: Array<number>
-    searchProps: {}
-    searchText: null | string
-    selectedRows: { lookup: { dataIndex: boolean }, data: Array<{ index: number, dataIndex: number }> }
-    showResponsive: boolean
-    sortOrder: { name: string, direction: string }
-}
-
 declare module '@mui/material/styles/createTypography' {
     interface Typography {
-        mediumAvatar:  React.CSSProperties,
-        menuCaption: React.CSSProperties
         subMenuCaption: React.CSSProperties,
     }
     // allow configuration using `createTheme`
     interface TypographyOptions {
-        menuCaption?: React.CSSProperties
-        mediumAvatar?: React.CSSProperties,
         subMenuCaption?: React.CSSProperties
-    }
-}
-
-declare module '@mui/material/styles' {
-    interface Theme {
-        mainContent: React.CSSProperties,
-    }
-    // allow configuration using `createTheme`
-    interface ThemeOptions {
-        mainContent?: React.CSSProperties,
     }
 }
 

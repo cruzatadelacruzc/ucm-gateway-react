@@ -30,7 +30,14 @@ const NavGroup = ({item}: INavGroup) => {
             <List
                 subheader={
                     item.title && (
-                        <Typography variant="caption" sx={{...theme.typography.menuCaption}} display="block"
+                        <Typography variant="caption" sx={{
+                            fontSize: '0.875rem',
+                            fontWeight: 600,
+                            color: theme.palette.grey['600'],
+                            padding: '6px',
+                            textTransform: 'capitalize',
+                            marginTop: '10px'
+                        }} display="block"
                                     gutterBottom>
                             {item.title}
                             {item.caption && (

@@ -135,15 +135,12 @@ export default function ProfileSection() {
                         alignItems: 'center',
                         borderRadius: '27px',
                         transition: 'all .2s ease-in-out',
-                        borderColor: theme.palette.primary.light,
-                        backgroundColor: theme.palette.primary.light,
+                        borderColor: theme.palette.secondary.main,
+                        backgroundColor: theme.palette.secondary.main,
                         '&[aria-controls="menu-list-grow"], &:hover': {
-                            borderColor: theme.palette.primary.main,
-                            background: `${theme.palette.primary.main}!important`,
-                            color: theme.palette.primary.light,
-                            '& svg': {
-                                stroke: theme.palette.primary.light
-                            }
+                            borderColor: theme.palette.secondary.light,
+                            background: `${theme.palette.secondary.light}!important`,
+                            color: theme.palette.secondary.contrastText
                         },
                         '& .MuiChip-label': {
                             lineHeight: 0
@@ -154,8 +151,11 @@ export default function ProfileSection() {
                         <Avatar
                             alt={account.login ? account.login : t('common:anonymous')}
                             sx={{
-                                ...theme.typography.mediumAvatar,
+                                width: '34px',
+                                height: '34px',
+                                fontSize: '1.2rem',
                                 margin: '8px 0 8px 8px !important',
+                                backgroundColor: theme.palette.background.default,
                                 cursor: 'pointer'
                             }}
                             ref={anchorRef}
@@ -217,13 +217,14 @@ export default function ProfileSection() {
                                         }}>
                                             <Box sx={{p: 2}}>
                                                 <Box sx={{
-                                                    bgcolor: theme.palette.primary.light,
+                                                    bgcolor: theme.palette.primary.main,
                                                     textAlign: 'center',
-                                                    py:1
+                                                    py: 1
                                                 }}>
-                                                <Typography  variant='subtitle1' display='block'>
-                                                    {account.login ? account.login : t('common:anonymous')}
-                                                </Typography>
+                                                    <Typography variant='subtitle1' display='block'
+                                                                color='primary.contrastText'>
+                                                        {account.login ? account.login : t('common:anonymous')}
+                                                    </Typography>
                                                 </Box>
                                                 <Divider />
                                                 <List

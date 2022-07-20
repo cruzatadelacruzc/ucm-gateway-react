@@ -1,5 +1,4 @@
 import React from 'react';
-import {cropDialogStyles} from "./style";
 import {useTranslation} from "react-i18next";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton} from "@mui/material";
 import toast from '../util/notification-snackbar.util';
@@ -16,7 +15,6 @@ export interface ICropImageDialog {
     imgWidth?: number
 }
 export default function CropImageDialog(props: ICropImageDialog) {
-    const classes = cropDialogStyles();
     const {t} = useTranslation(['error']);
     const [src, setSrc] = React.useState('');
     const [croppedFile, setCroppedFile] = React.useState<File>();
@@ -97,7 +95,7 @@ export default function CropImageDialog(props: ICropImageDialog) {
        return <>
            <Dialog
                maxWidth="sm"
-               classes={{paper: classes.paper}}
+               sx={{minWidth: 200, minHeight: 200}}
                open={props.openCrop}
                onClose={() => props.onClose(false)}
                aria-labelledby="image-crop-dialog"
@@ -106,7 +104,11 @@ export default function CropImageDialog(props: ICropImageDialog) {
                <DialogTitle id="image-crop-dialog">{t("common:photo_crop")}</DialogTitle>
                <IconButton
                    aria-label="close"
-                   className={classes.closeButton}
+                   sx={{
+                       position: 'absolute',
+                       right: 2,
+                       top: 3,
+                   }}
                    onClick={() => props.onClose(false)}
                    size="large">
                    <CloseIcon/>

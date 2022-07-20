@@ -61,15 +61,15 @@ public class GatewayApplication {
 	 * @param app the Spring application.
 	 */
 	public static void addDefaultProfile(SpringApplication app) {
-		Map<String, Object> defProperties = new HashMap<>();
-		/*
-		 * The default profile to use when no other profiles are defined
-		 * This cannot be set in the application.yml file.
-		 * See https://github.com/spring-projects/spring-boot/issues/1219
-		 */
-		defProperties.put("spring.profiles.active", Constants.PROFILE_DEV);
-		app.setDefaultProperties(defProperties);
-	}
+        Map<String, Object> defProperties = new HashMap<>();
+        /*
+         * The default profile to use when no other profiles are defined
+         * This cannot be set in the application.yml file.
+         * See https://github.com/spring-projects/spring-boot/issues/1219
+         */
+        defProperties.put("spring.profiles.active", Constants.PROFILE_UCM);
+        app.setDefaultProperties(defProperties);
+    }
 
 	private static void logApplicationStartup(Environment env) {
 		String protocol = Optional.ofNullable(env.getProperty("server.ssl.key-store")).map(key -> "https").orElse("http");

@@ -6,6 +6,7 @@ import UCMDataBase from "../../../shared/components/datatable";
 import axios from "axios";
 import toast from "../../../shared/util/notification-snackbar.util";
 import {Link} from "react-router-dom";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const Phones = () => {
     const {t} = useTranslation(['phone']);
@@ -72,7 +73,8 @@ const Phones = () => {
                 customBodyRender: (value, tableMeta) => {
                     const _employeeId = tableMeta.rowData?.length > 0 && tableMeta.rowData[6]
                     return _employeeId ?
-                        <Button variant="text" component={Link} to={`/dashboard/employee/show/${_employeeId}`}>{value}</Button> :
+                        <Button startIcon={<VisibilityIcon/>} variant="text" component={Link}
+                                to={`/dashboard/employee/show/${_employeeId}`}>{value}</Button> :
                         ''
                 }
             }
@@ -84,7 +86,8 @@ const Phones = () => {
                 customBodyRender: (value, tableMeta) => {
                     const _workplaceId = tableMeta.rowData?.length > 0 && tableMeta.rowData[7]
                     return _workplaceId ?
-                        <Button variant="text" component={Link} to={`/dashboard/workplace/show/${_workplaceId}`}>{value}</Button> :
+                        <Button startIcon={<VisibilityIcon/>} variant="text" component={Link}
+                                to={`/dashboard/workplace/show/${_workplaceId}`}>{value}</Button> :
                         ''
                 }
             }

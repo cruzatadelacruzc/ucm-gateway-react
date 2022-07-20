@@ -24,6 +24,8 @@ import UCMAvatar from "../../../shared/components/avatar";
 import {getFilteredEmployees, reset as ResetEmp} from "../person/employee/employee.reducer";
 import {CONFIG} from "../../../../config/constants";
 import throttle from "lodash/throttle";
+import CancelIcon from "@mui/icons-material/Cancel";
+import SendIcon from "@mui/icons-material/Send";
 
 
 const WorkPlaceManage = () => {
@@ -222,15 +224,15 @@ const WorkPlaceManage = () => {
                                     variant="contained"
                                     component={Link}
                                     to='/dashboard/workplace'
+                                    startIcon={<CancelIcon/>}
                                     disabled={updating}>
                                     {t('common:cancel')}
                                 </Button>
                                 <Button
                                     className={classes.button}
-                                    color="success"
                                     variant="contained"
                                     disabled={updating}
-                                    endIcon={updating ? <CircularProgress size="1rem"/> : null}
+                                    startIcon={updating ? <CircularProgress size="1rem"/> : <SendIcon/>}
                                     onClick={submitForm}>
                                     {t('common:submit')}
                                 </Button>
