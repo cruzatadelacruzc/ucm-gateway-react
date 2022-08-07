@@ -117,7 +117,7 @@ export const getSearchPerson: ISearchAction<ISearchResultPerson> = (search, from
     try {
         const query = CONFIG.ES_PERSON_SEARCH_TEMPLATE ? {id: CONFIG.ES_PERSON_SEARCH_TEMPLATE, params: search} : {
             from: from,
-            size: 2,
+            size: size,
             query: {
                 multi_match: {
                     query: search,
