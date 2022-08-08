@@ -1,23 +1,22 @@
 import React from "react";
 import * as yup from 'yup';
-import {formUpdateStyles} from "../style";
 import {Autocomplete, TextField} from 'formik-mui'
 import {Field, Form, Formik} from "formik";
 import {useTranslation} from "react-i18next";
 import {IRootState} from "../../../shared/reducer";
 import Widget from "../../../shared/layout/widget";
 import {useDispatch, useSelector} from "react-redux";
-import {AutocompleteRenderInputParams, Box, Button, CircularProgress, TextField as MUITextField} from "@mui/material";
+import {AutocompleteRenderInputParams, Button, CircularProgress, TextField as MUITextField} from "@mui/material";
 import {Link, useNavigate, useParams} from 'react-router-dom'
 import SendIcon from '@mui/icons-material/Send';
 import CancelIcon from '@mui/icons-material/Cancel';
 import {defaultValue, DISCRIMINATOR, INomenclature} from "../../../shared/models/nomenclature.model";
 import {createNomenclature, getNomenclature, reset, updateNomenclature} from "./nomenclature.reducer";
+import Grid from "@mui/material/Grid";
 
 const NomenclatureManage = () => {
     const dispatch = useDispatch();
     let navigate = useNavigate();
-    const classes = formUpdateStyles();
     let {id} = useParams<{ id: string }>();
     const [isNew] = React.useState(!id);
     const {t} = useTranslation(['nomenclature']);
@@ -72,42 +71,42 @@ const NomenclatureManage = () => {
             >
                 {({submitForm, errors, touched}) => (
                     <Form autoComplete="off" noValidate={true}>
-                        <Box className={classes.form_group}>
-                            <Box className={classes.input}>
-                                <Field
-                                    InputLabelProps={{shrink: true}}
-                                    component={TextField}
-                                    fullWidth
-                                    variant="outlined"
-                                    name={"name"}
-                                    label={t("name")}
-                                />
-                            </Box>
-                           <Box className={classes.input}>
-                               <Field
-                                   fullWidth
-                                   disabled={!isNew}
-                                   disableClearable
-                                   name="discriminator"
-                                   options={discriminators}
-                                   component={Autocomplete}
-                                   isOptionEqualToValue={(option, value) => option === value}
-                                   renderInput={(params: AutocompleteRenderInputParams) => (
-                                       <MUITextField
-                                           {...params}
-                                           variant="outlined"
-                                           name="discriminator"
-                                           label={t('discriminator')}
-                                           InputLabelProps={{shrink: true}}
-                                           helperText={errors['discriminator']}
-                                           error={touched['discriminator'] && !!errors['discriminator']}
-                                       />
-                                   )}
-                               />
-                           </Box>
-                        </Box>
-                        <Box className={classes.form_group}>
-                            <Box className={classes.input}>
+                        <Grid container spacing={2}>
+                            <Grid container item xs={12} spacing={2}>
+                                <Grid item xs={12} sm={6}>
+                                    <Field
+                                        InputLabelProps={{shrink: true}}
+                                        component={TextField}
+                                        fullWidth
+                                        variant="outlined"
+                                        name={"name"}
+                                        label={t("name")}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <Field
+                                        fullWidth
+                                        disabled={!isNew}
+                                        disableClearable
+                                        name="discriminator"
+                                        options={discriminators}
+                                        component={Autocomplete}
+                                        isOptionEqualToValue={(option, value) => option === value}
+                                        renderInput={(params: AutocompleteRenderInputParams) => (
+                                            <MUITextField
+                                                {...params}
+                                                variant="outlined"
+                                                name="discriminator"
+                                                label={t('discriminator')}
+                                                InputLabelProps={{shrink: true}}
+                                                helperText={errors['discriminator']}
+                                                error={touched['discriminator'] && !!errors['discriminator']}
+                                            />
+                                        )}
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={12}>
                                 <Field
                                     component={TextField}
                                     InputLabelProps={{shrink: true}}
@@ -118,29 +117,33 @@ const NomenclatureManage = () => {
                                     inputProps={{maxLength: "255"}}
                                     label={t("description")}
                                 />
-                            </Box>
-                        </Box>
-                        <Box className={classes.buttons}>
-                            <Button
-                                className={classes.button}
-                                color="secondary"
-                                variant="contained"
-                                component={Link}
-                                to='/dashboard/nomenclature'
-                                disabled={updating}
-                                startIcon={<CancelIcon/>}
-                            >
-                                {t('common:cancel')}
-                            </Button>
-                            <Button
-                                className={classes.button}
-                                variant="contained"
-                                disabled={updating}
-                                startIcon={updating ? <CircularProgress size="1rem"/> : <SendIcon/>}
-                                onClick={submitForm}>
-                                {t('common:submit')}
-                            </Button>
-                        </Box>
+                            </Grid>
+                            <Grid item container xs={12} spacing={{xs:2, sm:0}}>
+                                <Grid item xs={12} sm={2}>
+                                    <Button
+                                        fullWidth
+                                        color="secondary"
+                                        variant="contained"
+                                        component={Link}
+                                        to='/dashboard/nomenclature'
+                                        disabled={updating}
+                                        startIcon={<CancelIcon/>}
+                                    >
+                                        {t('common:cancel')}
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={12} sm={2}>
+                                    <Button
+                                        fullWidth
+                                        variant="contained"
+                                        disabled={updating}
+                                        startIcon={updating ? <CircularProgress size="1rem"/> : <SendIcon/>}
+                                        onClick={submitForm}>
+                                        {t('common:submit')}
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Grid>
                     </Form>
                 )}
             </Formik>
