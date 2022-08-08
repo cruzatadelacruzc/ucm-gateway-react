@@ -67,7 +67,7 @@ public class GatewayApplication {
          * This cannot be set in the application.yml file.
          * See https://github.com/spring-projects/spring-boot/issues/1219
          */
-        defProperties.put("spring.profiles.active", Constants.PROFILE_UCM);
+        defProperties.put("spring.profiles.active", Constants.PROFILE_DEV);
         app.setDefaultProperties(defProperties);
     }
 
