@@ -1,7 +1,6 @@
 import React from 'react';
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {detailsStyles} from "../style";
 import {IRootState} from "../../../shared/reducer";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {deleteWorkPlace, getWorkPlace} from "./workplace.reducer";
@@ -33,17 +32,27 @@ import {CONFIG} from "../../../../config/constants";
 import CancelIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import useTheme from "@mui/material/styles/useTheme";
 
 const WorkplaceDetails = () => {
+    const theme = useTheme()
     let navigate = useNavigate();
     const dispatch = useDispatch();
-    const classes = detailsStyles();
     let {id} = useParams<{ id: string }>();
     const {t} = useTranslation(['workplace']);
     const [modalOpen, setModalOpen] = React.useState(false);
     const _entity = useSelector((states: IRootState) => states.workPlace.entity);
     const updating = useSelector((states: IRootState) => states.workPlace.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.workPlace.updateSuccess);
+
+    const buttonSX = {
+        marginRight: 3,
+        [theme.breakpoints.down('sm')]: {
+            width: "100%",
+            marginRight: 0,
+            marginBottom: 1
+        }
+    }
 
     React.useEffect(() => {
         if (undefined !== id) {
@@ -69,11 +78,18 @@ const WorkplaceDetails = () => {
 
     return (
         <Widget disableWidgetMenu>
-            <Box className={classes.root}>
-                <Box className={classes.wrapDivider}>
-                    <Divider className={classes.order1}/>
-                    <Chip variant='outlined' label={t('detail.title')} className={classes.order2}/>
-                    <Divider className={classes.order3}/>
+            <Box  sx={{
+                width: '100%',
+                ...theme.typography.body2,
+                '& > :not(style) + :not(style)': {
+                    marginTop: 2,
+                    marginBottom: 2,
+                }
+            }}>
+                <Box sx={{display: 'flex'}}>
+                    <Divider sx={{order: 1,flex: '1 1 auto'}}/>
+                    <Chip variant='outlined' label={t('detail.title')} sx={{  order: 2, flex: '1 1 auto'}}/>
+                    <Divider sx={{  order: 3, flex: '1 1 auto'}}/>
                 </Box>
                 <Box sx={{flexGrow: 1}}>
                     <Grid container spacing={{xs: 2, md: 1}}>
@@ -157,12 +173,19 @@ const WorkplaceDetails = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <Button
+                                sx={{
+                                    marginRight: 3,
+                                    [theme.breakpoints.down('sm')]: {
+                                        width: "100%",
+                                        marginRight: 0,
+                                        marginBottom: 1
+                                    }
+                                }}
                                 component={Link}
                                 color="secondary"
                                 startIcon={<CancelIcon/>}
                                 variant="contained"
-                                to={'/dashboard/workplace'}
-                                className={classes.button}>
+                                to={'/dashboard/workplace'}>
                                 {t('common:close')}
                             </Button>
                             <Button
@@ -170,13 +193,13 @@ const WorkplaceDetails = () => {
                                 color="secondary"
                                 variant="contained"
                                 startIcon={<EditIcon/>}
-                                className={classes.button}
+                                sx={buttonSX}
                                 to={`/dashboard/workplace/edit/${id}`}>
                                 {t('common:edit')}
                             </Button>
                             <Button
                                 variant="contained"
-                                className={classes.button}
+                                sx={buttonSX}
                                 onClick={() => setModalOpen(true)}
                                 disabled={updating}
                                 startIcon={updating ? <CircularProgress size="1rem"/> : <DeleteIcon/>}
