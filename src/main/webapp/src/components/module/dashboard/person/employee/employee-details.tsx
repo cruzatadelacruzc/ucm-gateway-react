@@ -21,7 +21,6 @@ import {
     ListItemText,
     Typography
 } from "@mui/material";
-import {detailsStyles} from "../../style";
 import PersonDetails from "../person-details";
 import dayjs from "dayjs";
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
@@ -31,17 +30,43 @@ import DialogDelete from "../../../../shared/components/dialog-delete";
 import CancelIcon from "@mui/icons-material/Cancel";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import useTheme from "@mui/material/styles/useTheme";
+import styled from "@mui/material/styles/styled";
+
+const ChipStyled = styled(Chip)(() => ({
+    order: 2,
+    flex: '1 1 auto'
+}))
+
+const Divider1Styled = styled(Divider)(() => ({
+    order: 1,
+    flex: '1 1 auto'
+}))
+
+const Divider2Styled = styled(Divider)(() => ({
+    order: 3,
+    flex: '1 1 auto'
+}))
 
 function EmployeeDetails() {
+    const theme = useTheme();
     let navigate = useNavigate();
     const dispatch = useDispatch();
-    const classes = detailsStyles();
     let {id} = useParams<{ id: string }>();
     const {t} = useTranslation(['employee']);
     const [modalOpen, setModalOpen] = React.useState(false);
     const _entity = useSelector((states: IRootState) => states.employee.entity);
     const updating = useSelector((states: IRootState) => states.employee.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.employee.updateSuccess);
+
+    const buttonSX = {
+        marginRight: 3,
+        [theme.breakpoints.down('sm')]: {
+            width: "100%",
+            marginRight: 0,
+            marginBottom: 1
+        }
+    }
 
     React.useEffect(() => {
         if (undefined !== id) {
@@ -59,19 +84,24 @@ function EmployeeDetails() {
 
     return (
         <Widget disableWidgetMenu>
-            <Box className={classes.root}>
-                <Box className={classes.wrapDivider}>
-                    <Divider className={classes.order1}/>
-                    <Chip variant='outlined' label={t("person:step")} className={classes.order2}/>
-                    <Divider className={classes.order3}/>
+            <Box
+                sx={{
+                    width: '100%',
+                    ...theme.typography.body2,
+                    '& > :not(style) + :not(style)': {
+                            marginTop: 2,
+                            marginBottom: 2,
+                        }
+                }}
+            >
+                <Box sx={{display: 'flex'}}>
+                    <Divider1Styled/><ChipStyled variant='outlined' label={t("person:step")}/><Divider2Styled/>
                 </Box>
 
                 <PersonDetails {..._entity} />
 
-                <Box className={classes.wrapDivider}>
-                    <Divider className={classes.order1}/>
-                    <Chip variant='outlined' label={t("title.step")} className={classes.order2}/>
-                    <Divider className={classes.order3}/>
+                <Box sx={{display: 'flex'}}>
+                    <Divider1Styled/><ChipStyled variant='outlined' label={t("title.step")}/><Divider2Styled/>
                 </Box>
                 <Box sx={{flexGrow: 1}}>
                     <Grid container spacing={{xs: 2, md: 1}}>
@@ -188,7 +218,7 @@ function EmployeeDetails() {
                                 color="secondary"
                                 variant="contained"
                                 to={'/dashboard/employee'}
-                                className={classes.button}>
+                                sx={buttonSX}>
                                 {t('common:close')}
                             </Button>
                             <Button
@@ -196,13 +226,13 @@ function EmployeeDetails() {
                                 color="secondary"
                                 startIcon={<EditIcon/>}
                                 variant="contained"
-                                className={classes.button}
+                                sx={buttonSX}
                                 to={`/dashboard/employee/edit/${id}`}>
                                 {t('common:edit')}
                             </Button>
                             <Button
                                 variant="contained"
-                                className={classes.button}
+                                sx={buttonSX}
                                 onClick={() => setModalOpen(true)}
                                 disabled={updating}
                                 startIcon={updating ? <CircularProgress size="1rem"/> : <DeleteIcon/>}

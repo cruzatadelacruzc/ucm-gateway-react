@@ -1,6 +1,5 @@
 import React from 'react'
 import dayjs from "dayjs";
-import {detailsStyles} from "../style";
 import {useTranslation} from "react-i18next";
 import {IPerson} from "../../../shared/models/person.model";
 import {Box, Card, CardActionArea, CardMedia, FormControl, FormLabel, Grid} from "@mui/material";
@@ -9,7 +8,6 @@ import {CONFIG} from "../../../../config/constants";
 
 export default function PersonDetails(_entity: IPerson) {
     const {t} = useTranslation(['person']);
-    const classes = detailsStyles();
     const getAvatarUrl = (): string => {
         if (_entity.avatarUrl) {
             return buildAvatarURL(_entity.avatarUrl)
@@ -22,7 +20,7 @@ export default function PersonDetails(_entity: IPerson) {
         <Box sx={{flexGrow: 1}}>
             <Grid container spacing={{xs: 2, md: 1}}>
                 <Grid item xs={12} sm={4}>
-                    <Card className={classes.cover}>
+                    <Card sx={{maxWidth: 255, maxHeight: 255}}>
                         <CardActionArea>
                             <CardMedia
                                 component="img"

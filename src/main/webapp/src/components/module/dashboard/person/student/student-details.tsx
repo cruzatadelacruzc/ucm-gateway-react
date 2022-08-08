@@ -1,5 +1,4 @@
 import React from 'react';
-import {detailsStyles} from "../../style";
 import {useTranslation} from "react-i18next";
 import {deleteStudent, getStudent} from './student.reducer'
 import {useDispatch, useSelector} from "react-redux";
@@ -12,17 +11,42 @@ import DialogDelete from "../../../../shared/components/dialog-delete";
 import CancelIcon from "@mui/icons-material/Cancel";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from "@mui/icons-material/Delete";
+import styled from "@mui/material/styles/styled";
+import useTheme from "@mui/material/styles/useTheme";
 
+const ChipStyled = styled(Chip)(() => ({
+    order: 2,
+    flex: '1 1 auto'
+}))
+
+const Divider1Styled = styled(Divider)(() => ({
+    order: 1,
+    flex: '1 1 auto'
+}))
+
+const Divider2Styled = styled(Divider)(() => ({
+    order: 3,
+    flex: '1 1 auto'
+}))
 const StudentDetails = () => {
+    const theme = useTheme();
     let navigate = useNavigate();
     const dispatch = useDispatch();
-    const classes = detailsStyles();
     let {id} = useParams<{ id: string }>();
     const {t} = useTranslation(['student']);
     const [modalOpen, setModalOpen] = React.useState(false);
     const _entity = useSelector((states: IRootState) => states.student.entity);
     const updating = useSelector((states: IRootState) => states.student.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.student.updateSuccess);
+
+    const buttonSX = {
+        marginRight: 3,
+        [theme.breakpoints.down('sm')]: {
+            width: "100%",
+            marginRight: 0,
+            marginBottom: 1
+        }
+    }
 
     React.useEffect(() => {
         if (undefined !== id){
@@ -40,19 +64,22 @@ const StudentDetails = () => {
 
     return (
         <Widget disableWidgetMenu>
-            <Box className={classes.root}>
-                <Box className={classes.wrapDivider}>
-                    <Divider className={classes.order1}/>
-                    <Chip variant='outlined' label={t("person:step")} className={classes.order2}/>
-                    <Divider className={classes.order3}/>
+            <Box sx={{
+                width: '100%',
+                ...theme.typography.body2,
+                '& > :not(style) + :not(style)': {
+                    marginTop: 2,
+                    marginBottom: 2,
+                }
+            }}>
+                <Box sx={{display: 'flex'}}>
+                    <Divider1Styled/><ChipStyled variant='outlined' label={t("person:step")}/><Divider2Styled/>
                 </Box>
 
                 <PersonDetails {..._entity} />
 
-                <Box className={classes.wrapDivider}>
-                    <Divider className={classes.order1}/>
-                    <Chip variant='outlined' label={t("title.step")} className={classes.order2}/>
-                    <Divider className={classes.order3}/>
+                <Box sx={{display: 'flex'}}>
+                    <Divider1Styled/><ChipStyled variant='outlined' label={t("title.step")}/><Divider2Styled/>
                 </Box>
                 <Box sx={{flexGrow: 1}}>
                     <Grid container spacing={{xs: 2, md: 1}}>
@@ -97,21 +124,21 @@ const StudentDetails = () => {
                                 variant="contained"
                                 to={'/dashboard/student'}
                                 startIcon={<CancelIcon/>}
-                                className={classes.button}>
+                                sx={buttonSX}>
                                 {t('common:close')}
                             </Button>
                             <Button
                                 component={Link}
                                 color="secondary"
                                 variant="contained"
-                                className={classes.button}
+                                sx={buttonSX}
                                 startIcon={<EditIcon/>}
                                 to={`/dashboard/student/edit/${id}`}>
                                 {t('common:edit')}
                             </Button>
                             <Button
                                 variant="contained"
-                                className={classes.button}
+                                sx={buttonSX}
                                 onClick={() => setModalOpen(true)}
                                 disabled={updating}
                                 startIcon={updating ? <CircularProgress size="1rem"/> : <DeleteIcon/>}
