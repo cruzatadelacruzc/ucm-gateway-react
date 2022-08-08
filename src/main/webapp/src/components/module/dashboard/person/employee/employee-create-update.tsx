@@ -3,13 +3,12 @@ import {Field} from "formik";
 import React from "react";
 import {useTranslation} from "react-i18next";
 import i18n from "../../../../../config/i18n";
-import {Box, InputAdornment} from "@mui/material";
+import {InputAdornment} from "@mui/material";
 import Widget from "../../../../shared/layout/widget";
 import {useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../../../shared/reducer";
 import {useNavigate, useParams} from "react-router-dom";
 import PersonalStep, {_validationSchema} from '../index'
-import {formUpdateStyles} from "../../style";
 import {
     getCategories,
     getCharges,
@@ -34,11 +33,11 @@ import throttle from "lodash/throttle";
 import {INomenclature} from "../../../../shared/models/nomenclature.model";
 import UCMAutocomplete from "../../../../shared/components/autocomplete";
 import {getFilteredWorkPlace, getWorkPlaces, reset as workPlaceReset} from "../../workplace/workplace.reducer";
+import Grid from "@mui/material/Grid";
 
 function EmployeeManage() {
     const dispatch = useDispatch();
     let navigate = useNavigate();
-    const classes = formUpdateStyles();
     const {id} = useParams<{ id: string }>();
     const [_isNew] = React.useState(!id);
     const {t} = useTranslation(['employee']);
@@ -195,7 +194,7 @@ function EmployeeManage() {
             <FormStep
                 label={t("person:step")}
                 validationSchema={_validationSchema}
-                operationKind={_isNew ? "CREATE": "UPDATE"}
+                operationKind={_isNew ? "CREATE" : "UPDATE"}
                 onSubmit={async (values: IEmployee) => {
                     if (undefined !== id) {
                         return dispatch(partialUpdateEmployee({id, employee: values, avatar: avatar}))
@@ -219,177 +218,179 @@ function EmployeeManage() {
                 })}
             >
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Box className={classes.form_group}>
-                        <Box className={classes.input}>
-                            <Field
-                                autoOk
-                                fullWidth
-                                name={"startDate"}
-                                component={DatePicker}
-                                inputVariant="outlined"
-                                label={t('startDate')}
-                                InputLabelProps={{shrink: true}}
-                                format={t("common:date_format")}
-                            />
-                        </Box>
-                        <Box className={classes.input}>
-                            <Field
-                                autoOk
-                                fullWidth
-                                name={"endDate"}
-                                clearable={true}
-                                component={DatePicker}
-                                inputVariant="outlined"
-                                label={t('endDate')}
-                                InputLabelProps={{shrink: true}}
-                                format={t("common:date_format")}
-                            />
-                        </Box>
-                        <Box className={classes.input}>
-                            <Field component={TextField} type="number" variant="outlined" fullWidth
-                                   InputLabelProps={{shrink: true}}
-                                   name="graduateYears" label={t('graduateYears')}/>
-                        </Box>
-                    </Box>
-                    <Box className={classes.form_group}>
-                        <Box className={classes.input}>
-                            <Field
-                                type="checkbox"
-                                name="isGraduatedBySector"
-                                component={CheckboxWithLabel}
-                                Label={{label: t('isGraduatedBySector')}}
-                            />
-                        </Box>
-                        <Box className={classes.input}>
-                            <Field component={TextField} type="number" name="serviceYears" label={t('serviceYears')}
-                                   variant="outlined" fullWidth InputLabelProps={{shrink: true}}/>
-                        </Box>
-                        <Box className={classes.input}>
-                            <Field component={TextField} name="registerNumber" label={t('registerNumber')}
-                                   variant="outlined" fullWidth InputLabelProps={{shrink: true}}/>
-                        </Box>
-                    </Box>
-                    <Box className={classes.form_group}>
-                        <Box className={classes.input}>
-                            <Field component={TextField} type="number" name="salary" label={t('salary')}
-                                   variant="outlined" fullWidth InputLabelProps={{shrink: true}}
-                                   InputProps={{
-                                       startAdornment: (<InputAdornment position="start">$</InputAdornment>)
-                                   }}/>
-                        </Box>
-                        <Box className={classes.input}>
-                            <Field name='profession'
-                                   open={openProfession}
-                                   options={professions}
-                                   component={UCMAutocomplete}
-                                   loading={loadingProfessions}
-                                   onOpen={() => setOpenProfession(true)}
-                                   onClose={() => setOpenProfession(false)}
-                                   getOptionLabel={(option: INomenclature) => option.name || ''}
-                                   textFieldProps={{label: t('profession')}}
-                                   onInputChange={(event: React.SyntheticEvent, newInputValue) => {
-                                       setInputValueProfession(newInputValue);
-                                   }}
-                                   isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
-                            />
-                        </Box>
-                        <Box className={classes.input}>
-                            <Field component={TextField} name="professionalNumber" label={t('professionalNumber')}
-                                   variant="outlined" fullWidth InputLabelProps={{shrink: true}}/>
-                        </Box>
-                    </Box>
-                    <Box className={classes.form_group}>
-                        <Box className={classes.input}>
-                            <Field name='category'
-                                   open={openCategory}
-                                   options={categories}
-                                   component={UCMAutocomplete}
-                                   loading={loadingCategories}
-                                   onOpen={() => setOpenCategory(true)}
-                                   onClose={() => setOpenCategory(false)}
-                                   getOptionLabel={(option: INomenclature) => option.name || ''}
-                                   textFieldProps={{label: t('category')}}
-                                   onInputChange={(event: React.SyntheticEvent, newInputValue) => {
-                                       setInputValueCategory(newInputValue);
-                                   }}
-                                   isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
-                            />
-                        </Box>
-                        <Box className={classes.input}>
-                            <Field name='teachingCategory'
-                                   open={openTeachingCategory}
-                                   options={teachingCategories}
-                                   component={UCMAutocomplete}
-                                   loading={loadingTeachingCategory}
-                                   onOpen={() => setOpenTeachingCategory(true)}
-                                   onClose={() => setOpenTeachingCategory(false)}
-                                   getOptionLabel={(option: INomenclature) => option.name || ''}
-                                   textFieldProps={{label: t('teachingCategory')}}
-                                   onInputChange={(event: React.SyntheticEvent, newInputValue) => {
-                                       setInputValueTeachingCategory(newInputValue);
-                                   }}
-                                   isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
-                            />
-                        </Box>
-                        <Box className={classes.input}>
-                            <Field name='scientificDegree'
-                                   open={openScientificDegree}
-                                   options={scientificDegrees}
-                                   component={UCMAutocomplete}
-                                   loading={loadingScientificDegrees}
-                                   onOpen={() => setOpenScientificDegree(true)}
-                                   onClose={() => setOpenScientificDegree(false)}
-                                   getOptionLabel={(option: INomenclature) => option.name || ''}
-                                   textFieldProps={{label: t('scientificDegree')}}
-                                   onInputChange={(event: React.SyntheticEvent, newInputValue) => {
-                                       setInputValueScientificDegree(newInputValue);
-                                   }}
-                                   isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
-                            />
-                        </Box>
-                    </Box>
-                    <Box className={classes.form_group}>
-                        <Box className={classes.input}>
-                            <Field name='charge'
-                                   open={openCharge}
-                                   options={charges}
-                                   component={UCMAutocomplete}
-                                   loading={loadingCharges}
-                                   onOpen={() => setOpenCharge(true)}
-                                   onClose={() => setOpenCharge(false)}
-                                   getOptionLabel={(option: INomenclature) => option.name || ''}
-                                   textFieldProps={{label: t('charge')}}
-                                   onInputChange={(event: React.SyntheticEvent, newInputValue) => {
-                                       setInputValueCharge(newInputValue);
-                                   }}
-                                   isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
-                            />
-                        </Box>
-                        <Box className={classes.input}>
-                            <Field name='workPlace'
-                                   open={openWorkPlace}
-                                   options={workPlaces}
-                                   component={UCMAutocomplete}
-                                   loading={loadingWorkPlaces}
-                                   onOpen={() => setOpenWorkPlace(true)}
-                                   onClose={() => setOpenWorkPlace(false)}
-                                   getOptionLabel={(option: INomenclature) => option.name || ''}
-                                   textFieldProps={{label: t('workPlace')}}
-                                   onInputChange={(event: React.SyntheticEvent, newInputValue) => {
-                                       setInputValueWorkPlace(newInputValue);
-                                   }}
-                                   isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
-                            />
-                        </Box>
-                        <Box className={classes.input}>
-                            <Field
-                                type="checkbox"
-                                name="bossWorkPlace"
-                                component={CheckboxWithLabel}
-                                Label={{label: t('bossWorkPlace')}}
-                            />
-                        </Box>
-                    </Box>
+                    <Grid container spacing={2}>
+                        <Grid item container spacing={2}>
+                            <Grid item xs={12} sm={4}>
+                                <Field
+                                    autoOk
+                                    fullWidth
+                                    name={"startDate"}
+                                    component={DatePicker}
+                                    inputVariant="outlined"
+                                    label={t('startDate')}
+                                    InputLabelProps={{shrink: true}}
+                                    format={t("common:date_format")}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <Field
+                                    autoOk
+                                    fullWidth
+                                    name={"endDate"}
+                                    clearable={true}
+                                    component={DatePicker}
+                                    inputVariant="outlined"
+                                    label={t('endDate')}
+                                    InputLabelProps={{shrink: true}}
+                                    format={t("common:date_format")}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <Field component={TextField} type="number" variant="outlined" fullWidth
+                                       InputLabelProps={{shrink: true}}
+                                       name="graduateYears" label={t('graduateYears')}/>
+                            </Grid>
+                        </Grid>
+                        <Grid item container spacing={2}>
+                            <Grid item xs={12} sm={4}>
+                                <Field
+                                    type="checkbox"
+                                    name="isGraduatedBySector"
+                                    component={CheckboxWithLabel}
+                                    Label={{label: t('isGraduatedBySector')}}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <Field component={TextField} type="number" name="serviceYears" label={t('serviceYears')}
+                                       variant="outlined" fullWidth InputLabelProps={{shrink: true}}/>
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <Field component={TextField} name="registerNumber" label={t('registerNumber')}
+                                       variant="outlined" fullWidth InputLabelProps={{shrink: true}}/>
+                            </Grid>
+                        </Grid>
+                        <Grid item container spacing={2}>
+                            <Grid item xs={12} sm={4}>
+                                <Field component={TextField} type="number" name="salary" label={t('salary')}
+                                       variant="outlined" fullWidth InputLabelProps={{shrink: true}}
+                                       InputProps={{
+                                           startAdornment: (<InputAdornment position="start">$</InputAdornment>)
+                                       }}/>
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <Field name='profession'
+                                       open={openProfession}
+                                       options={professions}
+                                       component={UCMAutocomplete}
+                                       loading={loadingProfessions}
+                                       onOpen={() => setOpenProfession(true)}
+                                       onClose={() => setOpenProfession(false)}
+                                       getOptionLabel={(option: INomenclature) => option.name || ''}
+                                       textFieldProps={{label: t('profession')}}
+                                       onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                           setInputValueProfession(newInputValue);
+                                       }}
+                                       isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <Field component={TextField} name="professionalNumber" label={t('professionalNumber')}
+                                       variant="outlined" fullWidth InputLabelProps={{shrink: true}}/>
+                            </Grid>
+                        </Grid>
+                        <Grid item container spacing={2}>
+                            <Grid item xs={12} sm={4}>
+                                <Field name='category'
+                                       open={openCategory}
+                                       options={categories}
+                                       component={UCMAutocomplete}
+                                       loading={loadingCategories}
+                                       onOpen={() => setOpenCategory(true)}
+                                       onClose={() => setOpenCategory(false)}
+                                       getOptionLabel={(option: INomenclature) => option.name || ''}
+                                       textFieldProps={{label: t('category')}}
+                                       onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                           setInputValueCategory(newInputValue);
+                                       }}
+                                       isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <Field name='teachingCategory'
+                                       open={openTeachingCategory}
+                                       options={teachingCategories}
+                                       component={UCMAutocomplete}
+                                       loading={loadingTeachingCategory}
+                                       onOpen={() => setOpenTeachingCategory(true)}
+                                       onClose={() => setOpenTeachingCategory(false)}
+                                       getOptionLabel={(option: INomenclature) => option.name || ''}
+                                       textFieldProps={{label: t('teachingCategory')}}
+                                       onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                           setInputValueTeachingCategory(newInputValue);
+                                       }}
+                                       isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <Field name='scientificDegree'
+                                       open={openScientificDegree}
+                                       options={scientificDegrees}
+                                       component={UCMAutocomplete}
+                                       loading={loadingScientificDegrees}
+                                       onOpen={() => setOpenScientificDegree(true)}
+                                       onClose={() => setOpenScientificDegree(false)}
+                                       getOptionLabel={(option: INomenclature) => option.name || ''}
+                                       textFieldProps={{label: t('scientificDegree')}}
+                                       onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                           setInputValueScientificDegree(newInputValue);
+                                       }}
+                                       isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
+                                />
+                            </Grid>
+                        </Grid>
+                        <Grid item container spacing={2}>
+                            <Grid item xs={12} sm={4}>
+                                <Field name='charge'
+                                       open={openCharge}
+                                       options={charges}
+                                       component={UCMAutocomplete}
+                                       loading={loadingCharges}
+                                       onOpen={() => setOpenCharge(true)}
+                                       onClose={() => setOpenCharge(false)}
+                                       getOptionLabel={(option: INomenclature) => option.name || ''}
+                                       textFieldProps={{label: t('charge')}}
+                                       onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                           setInputValueCharge(newInputValue);
+                                       }}
+                                       isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <Field name='workPlace'
+                                       open={openWorkPlace}
+                                       options={workPlaces}
+                                       component={UCMAutocomplete}
+                                       loading={loadingWorkPlaces}
+                                       onOpen={() => setOpenWorkPlace(true)}
+                                       onClose={() => setOpenWorkPlace(false)}
+                                       getOptionLabel={(option: INomenclature) => option.name || ''}
+                                       textFieldProps={{label: t('workPlace')}}
+                                       onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                           setInputValueWorkPlace(newInputValue);
+                                       }}
+                                       isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <Field
+                                    type="checkbox"
+                                    name="bossWorkPlace"
+                                    component={CheckboxWithLabel}
+                                    Label={{label: t('bossWorkPlace')}}
+                                />
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </LocalizationProvider>
             </FormStep>
         </FormStepper>

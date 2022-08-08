@@ -13,8 +13,7 @@ import {
 } from "../nomenclature/nomenclature.reducer";
 import {DatePicker} from 'formik-mui-lab';
 import {Autocomplete, TextField} from 'formik-mui';
-import {AutocompleteRenderInputParams, Box, CircularProgress, Grid, TextField as MUITextField} from "@mui/material";
-import {formUpdateStyles} from "../style";
+import {AutocompleteRenderInputParams, CircularProgress, Grid, TextField as MUITextField} from "@mui/material";
 import AdapterDayjs from '@mui/lab/AdapterDayjs';
 import {LocalizationProvider} from "@mui/lab";
 import {IEmployee} from "../../../shared/models/employee.model";
@@ -49,7 +48,6 @@ interface IPersonStep {
 
 const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => {
     const dispatch = useDispatch();
-    const classes = formUpdateStyles();
     const {t} = useTranslation(["person"]);
     const {errors, touched, setFieldValue} = useFormikContext();
     const districts = useSelector((states: IRootState) => states.nomenclature.districts);
@@ -100,217 +98,209 @@ const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => 
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Grid container>
+            <Grid container spacing={2}>
                 <Grid container item md={4} sm={12} xs={12} lg={4} justifyContent="center">
                     <UCMAvatar
-                            height={250}
-                            width={250}
-                            avatarUrl={person.avatarUrl}
-                            setResultAvatar={setFileInput}
-                            deleteAvatar={() => {
-                                if (isEmployee(person)) {
-                                    dispatch(deleteEmployeeAvatar(person.id))
-                                } else {
-                                    dispatch(deleteStudentAvatar(person.id))
-                                }
-                            }}
+                        height={250}
+                        width={250}
+                        avatarUrl={person.avatarUrl}
+                        setResultAvatar={setFileInput}
+                        deleteAvatar={() => {
+                            if (isEmployee(person)) {
+                                dispatch(deleteEmployeeAvatar(person.id))
+                            } else {
+                                dispatch(deleteStudentAvatar(person.id))
+                            }
+                        }}
+                    />
+                </Grid>
+                <Grid container item md={8} sm={12} xs={12} lg={8} spacing={2}>
+                    <Grid item xs={12} sm={6} md={12}>
+                        <Field name="ci" label={t('ci')} variant="outlined" fullWidth
+                               InputLabelProps={{shrink: true}}
+                               component={TextField}/>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={12}>
+                        <Field name="email" label={t('email')} variant="outlined" fullWidth
+                               InputLabelProps={{shrink: true}}
+                               component={TextField}/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Field name="address" label={t('address')}
+                               variant="outlined"
+                               fullWidth
+                               multiline
+                               inputProps={{maxLength: "255"}}
+                               InputLabelProps={{shrink: true}}
+                               component={TextField}
                         />
-                </Grid>
-                <Grid container item md={8} sm={12} xs={12} lg={8}>
-                    <Grid item md={6} sm={6} xs={12} lg={6}>
-                        <Box className={classes.input}>
-                            <Field name="ci" label={t('ci')} variant="outlined" fullWidth
-                                   InputLabelProps={{shrink: true}}
-                                   component={TextField}/>
-                        </Box>
-                    </Grid>
-                    <Grid item md={12} sm={6} xs={12} lg={12}>
-                        <Box className={classes.input}>
-                            <Field name="email" label={t('email')} variant="outlined" fullWidth
-                                   InputLabelProps={{shrink: true}}
-                                   component={TextField}/>
-                        </Box>
-                    </Grid>
-                    <Grid item md={12} sm={12} xs={12} lg={12}>
-                        <Box className={classes.input}>
-                            <Field name="address" label={t('address')}
-                                   variant="outlined"
-                                   fullWidth
-                                   multiline
-                                   inputProps={{maxLength: "255"}}
-                                   InputLabelProps={{shrink: true}}
-                                   component={TextField}
-                            />
-                        </Box>
                     </Grid>
                 </Grid>
-            <Grid item container md={12} sm={12} xs={12} lg={12}>
-                <Box className={classes.input}>
-                    <Field name="name" label={t('name')}
-                           variant="outlined"
-                           fullWidth
-                           multiline
-                           InputLabelProps={{shrink: true}}
-                           inputProps={{maxLength: "255"}}
-                           component={TextField}/>
-                </Box>
-
-                <Box className={classes.input}>
-                    <Field name="firstLastName" label={t('firstLastName')}
-                           fullWidth
-                           multiline
-                           variant="outlined"
-                           component={TextField}
-                           InputLabelProps={{shrink: true}}
-                           inputProps={{maxLength: "255"}}
-                    />
-                </Box>
-
-                <Box className={classes.input}>
-                    <Field name="secondLastName" label={t('secondLastName')}
-                           fullWidth
-                           variant="outlined"
-                           component={TextField}
-                           InputLabelProps={{shrink: true}}
-                           inputProps={{maxLength: "255"}}
-                    />
-                </Box>
-            </Grid>
-                {!isNew && <Grid item container md={12} sm={12} xs={12} lg={12}>
-                <Box className={classes.input}>
-                    <Field
-                        fullWidth
-                        disableClearable
-                        name="gender"
-                        options={[PERSON_GENDER.FEMALE, PERSON_GENDER.MALE]}
-                        component={Autocomplete}
-                        isOptionEqualToValue={(option, value) => option === value}
-                        renderInput={(params: AutocompleteRenderInputParams) => (
-                            <MUITextField
-                                {...params}
-                                variant="outlined"
-                                name="gender"
-                                label={t('gender.label')}
-                                InputLabelProps={{shrink: true}}
-                                helperText={errors['gender']}
-                                error={touched['gender'] && !!errors['gender']}
-                            />
-                        )}
-                    />
-                </Box>
-                <Box className={classes.input}>
-                    <Field
-                        autoOk
-                        fullWidth
-                        inputVariant="outlined"
-                        name={"birthdate"}
-                        component={DatePicker}
-                        label={t('birthdate')}
-                        InputLabelProps={{shrink: true}}
-                        format={t("common:date_format")}
-                    />
-                </Box>
-            </Grid> }
-            <Grid item container>
-                <Box className={classes.input}>
-                    <Field name="race" label={t('race')} fullWidth InputLabelProps={{shrink: true}}
-                           variant="outlined" component={TextField}/>
-                </Box>
-                <Box className={classes.input}>
-                    <Field
-                        name="district"
-                        component={Autocomplete}
-                        open={openDistrict}
-                        options={districts}
-                        filterOptions={(x) => x}
-                        loading={loadingDistricts}
-                        onOpen={() => setOpenDistrict(true)}
-                        onClose={() => setOpenDistrict(false)}
-                        loadingText={t('common:loading')}
-                        noOptionsText={t('common:no_option')}
-                        isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
-                        onInputChange={(event: React.SyntheticEvent, newInputValue) => {
-                            if (newInputValue === '') {
-                                setFieldValue('districtId', "")
-                            }
-                            setInputValueDistrict(newInputValue);
-                        }}
-                        onChange={(event: React.SyntheticEvent, value: INomenclature) => {
-                            setFieldValue('districtId', value?.id || '')
-                            setFieldValue('district', value)
-                        }}
-                        getOptionLabel={(option: INomenclature) => option.name || ''}
-                        renderInput={(params: AutocompleteRenderInputParams) => (
-                            <MUITextField
-                                {...params}
-                                name="district"
-                                variant="outlined"
-                                label={t('district')}
-                                InputLabelProps={{shrink: true}}
-                                helperText={errors['districtId']}
-                                error={touched['districtId'] && !!errors['districtId']}
-                                InputProps={{
-                                    ...params.InputProps,
-                                    endAdornment: (
-                                        <React.Fragment>
-                                            {loadingDistricts ?
-                                                <CircularProgress color="inherit" size={20}/> : null}
-                                            {params.InputProps.endAdornment}
-                                        </React.Fragment>
-                                    ),
-                                }}
-                            />
-                        )}
-                    />
-                </Box>
-                <Box className={classes.input}>
-                    <Field
-                        name="specialty"
-                        component={Autocomplete}
-                        open={openSpecialty}
-                        options={specialties}
-                        filterOptions={(x) => x}
-                        loading={loadingSpecialties}
-                        onOpen={() => setOpenSpecialty(true)}
-                        onClose={() => setOpenSpecialty(false)}
-                        loadingText={t('common:loading')}
-                        noOptionsText={t('common:no_option')}
-                        isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
-                        onInputChange={(event: React.SyntheticEvent, newInputValue) => {
-                            if (newInputValue === '') {
-                                setFieldValue('specialtyId', "")
-                            }
-                            setInputValueSpecialty(newInputValue);
-                        }}
-                        onChange={(event: React.SyntheticEvent, value: INomenclature) => {
-                            setFieldValue('specialtyId', value?.id || '')
-                            setFieldValue('specialty', value)
-                        }}
-                        getOptionLabel={(option: INomenclature) => option.name || ''}
-                        renderInput={(params: AutocompleteRenderInputParams) => (
-                            <MUITextField
-                                {...params}
-                                name="specialty"
-                                variant="outlined"
-                                label={t('specialty')}
-                                InputLabelProps={{shrink: true}}
-                                helperText={errors['specialtyId']}
-                                error={touched['specialtyId'] && !!errors['specialtyId']}
-                                InputProps={{
-                                    ...params.InputProps,
-                                    endAdornment: (
-                                        <React.Fragment>
-                                            {loadingDistricts ?
-                                                <CircularProgress color="inherit" size={20}/> : null}
-                                            {params.InputProps.endAdornment}
-                                        </React.Fragment>
-                                    ),
-                                }}
-                            />
-                        )}
-                    />
-                </Box>
-            </Grid>
+                <Grid item container xs={12} spacing={2}>
+                    <Grid item xs={12} sm={4}>
+                        <Field name="name" label={t('name')}
+                               variant="outlined"
+                               fullWidth
+                               multiline
+                               InputLabelProps={{shrink: true}}
+                               inputProps={{maxLength: "255"}}
+                               component={TextField}/>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <Field name="firstLastName" label={t('firstLastName')}
+                               fullWidth
+                               multiline
+                               variant="outlined"
+                               component={TextField}
+                               InputLabelProps={{shrink: true}}
+                               inputProps={{maxLength: "255"}}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <Field name="secondLastName" label={t('secondLastName')}
+                               fullWidth
+                               variant="outlined"
+                               component={TextField}
+                               InputLabelProps={{shrink: true}}
+                               inputProps={{maxLength: "255"}}
+                        />
+                    </Grid>
+                </Grid>
+                {!isNew && <Grid item container xs={12} spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                        <Field
+                            autoOk
+                            fullWidth
+                            inputVariant="outlined"
+                            name={"birthdate"}
+                            component={DatePicker}
+                            label={t('birthdate')}
+                            InputLabelProps={{shrink: true}}
+                            format={t("common:date_format")}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <Field
+                            fullWidth
+                            disableClearable
+                            name="gender"
+                            options={[PERSON_GENDER.FEMALE, PERSON_GENDER.MALE]}
+                            component={Autocomplete}
+                            isOptionEqualToValue={(option, value) => option === value}
+                            renderInput={(params: AutocompleteRenderInputParams) => (
+                                <MUITextField
+                                    {...params}
+                                    variant="outlined"
+                                    name="gender"
+                                    label={t('gender.label')}
+                                    InputLabelProps={{shrink: true}}
+                                    helperText={errors['gender']}
+                                    error={touched['gender'] && !!errors['gender']}
+                                />
+                            )}
+                        />
+                    </Grid>
+                </Grid>}
+                <Grid item container xs={12} spacing={2}>
+                    <Grid item xs={12} sm={4}>
+                        <Field name="race" label={t('race')} fullWidth InputLabelProps={{shrink: true}}
+                               variant="outlined" component={TextField}/>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <Field
+                            name="district"
+                            component={Autocomplete}
+                            open={openDistrict}
+                            options={districts}
+                            filterOptions={(x) => x}
+                            loading={loadingDistricts}
+                            onOpen={() => setOpenDistrict(true)}
+                            onClose={() => setOpenDistrict(false)}
+                            loadingText={t('common:loading')}
+                            noOptionsText={t('common:no_option')}
+                            isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
+                            onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                if (newInputValue === '') {
+                                    setFieldValue('districtId', "")
+                                }
+                                setInputValueDistrict(newInputValue);
+                            }}
+                            onChange={(event: React.SyntheticEvent, value: INomenclature) => {
+                                setFieldValue('districtId', value?.id || '')
+                                setFieldValue('district', value)
+                            }}
+                            getOptionLabel={(option: INomenclature) => option.name || ''}
+                            renderInput={(params: AutocompleteRenderInputParams) => (
+                                <MUITextField
+                                    {...params}
+                                    name="district"
+                                    variant="outlined"
+                                    label={t('district')}
+                                    InputLabelProps={{shrink: true}}
+                                    helperText={errors['districtId']}
+                                    error={touched['districtId'] && !!errors['districtId']}
+                                    InputProps={{
+                                        ...params.InputProps,
+                                        endAdornment: (
+                                            <React.Fragment>
+                                                {loadingDistricts ?
+                                                    <CircularProgress color="inherit" size={20}/> : null}
+                                                {params.InputProps.endAdornment}
+                                            </React.Fragment>
+                                        ),
+                                    }}
+                                />
+                            )}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <Field
+                            name="specialty"
+                            component={Autocomplete}
+                            open={openSpecialty}
+                            options={specialties}
+                            filterOptions={(x) => x}
+                            loading={loadingSpecialties}
+                            onOpen={() => setOpenSpecialty(true)}
+                            onClose={() => setOpenSpecialty(false)}
+                            loadingText={t('common:loading')}
+                            noOptionsText={t('common:no_option')}
+                            isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
+                            onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                if (newInputValue === '') {
+                                    setFieldValue('specialtyId', "")
+                                }
+                                setInputValueSpecialty(newInputValue);
+                            }}
+                            onChange={(event: React.SyntheticEvent, value: INomenclature) => {
+                                setFieldValue('specialtyId', value?.id || '')
+                                setFieldValue('specialty', value)
+                            }}
+                            getOptionLabel={(option: INomenclature) => option.name || ''}
+                            renderInput={(params: AutocompleteRenderInputParams) => (
+                                <MUITextField
+                                    {...params}
+                                    name="specialty"
+                                    variant="outlined"
+                                    label={t('specialty')}
+                                    InputLabelProps={{shrink: true}}
+                                    helperText={errors['specialtyId']}
+                                    error={touched['specialtyId'] && !!errors['specialtyId']}
+                                    InputProps={{
+                                        ...params.InputProps,
+                                        endAdornment: (
+                                            <React.Fragment>
+                                                {loadingDistricts ?
+                                                    <CircularProgress color="inherit" size={20}/> : null}
+                                                {params.InputProps.endAdornment}
+                                            </React.Fragment>
+                                        ),
+                                    }}
+                                />
+                            )}
+                        />
+                    </Grid>
+                </Grid>
             </Grid>
         </LocalizationProvider>
     )

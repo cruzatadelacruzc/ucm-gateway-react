@@ -4,11 +4,9 @@ import {Field} from "formik";
 import {useTranslation} from "react-i18next";
 import {TextField} from "formik-mui";
 import i18n from "../../../../../config/i18n";
-import {Box} from "@mui/material";
 import Widget from "../../../../shared/layout/widget";
 import {IRootState} from "../../../../shared/reducer";
 import {useNavigate, useParams} from "react-router-dom";
-import {formUpdateStyles} from "../../style";
 import PersonalStep, {_validationSchema} from "../index";
 import {useDispatch, useSelector} from "react-redux";
 import {createStudent, getStudent, partialUpdateStudent, reset, updateStudent} from "./student.reducer";
@@ -24,11 +22,11 @@ import {
 import throttle from "lodash/throttle";
 import UCMAutocomplete from "../../../../shared/components/autocomplete";
 import {INomenclature} from "../../../../shared/models/nomenclature.model";
+import Grid from "@mui/material/Grid";
 
 const StudentManage = () => {
     let navigate = useNavigate();
     const dispatch = useDispatch();
-    const classes = formUpdateStyles();
     let {id} = useParams<{ id: string }>();
     const [isNew] = React.useState(!id);
     const {t} = useTranslation(['student']);
@@ -111,10 +109,10 @@ const StudentManage = () => {
             <FormStep
                 label={t("person:step")}
                 validationSchema={_validationSchema}
-                operationKind={isNew ? "CREATE": "UPDATE"}
+                operationKind={isNew ? "CREATE" : "UPDATE"}
                 onSubmit={async (values: IStudent) => {
                     if (undefined !== id) {
-                       return dispatch(partialUpdateStudent({id, student: values, avatar: avatar}))
+                        return dispatch(partialUpdateStudent({id, student: values, avatar: avatar}))
                     }
                 }}
             >
@@ -133,58 +131,60 @@ const StudentManage = () => {
                     residence: yup.string().required(i18n.t("error:form.required")),
                     studyCenterId: yup.string().required(i18n.t("error:form.required"))
                 })}
-                >
-                <Box className={classes.form_group}>
-                    <Box className={classes.input}>
-                        <Field component={TextField} variant="outlined" fullWidth InputLabelProps={{shrink: true}}
-                               name="residence" label={t('residence')}/>
-                    </Box>
-                    <Box className={classes.input}>
-                        <Field component={TextField} variant="outlined" fullWidth InputLabelProps={{shrink: true}}
-                               name="classRoom" label={t('classRoom')}/>
-                    </Box>
-                    <Box className={classes.input}>
-                        <Field component={TextField} variant="outlined" fullWidth InputLabelProps={{shrink: true}}
-                             type="number"  name="universityYear" label={t('universityYear')}/>
-                    </Box>
-                </Box>
-                <Box className={classes.form_group}>
-                    <Box className={classes.input}>
-                        <Field name='kind'
-                               open={openKind}
-                               options={kinds}
-                               component={UCMAutocomplete}
-                               loading={loadingKinds}
-                               onOpen={() => setOpenKind(true)}
-                               onClose={() => setOpenKind(false)}
-                               getOptionLabel={(option: INomenclature) => option.name || ''}
-                               textFieldProps={{label: t('kind')}}
-                               onInputChange={(event: React.SyntheticEvent, newInputValue) => {
-                                   setInputValueKind(newInputValue);
-                               }}
-                               isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
-                        />
-                    </Box>
-                    <Box className={classes.input}>
-                        <Field name='studyCenter'
-                               open={openStudyCenter}
-                               options={studyCenters}
-                               component={UCMAutocomplete}
-                               loading={loadingStudyCenters}
-                               onOpen={() => setOpenStudyCenter(true)}
-                               onClose={() => setOpenStudyCenter(false)}
-                               getOptionLabel={(option: INomenclature) => option.name || ''}
-                               textFieldProps={{label: t('studyCenter')}}
-                               onInputChange={(event: React.SyntheticEvent, newInputValue) => {
-                                   setInputValueStudyCenter(newInputValue);
-                               }}
-                               isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
-                        />
-                    </Box>
-                </Box>
+            >
+                <Grid container spacing={2}>
+                    <Grid item container spacing={2}>
+                        <Grid item xs={12} sm={4}>
+                            <Field component={TextField} variant="outlined" fullWidth InputLabelProps={{shrink: true}}
+                                   name="residence" label={t('residence')}/>
+                        </Grid>
+                        <Grid item xs={12} sm={4}>
+                            <Field component={TextField} variant="outlined" fullWidth InputLabelProps={{shrink: true}}
+                                   name="classRoom" label={t('classRoom')}/>
+                        </Grid>
+                        <Grid item xs={12} sm={4}>
+                            <Field component={TextField} variant="outlined" fullWidth InputLabelProps={{shrink: true}}
+                                   type="number" name="universityYear" label={t('universityYear')}/>
+                        </Grid>
+                    </Grid>
+                    <Grid item container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                            <Field name='kind'
+                                   open={openKind}
+                                   options={kinds}
+                                   component={UCMAutocomplete}
+                                   loading={loadingKinds}
+                                   onOpen={() => setOpenKind(true)}
+                                   onClose={() => setOpenKind(false)}
+                                   getOptionLabel={(option: INomenclature) => option.name || ''}
+                                   textFieldProps={{label: t('kind')}}
+                                   onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                       setInputValueKind(newInputValue);
+                                   }}
+                                   isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Field name='studyCenter'
+                                   open={openStudyCenter}
+                                   options={studyCenters}
+                                   component={UCMAutocomplete}
+                                   loading={loadingStudyCenters}
+                                   onOpen={() => setOpenStudyCenter(true)}
+                                   onClose={() => setOpenStudyCenter(false)}
+                                   getOptionLabel={(option: INomenclature) => option.name || ''}
+                                   textFieldProps={{label: t('studyCenter')}}
+                                   onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                       setInputValueStudyCenter(newInputValue);
+                                   }}
+                                   isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
+                            />
+                        </Grid>
+                    </Grid>
+                </Grid>
             </FormStep>
         </FormStepper>
-      </Widget>
+    </Widget>
 };
 
 export default StudentManage;
