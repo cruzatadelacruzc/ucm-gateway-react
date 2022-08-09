@@ -4,18 +4,10 @@ import {Field, Form, Formik} from "formik";
 import {useTranslation} from "react-i18next";
 import {IRootState} from "../../../shared/reducer";
 import Widget from "../../../shared/layout/widget";
-import {formUpdateStyles} from "../style";
 import {useDispatch, useSelector} from "react-redux";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {Autocomplete, CheckboxWithLabel, TextField} from "formik-mui";
-import {
-    AutocompleteRenderInputParams,
-    Box,
-    Button,
-    CircularProgress,
-    Grid,
-    TextField as MUITextField
-} from "@mui/material";
+import {AutocompleteRenderInputParams, Button, CircularProgress, Grid, TextField as MUITextField} from "@mui/material";
 import {defaultValue, IWorkPlace} from "../../../shared/models/workplace.model";
 import {createWorkPlace, deleteAvatar, getWorkPlace, reset, updateWorkPlace} from "./workplace.reducer";
 import {createDeepEqualSelector} from "../../../shared/util/function-utils";
@@ -31,7 +23,6 @@ import SendIcon from "@mui/icons-material/Send";
 const WorkPlaceManage = () => {
     let navigate = useNavigate();
     const dispatch = useDispatch();
-    const classes = formUpdateStyles();
     let {id} = useParams<{ id: string }>();
     const [isNew] = React.useState(!id);
     const {t} = useTranslation(['workplace']);
@@ -66,9 +57,9 @@ const WorkPlaceManage = () => {
                     const filter = `name.contains=${input}&firstLastName.contains=${input}&secondLastName.contains=${input}`
                     dispatch(getFilteredEmployees(filter, 'name,ASC', 'OR'))
                 }
-             },
-             300,
-            ),
+            },
+            300,
+        ),
         []); // eslint-disable-line react-hooks/exhaustive-deps
 
     React.useEffect(() => {
@@ -94,11 +85,11 @@ const WorkPlaceManage = () => {
                 initialValues={isNew ? defaultValue : entity}
                 enableReinitialize={!isNew}
                 onSubmit={async (values: IWorkPlace) => {
-                        if (isNew) {
-                            return dispatch(createWorkPlace({workplace: values, avatar: avatar}))
-                        } else {
-                            return dispatch(updateWorkPlace({workplace: values, avatar: avatar}))
-                        }
+                    if (isNew) {
+                        return dispatch(createWorkPlace({workplace: values, avatar: avatar}))
+                    } else {
+                        return dispatch(updateWorkPlace({workplace: values, avatar: avatar}))
+                    }
                 }}
                 validationSchema={yup.object().shape({
                     email: yup.string().email(t("error:form.email")),
@@ -106,10 +97,10 @@ const WorkPlaceManage = () => {
                     description: yup.string().max(255, t("error:form.maxlength", {max: 255}))
                 })}
             >
-                {({submitForm, setFieldValue, values}) => (
+                {({submitForm, setFieldValue}) => (
                     <Form autoComplete="off" noValidate={true}>
-                        <Grid container>
-                            <Grid container item md={5} sm={12} xs={12} lg={4} justifyContent="center">
+                        <Grid container spacing={2}>
+                            <Grid container item xs={12} md={4} lg={4} justifyContent="center">
                                 <UCMAvatar
                                     height={300}
                                     width={300}
@@ -119,124 +110,117 @@ const WorkPlaceManage = () => {
                                     deleteAvatar={() => dispatch(deleteAvatar(entity.id))}
                                 />
                             </Grid>
-                            <Grid container item md={7} sm={12} xs={12} lg={8}>
-                                <Grid container item xs={12}>
-                                    <Grid item xs={12} sm={9} md={9} lg={9}>
-                                        <Box className={classes.input}>
-                                            <Field
-                                                InputLabelProps={{shrink: true}}
-                                                component={TextField}
-                                                fullWidth
-                                                variant="outlined"
-                                                name={"email"}
-                                                label={t("email")}
-                                            />
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={12} sm={3} md={3} lg={3}>
-                                        <Box className={classes.inputSM}>
-                                            <Field
-                                                type="checkbox"
-                                                name="active"
-                                                component={CheckboxWithLabel}
-                                                Label={{label: t('active')}}
-                                            />
-                                        </Box>
-                                    </Grid>
+                            <Grid container item xs={12} md={8} lg={8} >
+                                <Grid item xs={12}>
+                                    <Field
+                                        fullWidth
+                                        type="checkbox"
+                                        name="active"
+                                        component={CheckboxWithLabel}
+                                        Label={{label: t('active')}}
+                                    />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Box className={classes.input}>
-                                        <Field
-                                            InputLabelProps={{shrink: true}}
-                                            component={TextField}
-                                            fullWidth
-                                            variant="outlined"
-                                            name={"name"}
-                                            label={t("name")}
-                                        />
-                                    </Box>
+                                    <Field
+                                        InputLabelProps={{shrink: true}}
+                                        component={TextField}
+                                        fullWidth
+                                        variant="outlined"
+                                        name={"email"}
+                                        label={t("email")}
+                                    />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Box className={classes.input}>
-                                        <Field
-                                            multiple
-                                            fullWidth
-                                            name="employees"
-                                            open={openEmployee}
-                                            component={Autocomplete}
-                                            filterOptions={(x) => x}
-                                            loading={loadingEmployees}
-                                            options={employeesToUpdate}
-                                            loadingText={t('common:loading')}
-                                            noOptionsText={t('common:no_option')}
-                                            onOpen={() => setOpenEmployee(true)}
-                                            onClose={() => setOpenEmployee(false)}
-                                            onInputChange={(event: React.SyntheticEvent, newInputValue: string) => {
-                                                setInputValueEmployee(newInputValue);
-                                            }}
-                                            onChange={(event: React.SyntheticEvent, values: Array<IEmployee>) => {
-                                                    setFieldValue("employeeIds", values.map(emp => emp.id));
-                                                    setFieldValue("employees", values);
-                                            }}
-                                            isOptionEqualToValue={(option: IEmployee, value: IEmployee) => option.id === value.id}
-                                            getOptionLabel={(option: IEmployee) => `${option.name} ${option.firstLastName} ${option.secondLastName}` || ''}
-                                            renderInput={(params: AutocompleteRenderInputParams) => (
-                                                <MUITextField
-                                                    {...params}
-                                                    name="employees"
-                                                    variant="outlined"
-                                                    label={t('employees')}
-                                                    InputLabelProps={{shrink: true}}
-                                                    InputProps={{
-                                                        ...params.InputProps,
-                                                        endAdornment: (
-                                                            <React.Fragment>
-                                                                {loadingEmployees ?
-                                                                    <CircularProgress color="inherit" size={20}/> : null}
-                                                                {params.InputProps.endAdornment}
-                                                            </React.Fragment>
-                                                        ),
-                                                    }}
-                                                />
-                                            )}
-                                        />
-                                    </Box>
+                                    <Field
+                                        InputLabelProps={{shrink: true}}
+                                        component={TextField}
+                                        fullWidth
+                                        variant="outlined"
+                                        name={"name"}
+                                        label={t("name")}
+                                    />
                                 </Grid>
                             </Grid>
                             <Grid item xs={12}>
-                                <Box className={classes.input}>
-                                    <Field
-                                        component={TextField}
-                                        InputLabelProps={{shrink: true}}
-                                        fullWidth
-                                        name={"description"}
-                                        multiline
-                                        variant="outlined"
-                                        inputProps={{maxLength: "255"}}
-                                        label={t("description")}
-                                    />
-                                </Box>
+                                <Field
+                                    multiple
+                                    fullWidth
+                                    name="employees"
+                                    open={openEmployee}
+                                    component={Autocomplete}
+                                    filterOptions={(x) => x}
+                                    loading={loadingEmployees}
+                                    options={employeesToUpdate}
+                                    loadingText={t('common:loading')}
+                                    noOptionsText={t('common:no_option')}
+                                    onOpen={() => setOpenEmployee(true)}
+                                    onClose={() => setOpenEmployee(false)}
+                                    onInputChange={(event: React.SyntheticEvent, newInputValue: string) => {
+                                        setInputValueEmployee(newInputValue);
+                                    }}
+                                    onChange={(event: React.SyntheticEvent, values: Array<IEmployee>) => {
+                                        setFieldValue("employeeIds", values.map(emp => emp.id));
+                                        setFieldValue("employees", values);
+                                    }}
+                                    isOptionEqualToValue={(option: IEmployee, value: IEmployee) => option.id === value.id}
+                                    getOptionLabel={(option: IEmployee) => `${option.name} ${option.firstLastName} ${option.secondLastName}` || ''}
+                                    renderInput={(params: AutocompleteRenderInputParams) => (
+                                        <MUITextField
+                                            {...params}
+                                            name="employees"
+                                            variant="outlined"
+                                            label={t('employees')}
+                                            InputLabelProps={{shrink: true}}
+                                            InputProps={{
+                                                ...params.InputProps,
+                                                endAdornment: (
+                                                    <React.Fragment>
+                                                        {loadingEmployees ?
+                                                            <CircularProgress color="inherit" size={20}/> : null}
+                                                        {params.InputProps.endAdornment}
+                                                    </React.Fragment>
+                                                ),
+                                            }}
+                                        />
+                                    )}
+                                />
                             </Grid>
-                            <Box className={classes.buttons}>
-                                <Button
-                                    className={classes.button}
-                                    color="warning"
-                                    variant="contained"
-                                    component={Link}
-                                    to='/dashboard/workplace'
-                                    startIcon={<CancelIcon/>}
-                                    disabled={updating}>
-                                    {t('common:cancel')}
-                                </Button>
-                                <Button
-                                    className={classes.button}
-                                    variant="contained"
-                                    disabled={updating}
-                                    startIcon={updating ? <CircularProgress size="1rem"/> : <SendIcon/>}
-                                    onClick={submitForm}>
-                                    {t('common:submit')}
-                                </Button>
-                            </Box>
+                            <Grid item xs={12}>
+                                <Field
+                                    component={TextField}
+                                    InputLabelProps={{shrink: true}}
+                                    fullWidth
+                                    name={"description"}
+                                    multiline
+                                    variant="outlined"
+                                    inputProps={{maxLength: "255"}}
+                                    label={t("description")}
+                                />
+                            </Grid>
+                            <Grid item container xs={12} spacing={{xs: 2, sm: 0}}>
+                                <Grid item xs={12} sm={2}>
+                                    <Button
+                                        fullWidth
+                                        color="warning"
+                                        variant="contained"
+                                        component={Link}
+                                        to='/dashboard/workplace'
+                                        startIcon={<CancelIcon/>}
+                                        disabled={updating}>
+                                        {t('common:cancel')}
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={12} sm={2}>
+                                    <Button
+                                        fullWidth
+                                        variant="contained"
+                                        disabled={updating}
+                                        startIcon={updating ? <CircularProgress size="1rem"/> : <SendIcon/>}
+                                        onClick={submitForm}>
+                                        {t('common:submit')}
+                                    </Button>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Form>
                 )}
