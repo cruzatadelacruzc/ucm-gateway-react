@@ -40,15 +40,6 @@ const PhoneDetails = () => {
     const updating = useSelector((states: IRootState) => states.phone.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.phone.updateSuccess);
 
-    const buttonSX = {
-        marginRight: 3,
-        [theme.breakpoints.down('sm')]: {
-            width: "100%",
-            marginRight: 0,
-            marginBottom: 1
-        }
-    }
-
     React.useEffect(() => {
         if (undefined !== id) {
             dispatch(getPhone(id))
@@ -133,34 +124,40 @@ const PhoneDetails = () => {
                         </IconButton>
                         }
                     </Grid>
-                    <Grid item xs={12}>
-                        <Button
-                            sx={buttonSX}
-                            component={Link}
-                            color="secondary"
-                            startIcon={<CancelIcon/>}
-                            variant="contained"
-                            to={'/dashboard/phone'}>
-                            {t('common:close')}
-                        </Button>
-                        <Button
-                            sx={buttonSX}
-                            component={Link}
-                            color="secondary"
-                            startIcon={<EditIcon/>}
-                            variant="contained"
-                            to={`/dashboard/phone/edit/${id}`}>
-                            {t('common:edit')}
-                        </Button>
-                        <Button
-                            sx={buttonSX}
-                            variant="contained"
-                            onClick={() => setModalOpen(true)}
-                            disabled={updating}
-                            startIcon={updating ? <CircularProgress size="1rem"/> : <DeleteIcon/>}
-                        >
-                            {t('common:delete')}
-                        </Button>
+                    <Grid item container xs={12} spacing={{xs: 2, sm: 0}}>
+                        <Grid item xs={12} sm={2}>
+                            <Button
+                                fullWidth
+                                component={Link}
+                                color="secondary"
+                                startIcon={<CancelIcon/>}
+                                variant="contained"
+                                to={'/dashboard/phone'}>
+                                {t('common:close')}
+                            </Button>
+                        </Grid>
+                        <Grid item xs={12} sm={2}>
+                            <Button
+                                fullWidth
+                                component={Link}
+                                color="secondary"
+                                startIcon={<EditIcon/>}
+                                variant="contained"
+                                to={`/dashboard/phone/edit/${id}`}>
+                                {t('common:edit')}
+                            </Button>
+                        </Grid>
+                        <Grid item xs={12} sm={2}>
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                onClick={() => setModalOpen(true)}
+                                disabled={updating}
+                                startIcon={updating ? <CircularProgress size="1rem"/> : <DeleteIcon/>}
+                            >
+                                {t('common:delete')}
+                            </Button>
+                        </Grid>
                         <DialogDelete
                             open={modalOpen}
                             setOpen={setModalOpen}

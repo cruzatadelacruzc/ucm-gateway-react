@@ -39,15 +39,6 @@ const StudentDetails = () => {
     const updating = useSelector((states: IRootState) => states.student.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.student.updateSuccess);
 
-    const buttonSX = {
-        marginRight: 3,
-        [theme.breakpoints.down('sm')]: {
-            width: "100%",
-            marginRight: 0,
-            marginBottom: 1
-        }
-    }
-
     React.useEffect(() => {
         if (undefined !== id){
             dispatch(getStudent(id))
@@ -81,7 +72,6 @@ const StudentDetails = () => {
                 <Box sx={{display: 'flex'}}>
                     <Divider1Styled/><ChipStyled variant='outlined' label={t("title.step")}/><Divider2Styled/>
                 </Box>
-                <Box sx={{flexGrow: 1}}>
                     <Grid container spacing={{xs: 2, md: 1}}>
                         <Grid item container xs={12}>
                             <Grid item xs={12} sm={4}>
@@ -117,37 +107,42 @@ const StudentDetails = () => {
                                 </FormControl>
                             </Grid>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item container xs={12} spacing={{xs: 2, sm: 0}}>
+                            <Grid item xs={12} sm={2}>
                             <Button
+                                fullWidth
                                 color="secondary"
                                 component={Link}
                                 variant="contained"
                                 to={'/dashboard/student'}
-                                startIcon={<CancelIcon/>}
-                                sx={buttonSX}>
+                                startIcon={<CancelIcon/>}>
                                 {t('common:close')}
                             </Button>
+                            </Grid>
+                            <Grid item xs={12} sm={2}>
                             <Button
+                                fullWidth
                                 component={Link}
                                 color="secondary"
                                 variant="contained"
-                                sx={buttonSX}
                                 startIcon={<EditIcon/>}
                                 to={`/dashboard/student/edit/${id}`}>
                                 {t('common:edit')}
                             </Button>
+                            </Grid>
+                            <Grid item xs={12} sm={2}>
                             <Button
+                                fullWidth
                                 variant="contained"
-                                sx={buttonSX}
                                 onClick={() => setModalOpen(true)}
                                 disabled={updating}
                                 startIcon={updating ? <CircularProgress size="1rem"/> : <DeleteIcon/>}
                             >
                                 {t('common:delete')}
                             </Button>
+                            </Grid>
                         </Grid>
                     </Grid>
-                </Box>
                 <DialogDelete
                     open={modalOpen}
                     setOpen={setModalOpen}

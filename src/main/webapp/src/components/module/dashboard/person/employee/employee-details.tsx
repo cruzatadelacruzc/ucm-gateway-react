@@ -59,15 +59,6 @@ function EmployeeDetails() {
     const updating = useSelector((states: IRootState) => states.employee.updating);
     const isUpdateSuccess = useSelector((states: IRootState) => states.employee.updateSuccess);
 
-    const buttonSX = {
-        marginRight: 3,
-        [theme.breakpoints.down('sm')]: {
-            width: "100%",
-            marginRight: 0,
-            marginBottom: 1
-        }
-    }
-
     React.useEffect(() => {
         if (undefined !== id) {
             dispatch(getEmployee(id))
@@ -89,9 +80,9 @@ function EmployeeDetails() {
                     width: '100%',
                     ...theme.typography.body2,
                     '& > :not(style) + :not(style)': {
-                            marginTop: 2,
-                            marginBottom: 2,
-                        }
+                        marginTop: 2,
+                        marginBottom: 2,
+                    }
                 }}
             >
                 <Box sx={{display: 'flex'}}>
@@ -103,101 +94,101 @@ function EmployeeDetails() {
                 <Box sx={{display: 'flex'}}>
                     <Divider1Styled/><ChipStyled variant='outlined' label={t("title.step")}/><Divider2Styled/>
                 </Box>
-                <Box sx={{flexGrow: 1}}>
-                    <Grid container spacing={{xs: 2, md: 1}}>
-                        <Grid container item xs={12} sm={4} spacing={2} sx={{mb: 1}}>
-                            <Grid item xs={12}>
-                                <FormControl component="fieldset">
-                                    <FormLabel component="legend">{`${t("startDate")} / ${t("endDate")}`}</FormLabel>
-                                    {`${dayjs(_entity.startDate).format(t('common:date_format'))}
-                                 / ${_entity.endDate ? dayjs(_entity.endDate).format(t('common:date_format')) : ""}`}
-                                </FormControl>
-                            </Grid>
-
-                            <Grid item xs={12}>
-                                <FormControl component="fieldset">
-                                    <FormLabel component="legend">{t("registerNumber")}</FormLabel>
-                                    {_entity.registerNumber}
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormLabel component="legend">{t("charge")}</FormLabel>
-                                {_entity.chargeName}
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControl component="fieldset">
-                                    <FormLabel component="legend">{t("bossWorkPlace")}</FormLabel>
-                                    {_entity.bossWorkPlace ? t("positive") : "NO"}
-                                </FormControl>
-                            </Grid>
-                        </Grid>
-                        <Grid container item xs={12} sm={4}>
-                            <Grid item xs={12}>
-                                <FormControl component="fieldset">
-                                    <FormLabel component="legend">{t("profession")}</FormLabel>
-                                    {_entity.professionName}
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControl component="fieldset">
-                                    <FormLabel component="legend">{t("serviceYears")}</FormLabel>
-                                    {_entity.serviceYears}
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormLabel component="legend">{t("category")}</FormLabel>
-                                {_entity.categoryName}
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControl component="fieldset">
-                                    <FormLabel component="legend">{t("salary")}</FormLabel>
-                                    ${_entity.salary}
-                                </FormControl>
-                            </Grid>
-                        </Grid>
-                        <Grid container item xs={12} sm={4}>
-                            <Grid item xs={12}>
-                                <FormControl component="fieldset">
-                                    <FormLabel component="legend">{t("isGraduatedBySector")}</FormLabel>
-                                    {_entity.isGraduatedBySector ? t("positive") : "NO"}
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControl component="fieldset">
-                                    <FormLabel component="legend">{t("professionalNumber")}</FormLabel>
-                                    {_entity.professionalNumber}
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControl component="fieldset">
-                                    <FormLabel component="legend">{t("scientificDegree")}</FormLabel>
-                                    {_entity.scientificDegreeName}
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControl component="fieldset">
-                                    <FormLabel component="legend">{t("teachingCategory")}</FormLabel>
-                                    {_entity.teachingCategoryName}
-                                </FormControl>
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12} sx={{mb: 1}}>
+                <Grid container spacing={{xs: 2, md: 1}}>
+                    <Grid container item xs={12} sm={4} spacing={2} sx={{mb: 1}}>
+                        <Grid item xs={12}>
                             <FormControl component="fieldset">
-                                <FormLabel component="legend">{t("workPlace")}</FormLabel>
-                                {_entity.workPlaceId && <Button variant="text" color='primary' component={RouterLink}
-                                                                sx={{textTransform: 'uppercase'}}
-                                                                to={`/dashboard/workplace/show/${_entity.workPlaceId}`}
-                                                                startIcon={<Business fontSize='large'/>}>
-                                    <Typography variant="subtitle1">{_entity.workPlaceName}</Typography>
-                                </Button>}
+                                <FormLabel component="legend">{`${t("startDate")} / ${t("endDate")}`}</FormLabel>
+                                {`${dayjs(_entity.startDate).format(t('common:date_format'))}
+                                 / ${_entity.endDate ? dayjs(_entity.endDate).format(t('common:date_format')) : ""}`}
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12} sx={{mb: 1}}>
-                            <ContactPhoneIcon fontSize='large'/>
-                            <List sx={{py: 1}}>
-                                {_entity.phones?.map((phone, index) => (
+
+                        <Grid item xs={12}>
+                            <FormControl component="fieldset">
+                                <FormLabel component="legend">{t("registerNumber")}</FormLabel>
+                                {_entity.registerNumber}
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormLabel component="legend">{t("charge")}</FormLabel>
+                            {_entity.chargeName}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl component="fieldset">
+                                <FormLabel component="legend">{t("bossWorkPlace")}</FormLabel>
+                                {_entity.bossWorkPlace ? t("positive") : "NO"}
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                    <Grid container item xs={12} sm={4}>
+                        <Grid item xs={12}>
+                            <FormControl component="fieldset">
+                                <FormLabel component="legend">{t("profession")}</FormLabel>
+                                {_entity.professionName}
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl component="fieldset">
+                                <FormLabel component="legend">{t("serviceYears")}</FormLabel>
+                                {_entity.serviceYears}
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormLabel component="legend">{t("category")}</FormLabel>
+                            {_entity.categoryName}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl component="fieldset">
+                                <FormLabel component="legend">{t("salary")}</FormLabel>
+                                ${_entity.salary}
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                    <Grid container item xs={12} sm={4}>
+                        <Grid item xs={12}>
+                            <FormControl component="fieldset">
+                                <FormLabel component="legend">{t("isGraduatedBySector")}</FormLabel>
+                                {_entity.isGraduatedBySector ? t("positive") : "NO"}
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl component="fieldset">
+                                <FormLabel component="legend">{t("professionalNumber")}</FormLabel>
+                                {_entity.professionalNumber}
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl component="fieldset">
+                                <FormLabel component="legend">{t("scientificDegree")}</FormLabel>
+                                {_entity.scientificDegreeName}
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl component="fieldset">
+                                <FormLabel component="legend">{t("teachingCategory")}</FormLabel>
+                                {_entity.teachingCategoryName}
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={12} sx={{mb: 1}}>
+                        <FormControl component="fieldset">
+                            <FormLabel component="legend">{t("workPlace")}</FormLabel>
+                            {_entity.workPlaceId && <Button variant="text" color='primary' component={RouterLink}
+                                                            sx={{textTransform: 'uppercase'}}
+                                                            to={`/dashboard/workplace/show/${_entity.workPlaceId}`}
+                                                            startIcon={<Business fontSize='large'/>}>
+                                <Typography variant="subtitle1">{_entity.workPlaceName}</Typography>
+                            </Button>}
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sx={{mb: 1}}>
+                        <ContactPhoneIcon fontSize='large'/>
+                        <List sx={{py: 1}}>
+                            {_entity.phones?.map((phone, index) => (
                                     <IconButton key={index} size="large" sx={{p: 0, borderRadius: 0}}>
-                                        <ListItem component={RouterLink} to={`/dashboard/phone/show/${phone.id}`} sx={{pl: 0}}>
+                                        <ListItem component={RouterLink} to={`/dashboard/phone/show/${phone.id}`}
+                                                  sx={{pl: 0}}>
                                             <ListItemAvatar>
                                                 <Avatar>
                                                     <LocalPhone/>
@@ -205,34 +196,39 @@ function EmployeeDetails() {
                                             </ListItemAvatar>
                                             <ListItemText primary={phone.number}/>
                                         </ListItem>
-                                        </IconButton>
-                                    )
+                                    </IconButton>
                                 )
-                                }
-                            </List>
-                        </Grid>
-                        <Grid item xs={12}>
+                            )
+                            }
+                        </List>
+                    </Grid>
+                    <Grid item container xs={12} spacing={{xs: 2, sm: 0}}>
+                        <Grid item xs={12} sm={2}>
                             <Button
+                                fullWidth
                                 component={RouterLink}
                                 startIcon={<CancelIcon/>}
                                 color="secondary"
                                 variant="contained"
-                                to={'/dashboard/employee'}
-                                sx={buttonSX}>
+                                to={'/dashboard/employee'}>
                                 {t('common:close')}
                             </Button>
+                        </Grid>
+                        <Grid item xs={12} sm={2}>
                             <Button
+                                fullWidth
                                 component={RouterLink}
                                 color="secondary"
                                 startIcon={<EditIcon/>}
                                 variant="contained"
-                                sx={buttonSX}
                                 to={`/dashboard/employee/edit/${id}`}>
                                 {t('common:edit')}
                             </Button>
+                        </Grid>
+                        <Grid item xs={12} sm={2}>
                             <Button
+                                fullWidth
                                 variant="contained"
-                                sx={buttonSX}
                                 onClick={() => setModalOpen(true)}
                                 disabled={updating}
                                 startIcon={updating ? <CircularProgress size="1rem"/> : <DeleteIcon/>}
@@ -241,7 +237,7 @@ function EmployeeDetails() {
                             </Button>
                         </Grid>
                     </Grid>
-                </Box>
+                </Grid>
                 <DialogDelete
                     open={modalOpen}
                     setOpen={setModalOpen}
