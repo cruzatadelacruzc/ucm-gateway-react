@@ -1,41 +1,60 @@
 import React from 'react';
-import {widgetStyles} from "./style";
 import {IconButton, Menu, MenuItem, Paper, Typography} from "@mui/material";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import classnames from 'classnames'
 import {useTranslation} from "react-i18next";
+import Box from "@mui/material/Box";
+import {SxProps, Theme} from '@mui/material/styles';
 
-export interface IWidget {
+interface IWidget {
     header?: JSX.Element
     children: JSX.Element
     title?: String
     noBodyPadding?
-    bodyClass?
+    sx?: SxProps<Theme>
     disableWidgetMenu?
 }
 
-const Widget = ({header, title, children, noBodyPadding, bodyClass, disableWidgetMenu}: IWidget) => {
-    const classes = widgetStyles();
+const Widget = ({header, title, children, noBodyPadding, sx = [], disableWidgetMenu}: IWidget) => {
     const {t} = useTranslation(['common']);
     const [isMoreMenuOpen, setMoreMenuOpen] = React.useState(false);
     const [isMoreButtonRef, setMoreButtonRef] = React.useState<null | HTMLElement>(null);
 
     const menuHeaderId = "menu-header-id"
     return (
-        <div className={classes.widgetWrapper}>
-            <Paper className={classes.paper} classes={{root: classes.widgetRoot}}>
-                <div className={classes.widgetHeader}>
+        <Box sx={{display: "flex"}}>
+            <Paper sx={{
+                display: "flex",
+                flexDirection: "column",
+                flexGrow: 1,
+                overflow: "hidden",
+            }}>
+                <Box sx={{
+                    p: 3,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center"
+                }}>
                     {header ? (
                         header
                     ) : (
                         <>
-                            <Typography variant="h5" color="textSecondary">
+                            <Typography variant="h3" color="textSecondary">
                                 {title}
                             </Typography>
                             {!disableWidgetMenu && (
                                 <IconButton
                                     color="primary"
-                                    classes={{ root: classes.moreButton }}
+                                    sx={{
+                                        margin: -1,
+                                        padding: 0,
+                                        width: 40,
+                                        height: 40,
+                                        color: "secondary.contrastText",
+                                        "&:hover": {
+                                            backgroundColor: "primary.main",
+                                            color: "primary.contrastText",
+                                        },
+                                    }}
                                     aria-owns={menuHeaderId}
                                     aria-haspopup="true"
                                     onClick={() => setMoreMenuOpen(true)}
@@ -46,15 +65,17 @@ const Widget = ({header, title, children, noBodyPadding, bodyClass, disableWidge
                             )}
                         </>
                     )}
-                    </div>
-                <div
-                    className={classnames(classes.widgetBody, {
-                        [classes.noPadding]: noBodyPadding,
-                        [bodyClass]: bodyClass,
-                    })}
+                    </Box>
+                <Box
+                    sx={{
+                        pb: noBodyPadding ?  0 : 3,
+                        pr: noBodyPadding ?  0 : 3,
+                        pl: noBodyPadding ?  0 : 3,
+                        ...(Array.isArray(sx) ? sx : [sx]),
+                    }}
                 >
                     {children}
-                </div>
+                </Box>
             </Paper>
             <Menu
                 id={menuHeaderId}
@@ -76,7 +97,7 @@ const Widget = ({header, title, children, noBodyPadding, bodyClass, disableWidge
                     {t("common:print")}
                 </MenuItem>
             </Menu>
-        </div>
+        </Box>
     );
 }
 
