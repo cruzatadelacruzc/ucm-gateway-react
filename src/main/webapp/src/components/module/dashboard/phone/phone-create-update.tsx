@@ -103,6 +103,7 @@ const PhoneManage = () => {
 
     React.useEffect(() => {
         if (isUpdateSuccess) {
+            dispatch(reset())
             navigate(-1); // Pass the delta to go in the history stack, equivalent to hitting the back button.
         }
     }, [isUpdateSuccess])// eslint-disable-line react-hooks/exhaustive-deps

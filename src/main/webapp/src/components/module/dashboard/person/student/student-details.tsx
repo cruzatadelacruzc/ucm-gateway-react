@@ -112,9 +112,8 @@ const StudentDetails = () => {
                             <Button
                                 fullWidth
                                 color="secondary"
-                                component={Link}
                                 variant="contained"
-                                to={'/dashboard/student'}
+                                onClick={() => navigate(-1)}
                                 startIcon={<CancelIcon/>}>
                                 {t('common:close')}
                             </Button>

@@ -206,11 +206,10 @@ function EmployeeDetails() {
                         <Grid item xs={12} sm={2}>
                             <Button
                                 fullWidth
-                                component={RouterLink}
                                 startIcon={<CancelIcon/>}
                                 color="secondary"
                                 variant="contained"
-                                to={'/dashboard/employee'}>
+                                onClick={() => navigate(-1)}>
                                 {t('common:close')}
                             </Button>
                         </Grid>

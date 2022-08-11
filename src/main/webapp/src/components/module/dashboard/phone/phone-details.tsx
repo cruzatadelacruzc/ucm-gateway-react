@@ -128,11 +128,10 @@ const PhoneDetails = () => {
                         <Grid item xs={12} sm={2}>
                             <Button
                                 fullWidth
-                                component={Link}
                                 color="secondary"
                                 startIcon={<CancelIcon/>}
                                 variant="contained"
-                                to={'/dashboard/phone'}>
+                                onClick={() => navigate(-1)}>
                                 {t('common:close')}
                             </Button>
                         </Grid>
