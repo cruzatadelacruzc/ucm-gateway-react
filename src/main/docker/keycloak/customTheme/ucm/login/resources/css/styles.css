@@ -1,0 +1,79 @@
+.login-pf body {
+    background: #0064B0;
+}
+
+#kc-header-wrapper {
+    font-weight: bold;
+}
+
+a#kc-current-locale-link::after {
+    margin-left: 8px;
+}
+
+#kc-header-wrapper {
+    font-size: 3rem;
+}
+
+#kc-locale ul {
+    top: 25px;
+}
+
+div#kc-locale-dropdown {
+    box-shadow: 2px 2px 2px #333;
+    border-radius: 5px;
+    padding: 0px 15px 0px 10px;
+}
+
+a#kc-current-locale-link:hover {
+    text-decoration: none;
+}
+
+.pf-c-dropdown__menu-item:hover, .pf-c-dropdown__menu-item:focus {
+    background-color: #00aeef;
+}
+
+.card-pf {
+    border-color: #00aeef;
+    border-radius: 5px;
+}
+
+.pf-c-button.pf-m-primary {
+    color: #000;
+    background-color: #00aeef;
+    padding: 10px;
+    border-radius: 3px;
+    font-size: 1rem;
+}
+
+.pf-c-button.pf-m-primary:hover {
+    background-color: #66e0ff;
+}
+
+.pf-c-form__label {
+    font-size: 0.875rem;
+}
+
+@media (min-width: 768px) {
+
+    .login-pf-page .login-pf-header h1#kc-page-title {
+        font-size: 2.125rem;
+        font-weight: 500;
+    }
+}
+
+@media (max-width: 767px) {
+
+    .login-pf body {
+        background: #0064B0;
+    }
+
+    #kc-header-wrapper {
+        color: #fff;
+        font-size: 1rem;
+    }
+
+    #kc-current-locale-link {
+        color: #fff !important;
+    }
+}
+

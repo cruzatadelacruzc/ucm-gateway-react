@@ -1,0 +1,18 @@
+version: '3'
+services:
+  keycloak:
+    restart: unless-stopped
+    extends:
+      file: ./keycloak/keycloak.yml
+      service: keycloak
+
+  jhipster-registry:
+    restart: unless-stopped
+    extends:
+      file: jhipster-registry.yml
+      service: jhipster-registry
+    environment:
+      - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_TYPE=native
+      - SPRING_CLOUD_CONFIG_SERVER_COMPOSITE_0_SEARCH_LOCATIONS=file:./central-config/docker-config/
+    depends_on:
+      - keycloak

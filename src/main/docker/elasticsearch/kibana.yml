@@ -1,0 +1,4 @@
+# Default Kibana configuration for docker target
+server.name: localohost
+server.host: "0"
+xpack.monitoring.ui.container.elasticsearch.enabled: true
