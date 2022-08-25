@@ -7,7 +7,7 @@ import {Palette} from "@mui/material";
  */
 export default function themeTypography(palette: Palette): TypographyOptions {
     return {
-        fontFamily: ['"Lato"', 'sans-serif'].join(','),
+        fontFamily: ['"Open Sans"', 'sans-serif'].join(','),
         h6: {
             fontWeight: 500,
             color: palette.grey["900"],
