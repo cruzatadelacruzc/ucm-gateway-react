@@ -1,0 +1,103 @@
+body {
+    background-color: #0064B0;
+}
+
+.navbar-title {
+    background-image: url('../img/logo.svg');
+}
+
+.navbar-pf {
+    border-top: 3px solid #0064B0
+}
+
+.bs-sidebar {
+    border-radius: 0px 0px 0px 5px;
+    background: #FFF;
+}
+
+.bs-sidebar ul li.active a {
+    background-color: #00aeef;
+    border-color: #007fbc;
+}
+
+.bs-sidebar ul li a {
+    color: #000;
+    border-style: none;
+}
+
+.bs-sidebar ul li a:hover,
+.bs-sidebar ul li a:focus {
+    border-right: 3px solid #00aeef;
+}
+
+.content-area {
+    height: auto;
+    border-radius: 0px 0px 5px 5px;
+}
+
+.content-area h2 {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: #212121;
+}
+
+#logout-all-sessions {
+    margin-bottom: 23px
+}
+
+.form-horizontal {
+    border-top: 1px solid #cdc7c7;
+}
+
+
+.btn-primary {
+    background-color: #00aeef;
+    color: #000;
+    border-radius: 4px;
+    padding: 6px 16px;
+}
+
+.btn-primary:hover {
+    background-color: #66e0ff;
+    color: #000;
+}
+
+.btn-default {
+    background-color: #0064B0;
+    background-image: none;
+    border-radius: 4px;
+    color: #FFF;
+}
+
+.btn-default:hover {
+    background-color: #00aeef;
+    color: #000;
+}
+
+input[class=form-control] {
+    height: 2.5rem;
+    border-radius: 4px;
+    color: #212121;
+    font-weight: 500;
+    background: #fafafa;
+}
+
+.kc-dropdown ul li a:hover {
+    background-color: #00aeef;
+}
+
+.form-horizontal .control-label {
+    line-height: 1.334em;
+    font-size: 0.875rem;
+    font-weight: 400;
+}
+
+input[class=form-control]:hover {
+    border-color: #000;
+    box-shadow: none;
+}
+
+input[class=form-control]:focus {
+    border: 2px solid #0064B0;
+    box-shadow: none;
+}
