@@ -1,5 +1,6 @@
 package sld.ucm.gateway.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -16,6 +17,9 @@ import java.util.stream.Collectors;
  */
 @Service
 public class UserService {
+
+    @Value("${spring.security.oauth2.client.registration.login-client.client-id:}")
+    private String clientId;
 
     /**
      * Returns the user from an OAuth 2.0 login or resource server with JWT.
@@ -34,6 +38,11 @@ public class UserService {
             throw new IllegalArgumentException("AuthenticationToken is not OAuth2 or JWT!");
         }
         AdminUserDTO user = getUser(attributes);
+        if (attributes.get("accountUrl") != null) {
+            String url = (String) attributes.get("accountUrl");
+            String fullUrl = url.endsWith("/") ? url.substring(0, url.length() - 1) : url;
+            user.setAccountUrl(String.format("%s?referrer=%s", fullUrl, clientId));
+        }
         user.setAuthorities(authToken.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet()));
