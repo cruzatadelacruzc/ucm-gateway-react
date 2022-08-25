@@ -22,8 +22,9 @@ export default function componentStyleOverrides(palette: Palette) {
                     }
                 }, containedSecondary: {
                     backgroundColor: palette.primary.main,
-                    color: palette.secondary.contrastText,
+                    color: palette.primary.contrastText,
                     '&:hover': {
+                        color: palette.secondary.contrastText,
                         backgroundColor: palette.secondary.main,
                     }
                 }
