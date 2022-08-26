@@ -42,7 +42,7 @@ spring:
             scope: openid,profile,email
         provider:
           keycloak:
-            issuer-uri: http://keycloak:9080/auth/realms/jhipster
+            issuer-uri: http://keycloak.ucmgt.cu:9080/realms/jhipster
 
 server:
   port: 8080
