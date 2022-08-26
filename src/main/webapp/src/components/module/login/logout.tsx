@@ -8,18 +8,16 @@ import {useTranslation} from "react-i18next";
 const Logout = () => {
     const dispatch = useDispatch();
     const {t} = useTranslation(["common"])
-    const { auth } = useSelector((states: IRootState) => states);
+    const logoutUrl = useSelector((states: IRootState) => states.auth.logoutUrl);
 
     useLayoutEffect(() => {
         dispatch(logout());
-        if(auth.logoutUrl) {
-            window.location.href = auth.logoutUrl+ '?redirect_uri=' + window.location.origin
+        if (logoutUrl) {
+            window.location.href = logoutUrl
         }
-    },[auth.logoutUrl, dispatch])
+    }, [logoutUrl]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    return (
-        <Typography variant="caption">{t("logout_ok")}</Typography>
-    );
+    return (<Typography variant="caption">{t("logout_ok")}</Typography>);
 }
 
 export default Logout

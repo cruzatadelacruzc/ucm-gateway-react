@@ -4,7 +4,7 @@ import {AUTHORITIES, CONFIG} from './config/constants';
 import Loadable from "./components/shared/components/Loadable";
 import RequireAuth from "./components/shared/auth/private-route";
 
-const Logout = Loadable(lazy(() => import("./components/module/login/Logout")));
+const Logout = Loadable(lazy(() => import("./components/module/login/logout")));
 const Dashboard = Loadable(lazy(() => import("./components/module/dashboard")));
 const Nomenclature = Loadable(lazy(() => import("./components/module/dashboard/nomenclature")));
 const Employee = Loadable(lazy(() => import("./components/module/dashboard/person/employee")));

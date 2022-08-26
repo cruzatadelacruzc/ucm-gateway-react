@@ -1,6 +1,7 @@
 package sld.ucm.gateway.web.rest;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -32,21 +32,20 @@ public class LogoutResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and a body with a global logout URL and ID token.
      */
     @PostMapping("/api/logout")
-    public Mono<Map<String, String>> logout(@AuthenticationPrincipal(expression = "idToken") OidcIdToken idToken, WebSession webSession) {
+    public Mono<Map<String, String>> logout(@AuthenticationPrincipal(expression = "idToken") OidcIdToken idToken,
+                                            WebSession webSession,
+                                            ServerHttpRequest request) {
         return webSession
                 .invalidate()
                 .then(
                         this.registration.map(clientRegistration -> clientRegistration
                                 .getProviderDetails()
                                 .getConfigurationMetadata().get("end_session_endpoint").toString())
-                                .map(
-                                        logoutUrl -> {
-                                            Map<String, String> logoutDetails = new HashMap<>();
-                                            logoutDetails.put("idToken", idToken.getTokenValue());
-                                            logoutDetails.put("logoutUrl", logoutUrl);
-                                            return logoutDetails;
-                                        }
-                                )
+                                .map(logoutUrl -> Map.of("logoutUrl", String.format(
+                                        "%s?id_token_hint=%s&post_logout_redirect_uri=%s",
+                                        logoutUrl,
+                                        idToken.getTokenValue(),
+                                        request.getHeaders().getOrigin())))
                 );
     }
 }
