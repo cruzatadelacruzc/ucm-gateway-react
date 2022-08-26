@@ -70,20 +70,23 @@ export default function ProfileSection() {
         setSelectedIndex(index);
         handleClose(event);
 
-        if ( route === DASHBOARD_ROUTE) {
+        if (route === DASHBOARD_ROUTE) {
             dispatch(menuOpen('dashboard'));
         }
         if (route && route !== '') {
-            navigate(route, { replace: true });
+            navigate(route, {replace: true});
         }
     };
+
+    const goToProfile = () => window.location.href = account.accountUrl
 
     const PrivateMenu = function () {
         return (
             <div>
+                {account.accountUrl &&
                 <ListItemButton
                     selected={selectedIndex === 1}
-                    onClick={(event) => handleListItemClick(event, 1, '/profile')}
+                    onClick={() => goToProfile()}
                 >
                     <ListItemIcon>
                         <ManageAccountsOutlined/>
@@ -93,6 +96,7 @@ export default function ProfileSection() {
                     >
                     </ListItemText>
                 </ListItemButton>
+                }
                 {!location.pathname.includes(DASHBOARD_ROUTE) && <ListItemButton
                     selected={selectedIndex === 2}
                     onClick={(event) => handleListItemClick(event, 2, DASHBOARD_ROUTE)}
