@@ -16,11 +16,9 @@ export const isPromise = (value): boolean => {
     return false;
 };
 
-const apiUrl = "services/directory/api/files";
-
 export const buildAvatarURL = (fileName: string): string => {
     if (fileName !== '') {
-        const serviceURL = `${apiUrl}/avatar`.replace("avatar", fileName);
+        const serviceURL = 'api/files/avatar'.replace("avatar", fileName);
         return CONFIG.SERVER_API_URL?.endsWith("/") ? CONFIG.SERVER_API_URL + serviceURL : CONFIG.SERVER_API_URL + "/" + serviceURL;
     }
     return '';
