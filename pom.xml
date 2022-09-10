@@ -58,6 +58,17 @@
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>${springfox.swagger.version}</version>
 		</dependency>
+		<!--Object Storage MinIO-->
+		<dependency>
+			<groupId>io.minio</groupId>
+			<artifactId>minio</artifactId>
+			<version>8.4.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>4.9.3</version>
+		</dependency>
 		<!-- Spring Cloud -->
 		<!-- https://github.com/jhipster/jhipster-control-center/issues/174 -->
 		<dependency>
