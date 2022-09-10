@@ -22,6 +22,14 @@ eureka:
     service-url:
       defaultZone: http://admin:${application.registry-config.password}@192.168.1.10:8761/eureka/
 
+#Object Storage Service
+minio:
+  bucket:
+    name: directory
+  access:
+    key: minio
+    secret: miniostorage
+  url: http://192.168.1.10:9000
 
 spring:
   config:
@@ -35,11 +43,6 @@ spring:
     oauth2:
       client:
         registration:
-          login-client:
-            provider: keycloak
-            client-id: web_app
-            client-secret: web_app
-            scope: openid,profile,email
         provider:
           keycloak:
             issuer-uri: http://keycloak.ucmgt.cu:9080/realms/jhipster
