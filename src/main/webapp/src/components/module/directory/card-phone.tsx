@@ -5,7 +5,7 @@ import React from "react";
 import {ISearchResultPhoneHit} from "../../shared/models/search-result-phone.model";
 import {buildAvatarURL} from "../../shared/util/function-utils";
 import {CONFIG} from "../../../config/constants";
-import {useTheme} from "@mui/styles";
+import useTheme from "@mui/styles/useTheme";
 import Grid from "@mui/material/Grid";
 
 const cardPhone = React.forwardRef<HTMLDivElement, ISearchResultPhoneHit>((props, ref) => {

@@ -5,7 +5,7 @@ import React from "react";
 import {ISearchResultWorkPlaceHit} from "../../shared/models/search-result-workplace.model";
 import {buildAvatarURL} from "../../shared/util/function-utils";
 import {CONFIG} from "../../../config/constants";
-import {useTheme} from "@mui/styles";
+import useTheme from "@mui/styles/useTheme";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";

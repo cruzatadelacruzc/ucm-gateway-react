@@ -18,7 +18,7 @@ import {useTranslation} from 'react-i18next';
 import {buildAvatarURL} from "../../shared/util/function-utils";
 import React from "react";
 import {CONFIG} from "../../../config/constants";
-import {useTheme} from "@mui/styles";
+import useTheme from "@mui/styles/useTheme";
 import {styled} from "@mui/material/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
