@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -52,27 +53,29 @@ public class LogoutResourceIT {
 
     @Test
     void getLogoutInformation() {
+        final String ORIGIN_URL = "http://localhost:8080";
         String logoutUrl = this.registrations.findByRegistrationId("login-client")
                 .map(clientRegistration -> clientRegistration
                         .getProviderDetails()
                         .getConfigurationMetadata()
                         .get("end_session_endpoint")
                         .toString()
-                    )
+                )
                 .block();
+        logoutUrl = logoutUrl + "?id_token_hint=" + ID_TOKEN + "&post_logout_redirect_uri=" + ORIGIN_URL;
         this.webTestClient.mutateWith(csrf())
                 .mutateWith(
                         mockAuthentication(registerAuthenticationToken(authorizedClientService, clientRegistration, authenticationToken(claims)))
                 )
                 .post()
-                .uri("/api/logout")
+                .uri(String.format("%s/api/logout", ORIGIN_URL))
+                .header(HttpHeaders.ORIGIN, ORIGIN_URL)
                 .exchange()
                 .expectStatus()
                 .isOk()
                 .expectHeader()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .expectBody()
-                .jsonPath("$.logoutUrl").isEqualTo(logoutUrl)
-                .jsonPath("$.idToken").isEqualTo(ID_TOKEN);
+                .jsonPath("$.logoutUrl").isEqualTo(logoutUrl);
     }
 }
