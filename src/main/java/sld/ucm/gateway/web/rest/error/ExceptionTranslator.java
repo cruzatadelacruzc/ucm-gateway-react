@@ -5,6 +5,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ServerWebExchange;
 import org.zalando.problem.DefaultProblem;
 import org.zalando.problem.Problem;
@@ -62,12 +63,12 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         if (problem instanceof ConstraintViolationProblem) {
             builder
                     .with("violations", ((ConstraintViolationProblem) problem).getViolations())
-                    .with(MESSAGE_KEY, "error.validation");
+                    .with(MESSAGE_KEY, "error:validation");
         } else {
             builder.withCause(((DefaultProblem) problem).getCause()).withDetail(problem.getDetail()).withInstance(problem.getInstance());
             problem.getParameters().forEach(builder::with);
             if (!problem.getParameters().containsKey(MESSAGE_KEY) && problem.getStatus() != null) {
-                builder.with(MESSAGE_KEY, "error.http." + problem.getStatus().getStatusCode());
+                builder.with(MESSAGE_KEY, "error:http." + problem.getStatus().getStatusCode());
             }
         }
         return Mono.just(new ResponseEntity<>(builder.build(), entity.getHeaders(), entity.getStatusCode()));
@@ -123,5 +124,15 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     private boolean containsPackageName(String message) {
         // This list is for sure not complete
         return StringUtils.containsAny(message, "org.", "java.", "net.", "javax.", "com.", "io.", "de.", "sld.ucm.gateway");
+    }
+
+    @ExceptionHandler
+    public Mono<ResponseEntity<Problem>> handleDisableAccountException(DisableAccountException ex, ServerWebExchange request) {
+        ProblemBuilder builder = Problem.builder()
+                .withDetail(ex.getDetail())
+                .withStatus(ex.getStatus())
+                .withTitle(ex.getTitle())
+                .with(MESSAGE_KEY, "error:account.disable");
+        return create(ex, builder.build(), request);
     }
 }

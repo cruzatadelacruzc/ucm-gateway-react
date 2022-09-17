@@ -1,5 +1,7 @@
 package sld.ucm.gateway.web.rest;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import sld.ucm.gateway.service.AdminUserDTO;
 import sld.ucm.gateway.service.UserService;
+import sld.ucm.gateway.web.rest.error.DisableAccountException;
 
 import java.security.Principal;
 
@@ -16,6 +19,10 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/api")
 public class AccountResource {
+
+    @Value("${application.clientApp.name}")
+    private String applicationName;
+
 
     private static class AccountResourceException extends RuntimeException {
 
@@ -41,9 +48,15 @@ public class AccountResource {
      */
     @GetMapping("/account")
     @SuppressWarnings("unchecked")
-    public Mono<AdminUserDTO> getAccount(Principal principal) {
+    public Mono<ResponseEntity<AdminUserDTO>> getAccount(Principal principal) {
         if (principal instanceof AbstractAuthenticationToken) {
-            return userService.getUserFromAuthentication((AbstractAuthenticationToken) principal);
+            return userService.getUserFromAuthentication((AbstractAuthenticationToken) principal)
+                    .map(account -> {
+                        if (!account.isActivated()) {
+                            throw new DisableAccountException();
+                        }
+                        return ResponseEntity.ok(account);
+                    });
         } else {
             throw new AccountResourceException("User could not be found");
         }
