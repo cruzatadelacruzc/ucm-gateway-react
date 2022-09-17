@@ -153,7 +153,7 @@ export default function ProfileSection() {
                     }}
                     icon={
                         <Avatar
-                            alt={account.login ? account.login : t('common:anonymous')}
+                            alt={(account.login && isAuthenticated) ? account.login : t('common:anonymous')}
                             sx={{
                                 width: '34px',
                                 height: '34px',
@@ -227,7 +227,7 @@ export default function ProfileSection() {
                                                 }}>
                                                     <Typography variant='subtitle1' display='block'
                                                                 color='primary.contrastText'>
-                                                        {account.login ? account.login : t('common:anonymous')}
+                                                        {(account.login && isAuthenticated) ? account.login : t('common:anonymous')}
                                                     </Typography>
                                                 </Box>
                                                 <Divider />
