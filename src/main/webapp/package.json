@@ -1,14 +1,14 @@
 {
   "name": "directory",
   "version": "0.0.1-SNAPSHOT",
-  "description": "Description for Gateway",
+  "description": "Web directory developed with API Gateway",
   "private": true,
   "license": "UNLICENSED",
   "dependencies": {
     "@date-io/dayjs": "^1.3.13",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
-    "@fontsource/roboto": "^4.4.2",
+    "@fontsource/open-sans": "^4.5.11",
     "@mui/icons-material": "^5.4.1",
     "@mui/lab": "^5.0.0-alpha.68",
     "@mui/material": "^5.4.1",
