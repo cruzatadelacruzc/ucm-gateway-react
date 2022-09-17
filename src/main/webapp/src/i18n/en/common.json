@@ -25,7 +25,6 @@
   "submit": "Submit",
   "select": "--Select--",
   "logout_ok": "Logged out successfully!",
-  "unauthorized_page": "You are not authorized to access this page.",
   "notfound_page": "Page Not Found",
   "notfound_exp_page": "Sorry, but the page you were trying to view does not exist.",
   "empty": "Empty",
