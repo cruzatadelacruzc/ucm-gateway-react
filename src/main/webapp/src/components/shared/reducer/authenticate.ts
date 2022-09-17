@@ -2,6 +2,7 @@ import axios from 'axios';
 import {IUser} from "../models/user.model";
 import {FAILURE, REQUEST, SUCCESS} from "./action-type.util";
 import {AnyAction} from "redux";
+import i18n from '../../../config/i18n'
 
 export interface ILogout{
   idToken: string;
@@ -57,7 +58,6 @@ const authReducer = function (state: AuthStateType = initialState, action: AnyAc
     case SUCCESS(ACTION_TYPES.LOGOUT):
       return {
         ...initialState,
-        idToken: action.payload.data.idToken,
         logoutUrl: action.payload.data.logoutUrl,
       };
     case ACTION_TYPES.ERROR_MESSAGE:
@@ -82,11 +82,11 @@ export const getSession: () => void = () => async (dispatch, getState) => {
     payload: axios.get<IUser>('api/account')
   });
 
-  /* const { account } = getState().authentication;
+  const {account} = getState().auth;
   if (account && account.langKey) {
-    const langKey = Storage.session.get('locale', account.langKey);
-    await dispatch(setLocale(langKey));
-  } */
+    await i18n.changeLanguage(account.langKey);
+    localStorage.setItem("i18nextLng", account.langKey)
+  }
 };
 
 export const logout: () => void = () => async dispatch => {
@@ -96,10 +96,8 @@ export const logout: () => void = () => async dispatch => {
   });
 }
 
-export const displayAuthError = message => ({ type: ACTION_TYPES.ERROR_MESSAGE, payload: message });
 
-export const clearAuthentication = (messageKey: string) => dispatch => {
-  dispatch(displayAuthError(messageKey));
+export const clearAuthentication = () => dispatch => {
   dispatch({
     type: ACTION_TYPES.CLEAR_AUTH,
   });
