@@ -11,7 +11,7 @@ import {clearAuthentication} from "./components/shared/reducer/authenticate";
 
 const store = configureStore();
 const action = bindActionCreators({ clearAuthentication }, store.dispatch);
-setupAxiosInterceptors(() => action.clearAuthentication('error:login.unauthorized'));
+setupAxiosInterceptors(() => action.clearAuthentication());
 
 ReactDOM.render(
   <ErrorBoundary>
