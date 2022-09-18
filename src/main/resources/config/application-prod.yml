@@ -1,0 +1,82 @@
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration will be overridden by the Spring profile you use,
+# for example application-prod.yml if you use the "prod" profile.
+#
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+logging:
+  level:
+    ROOT: INFO
+    sld.ucm.gateway: INFO
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://admin:${application.registry-config.password}@192.168.1.10:8761/eureka/
+
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: false
+
+#Object Storage Service
+minio:
+  bucket:
+    name: directory
+  access:
+    key: minio
+    secret: miniostorage
+  url: http://192.168.1.10:9000
+
+
+spring:
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: false
+  cloud:
+    config:
+      retry:
+        initial-interval: 1000
+        max-attempts: 100
+      uri: http://admin:${application.registry-config.password}@192.168.1.10:8761/config
+      # name of the config server's property source (file.yml) that we want to use
+      name: reactweb
+      profile: prod
+      label: main # toggle to switch to a different version of the configuration
+  security:
+    oauth2:
+      client:
+        registration:
+        provider:
+          keycloak:
+            issuer-uri: http://keycloak.ucmgt.cu:9080/realms/jhipster
+
+server:
+  port: 8080
+  shutdown: graceful # see https://docs.spring.io/spring-boot/docs/2.3.12.RELEASE/reference/html/spring-boot-features.html#boot-features-graceful-shutdown
+  compression:
+    enabled: true
+    min-response-size: 1024
+
+application:
+  registry-config:
+    password: admin
+  logging:
+    use-json-format: false # By default, logs are not in Json format
+    logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+      enabled: false
+      host: 192.168.1.10
+      port: 5000
+      queue-size: 512
+

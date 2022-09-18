@@ -26,6 +26,15 @@ server:
   port: 10344
   address: localhost
 
+#Object Storage Service
+minio:
+  bucket:
+    name: bucket
+  access:
+    key: key
+    secret: secret
+  url: http://DO_NOT_CALL:9000
+
 application:
   clientApp:
     name: GatewayReact
