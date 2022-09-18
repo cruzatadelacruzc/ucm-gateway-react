@@ -4,12 +4,10 @@
   "unknown": "Error desconocido",
   "url.not.found": "Recurso [{{ path }}] no existe",
   "no.response": "Sin respuesta del servidor",
-  "login": {
-    "unauthorized": "No estás authorizado"
-  },
   "title": "Página de error",
   "http": {
     "400": "Solicitud incorrecta. Avisar al administrador",
+    "401": "No estás authorizado. Debe iniciar sesión en su cuenta",
     "403": "No tiene permisos para acceder a la página.",
     "404": "La página no existe.",
     "405": "El verbo HTTP utilizado no tiene soporte para este URL.",
@@ -44,5 +42,7 @@
   "wrongtype": "Tipo de contenido del Archivo [{{ param }}] no es permitido",
   "menu": {
     "items.error": "Error de elementos del menú"
-  }
+  },
+  "unauthorized_page": "Usted no está authorizado a acceder a esta pagina",
+  "noSession": "Su sesión no ha sido recuperada, espere o regrese al Inicio"
 }

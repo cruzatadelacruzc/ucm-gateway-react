@@ -4,12 +4,10 @@
   "unknown": "Unknown error",
   "url.not.found": "Resource [{{ path }}] not found",
   "no.response": "No server response",
-  "login": {
-    "unauthorized": "You are not authorized"
-  },
   "title": "Error page",
   "http": {
     "400": "Bad request. Notify administrator",
+    "401": "You are not authorized. You must log in to your account",
     "403": "You are not authorized to access this page.",
     "404": "The page does not exist.",
     "405": "The HTTP verb you used is not supported for this URL.",
@@ -44,5 +42,7 @@
   "wrongtype": "Content type of File [{{ param }}] not allowed",
   "menu": {
     "items_error": "Menu Items Error"
-  }
+  },
+  "unauthorized_page": "You are not authorized to access this page",
+  "noSession": "Your session has not been fetched, please wait or back to Home"
 }

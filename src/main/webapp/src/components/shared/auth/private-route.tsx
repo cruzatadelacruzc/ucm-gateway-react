@@ -3,9 +3,12 @@ import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
 import {IRootState} from "../reducer";
 import {Typography} from '@mui/material';
-import {Navigate, useLocation} from 'react-router-dom';
+import {Navigate, useLocation, useNavigate} from 'react-router-dom';
 import {CONFIG} from "../../../config/constants";
 import ErrorBoundary from "../error/error-boudary";
+import Button from "@mui/material/Button";
+import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
+import Box from "@mui/material/Box";
 
 interface IRequireAuthProps {
     children: JSX.Element;
@@ -13,8 +16,9 @@ interface IRequireAuthProps {
 }
 
 const RequireAuth = ({children, hasAnyAuthorities = []}: IRequireAuthProps) => {
-    const {t} = useTranslation()
+    const {t} = useTranslation(['error'])
     let location = useLocation();
+    let navigate = useNavigate();
     const account = useSelector((states: IRootState) => states.auth.account);
     const isAuthenticated = useSelector((states: IRootState) => states.auth.isAuthenticated);
     const sessionHasBeenFetched = useSelector((states: IRootState) => states.auth.sessionHasBeenFetched);
@@ -23,12 +27,16 @@ const RequireAuth = ({children, hasAnyAuthorities = []}: IRequireAuthProps) => {
     const checkAuthorities = () =>
         isAuthorized ? (
             <ErrorBoundary>
-              {children}
+                {children}
             </ErrorBoundary>
-        ) : (<Typography variant='h4'>{t("common:unauthorized_page")}</Typography>);
+        ) : (<Typography variant='h4'>{t("unauthorized_page")}</Typography>);
 
         if (!sessionHasBeenFetched) {
-            return <></>
+            return <Box sx={{display: 'flex', alignItems: "center"}}>
+                <Typography variant='h5' sx={{mr: 1}}>{t("noSession")}</Typography>
+                <Button variant="text" onClick={() => navigate("/")}
+                        startIcon={<KeyboardReturnIcon/>}>{t('common:back')}</Button>
+            </Box>
         } else {
             return isAuthenticated ? (
                 checkAuthorities()
