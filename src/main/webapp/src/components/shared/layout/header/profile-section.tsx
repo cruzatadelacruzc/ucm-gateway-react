@@ -31,16 +31,9 @@ import {useTranslation} from 'react-i18next';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../reducer";
-import {getLoginUrl} from "../../util/url-util";
+import {getLoginUrl, REDIRECT_URL} from "../../util/url-util";
 import MainCard from "../../components/main-card";
 import {menuOpen} from "../../reducer/customization.reducer";
-
-export interface IProfile {
-    anchorEl: HTMLElement | null,
-    menuId: string,
-    isMenuOpen: boolean,
-    handleMenuClose: () => void
-}
 
 export default function ProfileSection() {
     const theme = useTheme();
@@ -78,7 +71,10 @@ export default function ProfileSection() {
         }
     };
 
-    const goToProfile = () => window.location.href = account.accountUrl
+    const goToProfile = () => {
+        localStorage.setItem(REDIRECT_URL, location.pathname);
+        window.location.href = account.accountUrl
+    }
 
     const PrivateMenu = function () {
         return (
