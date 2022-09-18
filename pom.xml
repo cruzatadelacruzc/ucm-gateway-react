@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -9,22 +9,26 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>sld.ucm</groupId>
-	<artifactId>gateway</artifactId>
+	<groupId>ucm.sld.cu</groupId>
+	<artifactId>gateway-webapp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>gateway</name>
-	<description>UCM gateway</description>
+	<name>ReactGateway</name>
+	<description>UCM React gateway</description>
 
 	<properties>
 		<java.version>11</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<spring-cloud.version>Hoxton.SR12</spring-cloud.version>
 		<node.version>v14.17.0</node.version>
-		<npm.version>6.14.13</npm.version>
-		<bucket4j-cache.version>6.2.0</bucket4j-cache.version>
+		<npm.version>6.14.15</npm.version>
+		<maven-failsafe-plugin.version>3.0.0-M7</maven-failsafe-plugin.version>
+		<maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
+		<bucket4j-cache.version>8.15.1</bucket4j-cache.version>
 		<problem-zalando.version>0.26.2</problem-zalando.version>
 		<springfox.swagger.version>3.0.0</springfox.swagger.version>
 		<git-commit-id-plugin.version>4.0.4</git-commit-id-plugin.version>
-		<frontend-maven-plugin.version>1.10.0</frontend-maven-plugin.version>
+		<frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
 		<maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
 	</properties>
 
@@ -36,6 +40,16 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.security</groupId>
+					<artifactId>spring-security-oauth2-jose</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.nimbusds</groupId>
+					<artifactId>oauth2-oidc-sdk</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -239,6 +253,24 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+				<configuration>
+					<!-- Force alphabetical order to have a reproducible build -->
+					<runOrder>alphabetical</runOrder>
+					<reportsDirectory>${junit.utReportFolder}</reportsDirectory>
+					<excludes>
+						<exclude>**/*IT*</exclude>
+						<exclude>**/*IntTest*</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
@@ -254,6 +286,42 @@
 					<optional>true</optional>
 				</dependency>
 			</dependencies>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-failsafe-plugin</artifactId>
+							<version>${maven-failsafe-plugin.version}</version>
+							<configuration>
+								<!-- Due to spring-boot repackage, without adding this property test classes are not found
+                                      See https://github.com/spring-projects/spring-boot/issues/6254 -->
+								<classesDirectory>${project.build.outputDirectory}</classesDirectory>
+								<!-- Force alphabetical order to have a reproducible build -->
+								<runOrder>alphabetical</runOrder>
+								<includes>
+									<include>**/*IT*</include>
+									<include>**/*IntTest*</include>
+								</includes>
+							</configuration>
+							<executions>
+								<execution>
+									<id>integration-test</id>
+									<goals>
+										<goal>integration-test</goal>
+									</goals>
+								</execution>
+								<execution>
+									<id>verify</id>
+									<goals>
+										<goal>verify</goal>
+									</goals>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
 			<properties>
 				<!-- default Spring profiles -->
 				<spring.profiles.active>dev</spring.profiles.active>
@@ -262,13 +330,47 @@
 		<profile>
 		<id>prod</id>
 			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-failsafe-plugin</artifactId>
+							<version>${maven-failsafe-plugin.version}</version>
+							<configuration>
+								<!-- Due to spring-boot repackage, without adding this property test classes are not found
+                                      See https://github.com/spring-projects/spring-boot/issues/6254 -->
+								<classesDirectory>${project.build.outputDirectory}</classesDirectory>
+								<!-- Force alphabetical order to have a reproducible build -->
+								<runOrder>alphabetical</runOrder>
+								<includes>
+									<include>**/*IT*</include>
+									<include>**/*IntTest*</include>
+								</includes>
+							</configuration>
+							<executions>
+								<execution>
+									<id>integration-test</id>
+									<goals>
+										<goal>integration-test</goal>
+									</goals>
+								</execution>
+								<execution>
+									<id>verify</id>
+									<goals>
+										<goal>verify</goal>
+									</goals>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
 				<plugins>
 					<plugin>
 						<artifactId>maven-clean-plugin</artifactId>
 						<configuration>
 							<filesets>
 								<fileset>
-									<directory>src/main/app/build</directory>
+									<directory>target/classes/static/</directory>
 								</fileset>
 							</filesets>
 						</configuration>
@@ -289,43 +391,36 @@
 						<artifactId>frontend-maven-plugin</artifactId>
 						<version>${frontend-maven-plugin.version}</version>
 						<configuration>
-							<nodeVersion>${node.version}</nodeVersion>
-							<npmVersion>${npm.version}</npmVersion>
+							<workingDirectory>src/main/webapp</workingDirectory>
 						</configuration>
 						<executions>
 							<execution>
-								<id>install node and npm</id>
+								<id>install-node-and-npm</id>
 								<goals>
 									<goal>install-node-and-npm</goal>
 								</goals>
+								<configuration>
+									<nodeVersion>${node.version}</nodeVersion>
+									<npmVersion>${npm.version}</npmVersion>
+								</configuration>
 							</execution>
 							<execution>
 								<id>npm install</id>
 								<goals>
 									<goal>npm</goal>
 								</goals>
-								<configuration>
-									<arguments>install</arguments>
-								</configuration>
-							</execution>
-							<execution>
-								<id>npm test</id>
-								<phase>test</phase>
-								<goals>
-									<goal>npm</goal>
-								</goals>
-								<configuration>
-									<arguments>test</arguments>
-								</configuration>
 							</execution>
 							<execution>
 								<id>Frontend production build</id>
-								<phase>prepare-package</phase>
+								<phase>generate-resources</phase>
 								<goals>
 									<goal>npm</goal>
 								</goals>
 								<configuration>
 									<arguments>run build</arguments>
+									<environmentVariables>
+										<APP_VERSION>${project.version}</APP_VERSION>
+									</environmentVariables>
 								</configuration>
 							</execution>
 						</executions>
@@ -334,8 +429,34 @@
 						<groupId>pl.project13.maven</groupId>
 						<artifactId>git-commit-id-plugin</artifactId>
 					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>${maven-resources-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>Copy Frontend production build into static folder</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.build.directory}/classes/static</outputDirectory>
+									<resources>
+										<resource>
+											<directory>src/main/webapp/build</directory>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 				</plugins>
 			</build>
+			<properties>
+				<!-- default Spring profiles -->
+				<spring.profiles.active>prod</spring.profiles.active>
+			</properties>
 		</profile>
 	</profiles>
 
