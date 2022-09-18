@@ -44,5 +44,8 @@
     "items_error": "Menu Items Error"
   },
   "unauthorized_page": "You are not authorized to access this page",
-  "noSession": "Your session has not been fetched, please wait or back to Home"
+  "noSession": "Your session has not been fetched, please wait or back to Home",
+  "account": {
+    "disable": "Disable account, Notify administrator"
+  }
 }

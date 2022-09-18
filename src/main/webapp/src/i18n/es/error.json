@@ -44,5 +44,8 @@
     "items.error": "Error de elementos del menú"
   },
   "unauthorized_page": "Usted no está authorizado a acceder a esta pagina",
-  "noSession": "Su sesión no ha sido recuperada, espere o regrese al Inicio"
+  "noSession": "Su sesión no ha sido recuperada, espere o regrese al Inicio",
+  "account": {
+    "disable": "Cuenta desabilitada, Avisar al administrador"
+  }
 }
