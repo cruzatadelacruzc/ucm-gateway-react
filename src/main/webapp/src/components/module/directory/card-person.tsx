@@ -81,7 +81,7 @@ const cardPerson = React.forwardRef<HTMLDivElement, ISearchResultPersonHit>((pro
                         <Typography component="div" color="text.secondary"
                                     variant="h4">{t('birthdate')}</Typography>
                         <Typography
-                            variant="h5">{dayjs(props._source.birthdate).format(t('card:date_format'))}</Typography>
+                            variant="h5">{dayjs(props._source.birthdate).format(t('common:date_format'))}</Typography>
                     </Item>
                 </StyledBox>
                 <StyledBox>
@@ -185,7 +185,7 @@ const cardPerson = React.forwardRef<HTMLDivElement, ISearchResultPersonHit>((pro
             <Stack direction={{xs: "column", sm: "row"}} justifyContent="space-between" spacing={{xs: 2, sm: 0}}>
                 <Box>
                     {props._type ? (
-                        <Badge badgeContent={t(`card:${props._type}`)} color='secondary'>
+                        <Badge badgeContent={t(props._type)} color='secondary'>
                             <Card sx={{maxWidth: 255, maxHeight: 255}}>
                                 <CardActionArea>
                                     <CardMedia

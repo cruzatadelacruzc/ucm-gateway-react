@@ -13,9 +13,11 @@
     "male": "Masculino"
   },
   "age": "Años de edad",
-  "birthdate": "Cumpleños",
+  "birthdate": "Cumpleaños",
   "race": "Raza",
   "district": "Municipio",
   "specialty": "Especialidad",
-  "step": "Datos personales"
+  "step": "Datos personales",
+  "employees": "Empleado",
+  "students": "Estudiante"
 }

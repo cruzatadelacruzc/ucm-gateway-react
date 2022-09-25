@@ -17,5 +17,7 @@
   "race": "Race",
   "district": "District",
   "specialty": "Specialty",
-  "step": "Personal data"
+  "step": "Personal data",
+  "employees": "Employee",
+  "students": "Student"
 }
