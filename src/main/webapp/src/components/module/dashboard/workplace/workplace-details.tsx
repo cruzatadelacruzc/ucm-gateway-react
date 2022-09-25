@@ -129,7 +129,8 @@ const WorkplaceDetails = () => {
                             {_entity.phones?.map((phone, index) => {
                                 return (
                                     <IconButton key={index} size="large" sx={{p: 0, borderRadius: 0}}>
-                                        <ListItem component={Link} to={`/phone/show/${phone.id}`} sx={{pl: 0}}>
+                                        <ListItem component={Link} to={`/dashboard/phone/show/${phone.id}`}
+                                                  sx={{pl: 0}}>
                                             <ListItemAvatar><Avatar><LocalPhone/></Avatar></ListItemAvatar>
                                             <ListItemText primary={phone.number}/>
                                         </ListItem>
