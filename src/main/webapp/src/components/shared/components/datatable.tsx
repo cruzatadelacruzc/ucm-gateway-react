@@ -92,6 +92,7 @@ export default function UCMDataBase(
                     }
                 }
                 setLoading(true);
+                setUpdate(false);
                 if (reduxAction && reduxAction !== '') {
                     dispatch({type: REQUEST(reduxAction)})
                 }
