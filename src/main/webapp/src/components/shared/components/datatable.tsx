@@ -1,5 +1,5 @@
 import {Box, Button, IconButton, InputBase, LinearProgress, Paper, Tooltip} from "@mui/material";
-import {Link} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -8,7 +8,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
 import {useTranslation} from "react-i18next";
 import MUIDataTable from "mui-datatables";
-import {ITEMS_PER_PAGE} from "../../../config/constants";
+import {CONFIG, ITEMS_PER_PAGE} from "../../../config/constants";
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import {FAILURE, REQUEST, SUCCESS} from "../reducer/action-type.util";
@@ -66,6 +66,8 @@ export default function UCMDataBase(
     }: IUCMDataBase
 ) {
     const theme = useTheme();
+    const navigate = useNavigate();
+    const location = useLocation();
     const {t} = useTranslation(['datatable']);
     const dispatch = useDispatch();
     const [items, setItems] = React.useState([]);
@@ -105,10 +107,16 @@ export default function UCMDataBase(
                 }
             } catch (error) {
                 setLoading(false);
+                const response = error.response
+                const data = response && response.data
+                const message = data.message || error.message
                 if (reduxAction && reduxAction !== '') {
-                    dispatch({type: FAILURE(reduxAction), payload: {data: error.message}})
+                    dispatch({type: FAILURE(reduxAction), payload: {data: message}})
                 }
-                toast.error(t(error.message))
+                toast.error(t(message))
+                if (response && (response.status === 401 || response.status === 403)) {
+                    navigate(CONFIG.LOGIN_URL, {state: {from: location}, replace: true})
+                }
             }
         })()
     },[search, currentPage, numberOfRows, sortOrder.name, sortOrder.direction, update, resourceURL, columns, reduxAction]) // eslint-disable-line react-hooks/exhaustive-deps
