@@ -23,7 +23,6 @@ public class OAuth2ReactiveRefreshTokensWebFilter implements WebFilter {
     }
 
 
-    @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
         return serverWebExchange
                 .getPrincipal()
