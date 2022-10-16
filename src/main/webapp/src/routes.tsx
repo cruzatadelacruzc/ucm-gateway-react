@@ -23,8 +23,6 @@ const LoginRedirect = Loadable(lazy(() => import("./components/module/login/logi
  * @constructor
  */
 export default function AppRoute() {
-    // let location = useLocation<RouteComponentProps>();
-    // React.useEffect(() => window.scrollTo(0, 0), [location.pathname]);
     return (
         <Routes>
             <Route path='/' element={<Directory/>}/>
@@ -37,7 +35,6 @@ export default function AppRoute() {
                <Route path='employee/*' element={<Employee/>}/>
                <Route path='student/*' element={<Student/>}/>
             </Route>
-
             <Route path='*' element={<PageNotFound/>}/>
         </Routes>
     )
