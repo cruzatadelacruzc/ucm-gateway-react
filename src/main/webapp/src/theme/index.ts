@@ -1,13 +1,11 @@
-import '@fontsource/roboto';
 import {createTheme, Theme, ThemeOptions} from "@mui/material/styles";
 import componentStyleOverrides from "./component-style-override";
 import themeTypography from "./typography";
 import themePalette from "./pelette";
-import {CustomizationType} from "../components/shared/reducer/customization.reducer";
 import createTypography from "@mui/material/styles/createTypography";
 
 
-export const theme = (customization: CustomizationType): Theme => {
+const theme = (): Theme => {
     const themeOptions: ThemeOptions = {
         direction: 'ltr',
         palette: themePalette(),
