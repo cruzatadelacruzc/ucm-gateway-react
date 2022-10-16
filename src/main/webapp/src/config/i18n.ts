@@ -1,8 +1,6 @@
 import i18n from 'i18next';
 import {initReactI18next} from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import card_es from '../i18n/es/card.json';
-import card_en from '../i18n/en/card.json';
 import directory_es from '../i18n/es/directory.json';
 import directory_en from '../i18n/en/directory.json';
 import common_en from '../i18n/en/common.json';
@@ -34,22 +32,20 @@ i18n
         fallbackLng: 'es',
         defaultNS: 'directory',
         ns: [
-            'card',
-            'directory',
-            'header',
-            'common',
+            'phone',
             'error',
+            'common',
             "person",
+            "student",
             "employee",
-            "nomenclature",
-            "directoryApp",
+            'directory',
             "datatable",
             "workplace",
-            "student"
+            "nomenclature",
+            "directoryApp"
         ],
         resources: {
             en: {
-                card: card_en,
                 error: error_en,
                 phone: phone_en,
                 common: common_en,
@@ -63,7 +59,6 @@ i18n
                 directoryApp: directoryApp_en
             },
             es: {
-                card: card_es,
                 error: error_es,
                 phone: phone_es,
                 common: common_es,
