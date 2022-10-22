@@ -28,7 +28,7 @@ jobs:
               ./mvnw -Pprod -DskipTests clean package
       
       - name: Create dependecies and extract
-        run: target/extracted && java -Djarmode=layertools -jar target/*.jar extract --destination target/extracted
+        run: mkdir target/extracted && java -Djarmode=layertools -jar target/*.jar extract --destination target/extracted
 
       - name: Build & push Docker image to Quay.io
         uses: mr-smithers-excellent/docker-build-push@v5
