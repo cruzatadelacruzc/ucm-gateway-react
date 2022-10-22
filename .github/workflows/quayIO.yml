@@ -13,7 +13,13 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    
+    env:
+        REACT_APP_ES_API_URL: ${{secrets.ES_API_URL}}
+        REACT_APP_ES_USER: ${{secrets.ES_USER}}
+        REACT_APP_ES_PASSWORD: ${{secrets.ES_PASSWORD}}
+        REACT_APP_SERVER_API_URL: ${{secrets.SERVER_API_URL}}
+    
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
