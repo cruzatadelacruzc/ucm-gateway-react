@@ -30,6 +30,7 @@ jobs:
         with:
           image: gsi_cesar/ucm/gateway/react
           tags: latest
+          buildArgs: JAR_FILE=target/gateway-webapp-0.0.1-SNAPSHOT.jar
           registry: quay.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
