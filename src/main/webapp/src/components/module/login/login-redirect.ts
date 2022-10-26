@@ -11,7 +11,7 @@ export const LoginRedirect = () => {
         ? state.from.pathname
         : "/"
     useEffect(() => {
-        localStorage.setItem(REDIRECT_URL, from );
+        window.sessionStorage.setItem(REDIRECT_URL, from);
         window.location.reload();
     });
     return null;

@@ -56,9 +56,9 @@ export default function Directory() {
     // after successful flow login, hi is redirect to public route(/) and if REDIRECT_URL exists in localStorage
     // redirect to route
     useEffect(() => {
-        const redirectURL = localStorage.getItem(REDIRECT_URL);
+        const redirectURL = window.sessionStorage.getItem(REDIRECT_URL);
         if (redirectURL) {
-            window.localStorage.removeItem(REDIRECT_URL);
+            window.sessionStorage.removeItem(REDIRECT_URL);
             window.location.href = `${window.location.origin}${redirectURL}`;
         }
     });
