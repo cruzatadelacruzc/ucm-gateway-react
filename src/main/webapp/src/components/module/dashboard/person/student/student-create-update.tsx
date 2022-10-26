@@ -130,7 +130,7 @@ const StudentManage = () => {
                         .integer(i18n.t("error:form.number")).min(1, i18n.t("error:form.min", {min: 1})),
                     classRoom: yup.string().required(i18n.t("error:form.required")),
                     residence: yup.string().required(i18n.t("error:form.required")),
-                    studyCenterId: yup.string().required(i18n.t("error:form.required"))
+                    studyCenter: yup.object().nullable().required(i18n.t("error:form.required"))
                 })}
             >
                 <Grid container spacing={2}>
