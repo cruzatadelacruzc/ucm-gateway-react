@@ -13,7 +13,7 @@ import {
 } from "../nomenclature/nomenclature.reducer";
 import {DatePicker} from 'formik-mui-lab';
 import {Autocomplete, TextField} from 'formik-mui';
-import {AutocompleteRenderInputParams, CircularProgress, Grid, TextField as MUITextField} from "@mui/material";
+import {AutocompleteRenderInputParams, Grid, TextField as MUITextField} from "@mui/material";
 import AdapterDayjs from '@mui/lab/AdapterDayjs';
 import {LocalizationProvider} from "@mui/lab";
 import {IEmployee} from "../../../shared/models/employee.model";
@@ -23,6 +23,7 @@ import {deleteAvatar as deleteStudentAvatar} from "./student/student.reducer";
 import UCMAvatar from "../../../shared/components/avatar";
 import {INomenclature} from "../../../shared/models/nomenclature.model";
 import throttle from "lodash/throttle";
+import UCMAutocomplete from "../../../shared/components/autocomplete";
 
 export const PERSON_GENDER = {
     FEMALE: "Femenino",
@@ -35,7 +36,7 @@ export const _validationSchema = yup.object().shape({
     name: yup.string().required(i18n.t("error:form.required")),
     race: yup.string().required(i18n.t("error:form.required")),
     address: yup.string().required(i18n.t("error:form.required")),
-    districtId: yup.string().required(i18n.t("error:form.required")),
+    district: yup.object().nullable().required(i18n.t("error:form.required"))
 })
 
 interface IPersonStep {
@@ -47,7 +48,7 @@ interface IPersonStep {
 const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => {
     const dispatch = useDispatch();
     const {t} = useTranslation(["person"]);
-    const {errors, touched, setFieldValue} = useFormikContext();
+    const {errors, touched} = useFormikContext();
     const districts = useSelector((states: IRootState) => states.nomenclature.districts);
     const specialties = useSelector((states: IRootState) => states.nomenclature.specialties);
 
@@ -205,97 +206,35 @@ const PersonalStep = React.memo(({isNew, person, setFileInput}: IPersonStep) => 
                                variant="outlined" component={TextField}/>
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                        <Field
-                            name="district"
-                            component={Autocomplete}
-                            open={openDistrict}
-                            options={districts}
-                            filterOptions={(x) => x}
-                            loading={loadingDistricts}
-                            onOpen={() => setOpenDistrict(true)}
-                            onClose={() => setOpenDistrict(false)}
-                            loadingText={t('common:loading')}
-                            noOptionsText={t('common:no_option')}
-                            isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
-                            onInputChange={(event: React.SyntheticEvent, newInputValue) => {
-                                if (newInputValue === '') {
-                                    setFieldValue('districtId', "")
-                                }
-                                setInputValueDistrict(newInputValue);
-                            }}
-                            onChange={(event: React.SyntheticEvent, value: INomenclature) => {
-                                setFieldValue('districtId', value?.id || '')
-                                setFieldValue('district', value)
-                            }}
-                            getOptionLabel={(option: INomenclature) => option.name || ''}
-                            renderInput={(params: AutocompleteRenderInputParams) => (
-                                <MUITextField
-                                    {...params}
-                                    name="district"
-                                    variant="outlined"
-                                    label={t('district')}
-                                    InputLabelProps={{shrink: true}}
-                                    helperText={errors['districtId']}
-                                    error={touched['districtId'] && !!errors['districtId']}
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        endAdornment: (
-                                            <React.Fragment>
-                                                {loadingDistricts ?
-                                                    <CircularProgress color="inherit" size={20}/> : null}
-                                                {params.InputProps.endAdornment}
-                                            </React.Fragment>
-                                        ),
-                                    }}
-                                />
-                            )}
+                        <Field name='district'
+                               open={openDistrict}
+                               options={districts}
+                               component={UCMAutocomplete}
+                               loading={loadingDistricts}
+                               onOpen={() => setOpenDistrict(true)}
+                               onClose={() => setOpenDistrict(false)}
+                               getOptionLabel={(option: INomenclature) => option.name || ''}
+                               textFieldProps={{label: t('district')}}
+                               onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                   setInputValueDistrict(newInputValue);
+                               }}
+                               isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
                         />
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                        <Field
-                            name="specialty"
-                            component={Autocomplete}
-                            open={openSpecialty}
-                            options={specialties}
-                            filterOptions={(x) => x}
-                            loading={loadingSpecialties}
-                            onOpen={() => setOpenSpecialty(true)}
-                            onClose={() => setOpenSpecialty(false)}
-                            loadingText={t('common:loading')}
-                            noOptionsText={t('common:no_option')}
-                            isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
-                            onInputChange={(event: React.SyntheticEvent, newInputValue) => {
-                                if (newInputValue === '') {
-                                    setFieldValue('specialtyId', "")
-                                }
-                                setInputValueSpecialty(newInputValue);
-                            }}
-                            onChange={(event: React.SyntheticEvent, value: INomenclature) => {
-                                setFieldValue('specialtyId', value?.id || '')
-                                setFieldValue('specialty', value)
-                            }}
-                            getOptionLabel={(option: INomenclature) => option.name || ''}
-                            renderInput={(params: AutocompleteRenderInputParams) => (
-                                <MUITextField
-                                    {...params}
-                                    name="specialty"
-                                    variant="outlined"
-                                    label={t('specialty')}
-                                    InputLabelProps={{shrink: true}}
-                                    helperText={errors['specialtyId']}
-                                    error={touched['specialtyId'] && !!errors['specialtyId']}
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        endAdornment: (
-                                            <React.Fragment>
-                                                {loadingDistricts ?
-                                                    <CircularProgress color="inherit" size={20}/> : null}
-                                                {params.InputProps.endAdornment}
-                                            </React.Fragment>
-                                        ),
-                                    }}
-                                />
-                            )}
+                        <Field name='specialty'
+                               open={openSpecialty}
+                               options={specialties}
+                               component={UCMAutocomplete}
+                               loading={loadingSpecialties}
+                               onOpen={() => setOpenSpecialty(true)}
+                               onClose={() => setOpenSpecialty(false)}
+                               getOptionLabel={(option: INomenclature) => option.name || ''}
+                               textFieldProps={{label: t('specialty')}}
+                               onInputChange={(event: React.SyntheticEvent, newInputValue) => {
+                                   setInputValueSpecialty(newInputValue);
+                               }}
+                               isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
                         />
                     </Grid>
                 </Grid>
