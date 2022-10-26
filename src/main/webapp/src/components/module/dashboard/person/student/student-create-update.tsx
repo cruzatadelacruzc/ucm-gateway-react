@@ -97,6 +97,8 @@ const StudentManage = () => {
                 const transformedValues: IStudent = {
                     ...values,
                     kindId: values.kind?.id,
+                    districtId: values.district?.id,
+                    specialtyId: values.specialty?.id,
                     studyCenterId: values.studyCenter?.id
                 }
                 if (isNew) {
