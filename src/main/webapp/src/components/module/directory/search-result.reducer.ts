@@ -125,7 +125,7 @@ export const getSearchPerson: ISearchAction<ISearchResultPerson> = (search, from
                     fields: ["ci^1.8", "name^2", "*LastName^1.9", "email^1.8",
                         "workPlace.name^1.6", "specialty^1.6", "district^1.6",
                         "registerNumber^1.5", "professionalNumber^1.4", "charge",
-                        "address", "profession^1.3", "category^1.3"
+                        "address", "profession^1.3", "category^1.3", "race", "gender"
                     ]
                 }
             }
@@ -157,7 +157,7 @@ export const getSearchWorkPlace: ISearchAction<ISearchResultWorkPlace> = (search
                                 query: search,
                                 tie_breaker: 0.3,
                                 fields: ["name^2", "email^1.9", "employees.ci^1.7", "phones.number^1.6",
-                                    "employees.name^1.7", "employees.specialty^1.5", "employees.profession^1.4"]
+                                    "employees.name^1.7", "employees.*LastName^1.6", "employees.specialty^1.5", "employees.profession^1.4"]
                             }
                         },
                         {
