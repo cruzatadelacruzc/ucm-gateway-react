@@ -72,7 +72,7 @@ export default function ProfileSection() {
     };
 
     const goToProfile = () => {
-        localStorage.setItem(REDIRECT_URL, location.pathname);
+        window.sessionStorage.setItem(REDIRECT_URL, location.pathname);
         window.location.href = account.accountUrl
     }
 
