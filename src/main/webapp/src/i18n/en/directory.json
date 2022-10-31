@@ -8,5 +8,7 @@
   },
   "no_result": "nothing to show",
   "placeholder": "What are you looking for? JUST TYPE...",
-  "loading": "Loading more..."
+  "loading": "Loading more...",
+  "suggestion": "Suggestions:",
+  "suggestion_good_type_words": "Make sure all words are spelled correctly"
 }

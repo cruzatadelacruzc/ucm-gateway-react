@@ -1,6 +1,6 @@
 import React, {ChangeEvent, FormEvent, useCallback, useEffect, useState} from 'react';
 import Header from './header';
-import {Container, Grid, Tab, Tabs, Typography} from '@mui/material';
+import {Container, Grid, Tab, Tabs, Typography, useTheme} from '@mui/material';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import PersonIcon from '@mui/icons-material/Person';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
@@ -24,9 +24,13 @@ import {REDIRECT_URL} from "../../shared/util/url-util";
 import {hasAnyAuthority} from "../../shared/auth/private-route";
 import CardPhone from "./card-phone";
 import DisplaySkeleton from "./skeleton";
+import Button from "@mui/material/Button";
+import {Business as BusinessIcon, Engineering as EngineeringIcon, School as SchoolIcon} from "@mui/icons-material";
+import {Link} from "react-router-dom";
 
 
 export default function Directory() {
+    const theme = useTheme();
     const {t} = useTranslation('directory');
     const [tabValue, setTabValue] = useState(0);
     const inputEl = React.useRef<HTMLInputElement>(null);
@@ -132,10 +136,55 @@ export default function Directory() {
                     <Grid xs={12} item>
                         <Typography variant='h2' sx={{
                             textTransform: 'uppercase',
-                            textAlign: 'center'
-                        }} color="text.secondary">
+                            marginBottom: 2
+                        }} color="text.secondary" gutterBottom display="block">
                             {t("no_result")}
                         </Typography>
+                        <Grid item xs={12}>
+                            <Typography variant="subtitle1" display="block" gutterBottom>
+                                {t("suggestion")}
+                            </Typography>
+                            <Typography variant="subtitle2" display="block">
+                                {t("suggestion_good_type_words")}
+                            </Typography>
+                            <Typography variant="subtitle2" display="block">
+                                {t("common:manage")}
+                                <Button variant="text"
+                                        component={Link}
+                                        to='/dashboard/student'
+                                        endIcon={<SchoolIcon fontSize="small"/>}
+                                > {t("common:entities.directoryStudent")}
+                                </Button>
+                            </Typography>
+                            <Typography variant="subtitle2" display="block">
+                                {t("common:manage")}
+                                <Button variant="text"
+                                        component={Link}
+                                        to='/dashboard/employee'
+                                        endIcon={<EngineeringIcon fontSize="small"/>}
+                                > {t("common:entities.directoryEmployee")}
+                                </Button>
+                            </Typography>
+                            <Typography variant="subtitle2" display="block">
+                                {t("common:manage")}
+                                <Button variant="text"
+                                        component={Link}
+                                        to='/dashboard/phone'
+                                        endIcon={<ContactPhoneIcon fontSize="small"/>}
+                                > {t("common:entities.directoryPhone")}
+                                </Button>
+                            </Typography>
+
+                            <Typography variant="subtitle2" display="block">
+                                {t("common:manage")}
+                                <Button variant="text"
+                                        component={Link}
+                                        to='/dashboard/workplace'
+                                        endIcon={<BusinessIcon fontSize="small"/>}
+                                > {t("common:entities.directoryWorkPlace")}
+                                </Button>
+                            </Typography>
+                        </Grid>
                     </Grid>
                 )}
             </>

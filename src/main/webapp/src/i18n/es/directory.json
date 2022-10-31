@@ -8,5 +8,7 @@
   },
   "no_result": "Nada que mostrar",
   "placeholder": "¿Qué estás buscando?, SOLO ESCRIBE...",
-  "loading": "Cargando más..."
+  "loading": "Cargando más...",
+  "suggestion": "Sugerencias:",
+  "suggestion_good_type_words": "Asegúrate de que todas las palabras estén escritas correctamente"
 }
