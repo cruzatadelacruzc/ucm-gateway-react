@@ -1,6 +1,6 @@
 import React, {ChangeEvent, FormEvent, useCallback, useEffect, useState} from 'react';
 import Header from './header';
-import {Container, Grid, Tab, Tabs, Typography, useTheme} from '@mui/material';
+import {Container, Grid, Tab, Tabs, Typography} from '@mui/material';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import PersonIcon from '@mui/icons-material/Person';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
@@ -30,7 +30,6 @@ import {Link} from "react-router-dom";
 
 
 export default function Directory() {
-    const theme = useTheme();
     const {t} = useTranslation('directory');
     const [tabValue, setTabValue] = useState(0);
     const inputEl = React.useRef<HTMLInputElement>(null);
