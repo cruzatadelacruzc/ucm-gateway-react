@@ -104,90 +104,93 @@ export default function Directory() {
     }
 
     const DisplayCardList = (props: ISearchResultPerson | ISearchResultPhone | ISearchResultWorkPlace) => {
-        return (
-            <>
-                {props.hits.total > 0 ? (
-                    <Grid item container spacing={3} justifyContent="center" alignItems="center">
-                        <Grid item xs={12}>
-                            <Typography variant='subtitle2' display='inline'>
-                                {t('result_announce', {
-                                    count: props.hits.total,
-                                    second: props.took / 1000,
-                                    quality: props.hits.max_score,
-                                })}
-                            </Typography>
-                        </Grid>
-                        {
-                            props.hits.hits.map((result, index) => {
-                                const lastCardElementRef = props.hits.hits.length === index + 1 ? lastElementRef : undefined;
-                                return <Grid key={index} item xs={12}>
-                                    {(result._type === INDICES.EMPLOYEES || result._type === INDICES.STUDENTS) &&
-                                    <CardPerson {...result} ref={lastCardElementRef}/>}
-                                    {result._type === INDICES.WORKPLACES &&
-                                    <CardWorkPlace {...result} ref={lastCardElementRef}/>}
-                                    {result._type === INDICES.PHONES &&
-                                    <CardPhone {...result} ref={lastCardElementRef}/>}
-                                </Grid>
-                            })
-                        }
-                    </Grid>
-                ) : (
-                    <Grid xs={12} item>
-                        <Typography variant='h2' sx={{
-                            textTransform: 'uppercase',
-                            marginBottom: 2
-                        }} color="text.secondary" gutterBottom display="block">
-                            {t("no_result")}
-                        </Typography>
-                        <Grid item xs={12}>
-                            <Typography variant="subtitle1" display="block" gutterBottom>
-                                {t("suggestion")}
-                            </Typography>
-                            <Typography variant="subtitle2" display="block">
-                                {t("suggestion_good_type_words")}
-                            </Typography>
-                            <Typography variant="subtitle2" display="block">
-                                {t("common:manage")}
-                                <Button variant="text"
-                                        component={Link}
-                                        to='/dashboard/student'
-                                        endIcon={<SchoolIcon fontSize="small"/>}
-                                > {t("common:entities.directoryStudent")}
-                                </Button>
-                            </Typography>
-                            <Typography variant="subtitle2" display="block">
-                                {t("common:manage")}
-                                <Button variant="text"
-                                        component={Link}
-                                        to='/dashboard/employee'
-                                        endIcon={<EngineeringIcon fontSize="small"/>}
-                                > {t("common:entities.directoryEmployee")}
-                                </Button>
-                            </Typography>
-                            <Typography variant="subtitle2" display="block">
-                                {t("common:manage")}
-                                <Button variant="text"
-                                        component={Link}
-                                        to='/dashboard/phone'
-                                        endIcon={<ContactPhoneIcon fontSize="small"/>}
-                                > {t("common:entities.directoryPhone")}
-                                </Button>
-                            </Typography>
 
-                            <Typography variant="subtitle2" display="block">
-                                {t("common:manage")}
-                                <Button variant="text"
-                                        component={Link}
-                                        to='/dashboard/workplace'
-                                        endIcon={<BusinessIcon fontSize="small"/>}
-                                > {t("common:entities.directoryWorkPlace")}
-                                </Button>
-                            </Typography>
-                        </Grid>
+        if (props.hits.total > 0 && inputEl.current) {
+            return (
+                <Grid item container spacing={3} justifyContent="center" alignItems="center">
+                    <Grid item xs={12}>
+                        <Typography variant='subtitle2' display='inline'>
+                            {t('result_announce', {
+                                count: props.hits.total,
+                                second: props.took / 1000,
+                                quality: props.hits.max_score,
+                            })}
+                        </Typography>
                     </Grid>
-                )}
-            </>
-        )
+                    {
+                        props.hits.hits.map((result, index) => {
+                            const lastCardElementRef = props.hits.hits.length === index + 1 ? lastElementRef : undefined;
+                            return <Grid key={index} item xs={12}>
+                                {(result._type === INDICES.EMPLOYEES || result._type === INDICES.STUDENTS) &&
+                                <CardPerson {...result} ref={lastCardElementRef}/>}
+                                {result._type === INDICES.WORKPLACES &&
+                                <CardWorkPlace {...result} ref={lastCardElementRef}/>}
+                                {result._type === INDICES.PHONES &&
+                                <CardPhone {...result} ref={lastCardElementRef}/>}
+                            </Grid>
+                        })
+                    }
+                </Grid>
+            )
+        }
+        if (props.hits.total === 0 && inputEl.current && inputEl.current.value !== "") {
+            return (
+                <Grid xs={12} item>
+                    <Typography variant='h2' sx={{
+                        textTransform: 'uppercase',
+                        marginBottom: 2
+                    }} color="text.secondary" gutterBottom display="block">
+                        {t("no_result")}
+                    </Typography>
+                    <Grid item xs={12}>
+                        <Typography variant="subtitle1" display="block" gutterBottom>
+                            {t("suggestion")}
+                        </Typography>
+                        <Typography variant="subtitle2" display="block">
+                            {t("suggestion_good_type_words")}
+                        </Typography>
+                        <Typography variant="subtitle2" display="block">
+                            {t("common:manage")}
+                            <Button variant="text" size="small"
+                                    component={Link}
+                                    to='/dashboard/student'
+                                    endIcon={<SchoolIcon fontSize="small"/>}
+                            > {t("common:entities.directoryStudent")}
+                            </Button>
+                        </Typography>
+                        <Typography variant="subtitle2" display="block">
+                            {t("common:manage")}
+                            <Button variant="text" size="small"
+                                    component={Link}
+                                    to='/dashboard/employee'
+                                    endIcon={<EngineeringIcon fontSize="small"/>}
+                            > {t("common:entities.directoryEmployee")}
+                            </Button>
+                        </Typography>
+                        <Typography variant="subtitle2" display="block">
+                            {t("common:manage")}
+                            <Button variant="text" size="small"
+                                    component={Link}
+                                    to='/dashboard/phone'
+                                    endIcon={<ContactPhoneIcon fontSize="small"/>}
+                            > {t("common:entities.directoryPhone")}
+                            </Button>
+                        </Typography>
+
+                        <Typography variant="subtitle2" display="block">
+                            {t("common:manage")}
+                            <Button variant="text" size="small"
+                                    component={Link}
+                                    to='/dashboard/workplace'
+                                    endIcon={<BusinessIcon fontSize="small"/>}
+                            > {t("common:entities.directoryWorkPlace")}
+                            </Button>
+                        </Typography>
+                    </Grid>
+                </Grid>
+            )
+        }
+        return null
     }
 
     return (
