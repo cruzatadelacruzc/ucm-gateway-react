@@ -28,12 +28,13 @@ import {
 } from '@mui/icons-material';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {useTranslation} from 'react-i18next';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../reducer";
-import {getLoginUrl, REDIRECT_URL} from "../../util/url-util";
+import {REDIRECT_URL} from "../../util/url-util";
 import MainCard from "../../components/main-card";
 import {menuOpen} from "../../reducer/customization.reducer";
+import {CONFIG} from "../../../../config/constants";
 
 export default function ProfileSection() {
     const theme = useTheme();
@@ -270,7 +271,8 @@ export default function ProfileSection() {
                                                         </ListItemButton>
                                                         :
                                                         <ListItemButton selected={selectedIndex === 3}
-                                                                        href={getLoginUrl()} component='a'>
+                                                                        state={{from: {pathname: "/dashboard"}}}
+                                                                        to={CONFIG.LOGIN_URL} component={Link}>
                                                             <ListItemIcon>
                                                                 <LoginOutlined/>
                                                             </ListItemIcon>
