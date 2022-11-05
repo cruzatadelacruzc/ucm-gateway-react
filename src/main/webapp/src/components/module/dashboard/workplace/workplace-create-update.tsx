@@ -122,7 +122,6 @@ const WorkPlaceManage = () => {
                             <Grid container item xs={12} md={8} lg={8}>
                                 <Grid item xs={12}>
                                     <Field
-                                        fullWidth
                                         type="checkbox"
                                         name="active"
                                         component={CheckboxWithLabel}
