@@ -107,16 +107,16 @@ const StudentDetails = () => {
                                 </FormControl>
                             </Grid>
                         </Grid>
-                        <Grid item container xs={12} spacing={{xs: 2, sm: 0}}>
+                        <Grid item container xs={12} spacing={2}>
                             <Grid item xs={12} sm={2}>
-                            <Button
-                                fullWidth
-                                color="secondary"
-                                variant="contained"
-                                onClick={() => navigate(-1)}
-                                startIcon={<CancelIcon/>}>
-                                {t('common:close')}
-                            </Button>
+                                <Button
+                                    fullWidth
+                                    color="secondary"
+                                    variant="contained"
+                                    onClick={() => navigate(-1)}
+                                    startIcon={<CancelIcon/>}>
+                                    {t('common:close')}
+                                </Button>
                             </Grid>
                             <Grid item xs={12} sm={2}>
                             <Button

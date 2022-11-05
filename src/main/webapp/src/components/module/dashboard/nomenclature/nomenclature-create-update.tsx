@@ -118,7 +118,7 @@ const NomenclatureManage = () => {
                                     label={t("description")}
                                 />
                             </Grid>
-                            <Grid item container xs={12} spacing={{xs:2, sm:0}}>
+                            <Grid item container xs={12} spacing={2}>
                                 <Grid item xs={12} sm={2}>
                                     <Button
                                         fullWidth
