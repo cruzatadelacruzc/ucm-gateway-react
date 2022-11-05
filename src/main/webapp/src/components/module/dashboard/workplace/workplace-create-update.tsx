@@ -6,8 +6,8 @@ import {IRootState} from "../../../shared/reducer";
 import Widget from "../../../shared/layout/widget";
 import {useDispatch, useSelector} from "react-redux";
 import {Link, useNavigate, useParams} from "react-router-dom";
-import {Autocomplete, CheckboxWithLabel, TextField} from "formik-mui";
-import {AutocompleteRenderInputParams, Button, CircularProgress, Grid, TextField as MUITextField} from "@mui/material";
+import {CheckboxWithLabel, TextField} from "formik-mui";
+import {Button, CircularProgress, Grid} from "@mui/material";
 import {defaultValue, IWorkPlace} from "../../../shared/models/workplace.model";
 import {createWorkPlace, deleteAvatar, getWorkPlace, reset, updateWorkPlace} from "./workplace.reducer";
 import {createDeepEqualSelector} from "../../../shared/util/function-utils";
@@ -18,6 +18,8 @@ import {CONFIG} from "../../../../config/constants";
 import throttle from "lodash/throttle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import SendIcon from "@mui/icons-material/Send";
+import UCMAutocomplete from "../../../shared/components/autocomplete";
+import {INomenclature} from "../../../shared/models/nomenclature.model";
 
 
 const WorkPlaceManage = () => {
@@ -86,10 +88,16 @@ const WorkPlaceManage = () => {
                 initialValues={isNew ? defaultValue : entity}
                 enableReinitialize={!isNew}
                 onSubmit={async (values: IWorkPlace) => {
+                    let ids: Array<string> = []
+                    if (values.employees !== undefined) {
+                        values.employees.forEach(emp => emp.id != undefined && ids.push(emp.id))
+                    }
+                    const transformValues: IWorkPlace = {...values, employeeIds: ids}
+
                     if (isNew) {
-                        return dispatch(createWorkPlace({workplace: values, avatar: avatar}))
+                        return dispatch(createWorkPlace({workplace: transformValues, avatar: avatar}))
                     } else {
-                        return dispatch(updateWorkPlace({workplace: values, avatar: avatar}))
+                        return dispatch(updateWorkPlace({workplace: transformValues, avatar: avatar}))
                     }
                 }}
                 validationSchema={yup.object().shape({
@@ -98,7 +106,7 @@ const WorkPlaceManage = () => {
                     description: yup.string().max(255, t("error:form.maxlength", {max: 255}))
                 })}
             >
-                {({submitForm, setFieldValue}) => (
+                {({submitForm}) => (
                     <Form autoComplete="off" noValidate={true}>
                         <Grid container spacing={2}>
                             <Grid container item xs={12} md={4} lg={4} justifyContent="center">
@@ -111,7 +119,7 @@ const WorkPlaceManage = () => {
                                     deleteAvatar={() => dispatch(deleteAvatar(entity.id))}
                                 />
                             </Grid>
-                            <Grid container item xs={12} md={8} lg={8} >
+                            <Grid container item xs={12} md={8} lg={8}>
                                 <Grid item xs={12}>
                                     <Field
                                         fullWidth
@@ -146,44 +154,19 @@ const WorkPlaceManage = () => {
                                 <Field
                                     multiple
                                     fullWidth
-                                    name="employees"
+                                    name='employees'
                                     open={openEmployee}
-                                    component={Autocomplete}
-                                    filterOptions={(x) => x}
-                                    loading={loadingEmployees}
                                     options={employeesToUpdate}
-                                    loadingText={t('common:loading')}
-                                    noOptionsText={t('common:no_option')}
+                                    component={UCMAutocomplete}
+                                    loading={loadingEmployees}
                                     onOpen={() => setOpenEmployee(true)}
                                     onClose={() => setOpenEmployee(false)}
-                                    onInputChange={(event: React.SyntheticEvent, newInputValue: string) => {
+                                    getOptionLabel={(option: INomenclature) => option.name || ''}
+                                    textFieldProps={{label: t('employees')}}
+                                    onInputChange={(event: React.SyntheticEvent, newInputValue) => {
                                         setInputValueEmployee(newInputValue);
                                     }}
-                                    onChange={(event: React.SyntheticEvent, values: Array<IEmployee>) => {
-                                        setFieldValue("employeeIds", values.map(emp => emp.id));
-                                        setFieldValue("employees", values);
-                                    }}
-                                    isOptionEqualToValue={(option: IEmployee, value: IEmployee) => option.id === value.id}
-                                    getOptionLabel={(option: IEmployee) => `${option.name} ${option.firstLastName} ${option.secondLastName}` || ''}
-                                    renderInput={(params: AutocompleteRenderInputParams) => (
-                                        <MUITextField
-                                            {...params}
-                                            name="employees"
-                                            variant="outlined"
-                                            label={t('employees')}
-                                            InputLabelProps={{shrink: true}}
-                                            InputProps={{
-                                                ...params.InputProps,
-                                                endAdornment: (
-                                                    <React.Fragment>
-                                                        {loadingEmployees ?
-                                                            <CircularProgress color="inherit" size={20}/> : null}
-                                                        {params.InputProps.endAdornment}
-                                                    </React.Fragment>
-                                                ),
-                                            }}
-                                        />
-                                    )}
+                                    isOptionEqualToValue={(option: INomenclature, value: INomenclature) => option.id === value.id}
                                 />
                             </Grid>
                             <Grid item xs={12}>
