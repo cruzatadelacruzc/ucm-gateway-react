@@ -90,7 +90,7 @@ const WorkPlaceManage = () => {
                 onSubmit={async (values: IWorkPlace) => {
                     let ids: Array<string> = []
                     if (values.employees !== undefined) {
-                        values.employees.forEach(emp => emp.id != undefined && ids.push(emp.id))
+                        values.employees.forEach(emp => emp.id !== undefined && ids.push(emp.id))
                     }
                     const transformValues: IWorkPlace = {...values, employeeIds: ids}
 
