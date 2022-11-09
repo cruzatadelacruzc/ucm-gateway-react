@@ -12,6 +12,7 @@ a#kc-current-locale-link::after {
 
 #kc-header-wrapper {
     font-size: 3rem;
+    padding: 25px 0 0 0;
 }
 
 #kc-locale ul {
