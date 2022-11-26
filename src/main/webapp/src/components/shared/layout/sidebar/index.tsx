@@ -14,7 +14,6 @@ export interface ISidebar {
 const Sidebar = ({toggleSidebar, isSidebarOpened}: ISidebar) => {
     const theme = useTheme();
     const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
-    const container = window !== undefined ? () => window.document.body : undefined;
 
     const drawer = (
         <>
@@ -48,7 +47,7 @@ const Sidebar = ({toggleSidebar, isSidebarOpened}: ISidebar) => {
              aria-label="mailbox folders">
             <Drawer
                 anchor="left"
-                container={container}
+                container={() => window.document.body}
                 open={isSidebarOpened}
                 onClose={toggleSidebar}
                 variant={'temporary'}
@@ -67,7 +66,6 @@ const Sidebar = ({toggleSidebar, isSidebarOpened}: ISidebar) => {
             </Drawer>
             <Drawer
                 anchor="left"
-                container={container}
                 open={isSidebarOpened}
                 onClose={toggleSidebar}
                 variant={'persistent'}
