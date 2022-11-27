@@ -41,6 +41,7 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
             marginBottom: theme.spacing(1)
         }
     }
+
     const buttonSubmitName = () => {
         if (currentChild.props.operationKind && currentChild.props.operationKind === "UPDATE") {
             return t("save_finished")
@@ -75,6 +76,35 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
         })
         return touched
     }
+
+    const renderFinishButton = (isSubmitting: boolean): React.ReactNode => {
+        if (currentChild.props.operationKind && currentChild.props.operationKind === "CREATE" && !isLastStep) {
+            return null;
+        }
+        /** Only render button if
+         * currentChild.props.operationKind === "UPDATE" & !isLastStep then render "Save & Finished"
+         * OR
+         * currentChild.props.operationKind === "UPDATE" & isLastStep then render "Finished"
+         * OR
+         * currentChild.props.operationKind === "CREATE" & isLastStep then render "Finished"
+         */
+        return (
+            <Button
+                sx={StyleButton}
+                type="submit"
+                disabled={isSubmitting}
+                startIcon={
+                    isSubmitting ? <CircularProgress size="1rem"/> : isLastStep ? <SendIcon/> :
+                        <SaveIcon/>
+                }
+                variant="contained"
+                color={isLastStep ? "primary" : "secondary"}
+            >
+                {isLastStep ? t('finish') : buttonSubmitName()}
+            </Button>
+        )
+    }
+
     return (
         <Formik
             {...props}
@@ -120,7 +150,7 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
                             flexDirection: "column",
                         }
                     }}>
-                        {<Button
+                        <Button
                             sx={StyleButton}
                             component={Link}
                             to={`/dashboard${props.cancelRoute}`}
@@ -131,7 +161,7 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
                         >
                             {currentChild.props.operationKind && currentChild.props.operationKind === "CREATE"
                                 ? t('cancel') : t('close')}
-                        </Button>}
+                        </Button>
 
                         {step > 0 &&
                         <Button
@@ -146,16 +176,11 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
                             color="secondary" variant="contained" startIcon={<KeyboardReturnIcon/>}
                             onClick={() => setStep(prevStep => prevStep - 1)} disabled={isSubmitting}>
                             {t('back')}
-                        </Button>}
-                        {(currentChild.props.operationKind && currentChild.props.operationKind === "CREATE" && !isLastStep) ||
-                        <Button
-                            sx={StyleButton}
-                            type="submit" disabled={isSubmitting}
-                            startIcon={isSubmitting ? <CircularProgress size="1rem"/> : isLastStep ? <SendIcon/> :
-                                <SaveIcon/>}
-                            color={isLastStep ? "primary" : "secondary"} variant="contained">
-                            {isLastStep ? t('finish') : buttonSubmitName()}
-                        </Button>}
+                        </Button>
+                        }
+
+                        {renderFinishButton(isSubmitting)}
+
                         {!isLastStep && currentChild.props.operationKind &&
                         <Button
                             sx={StyleButton}
@@ -172,7 +197,8 @@ const FormStepper = ({children, ...props}: IFormStepperProps) => {
                             })}
                         >
                             {t('continue')}
-                        </Button>}
+                        </Button>
+                        }
                     </Box>
                 </Form>
             )}
