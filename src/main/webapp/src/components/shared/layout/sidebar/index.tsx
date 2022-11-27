@@ -14,6 +14,10 @@ export interface ISidebar {
 const Sidebar = ({toggleSidebar, isSidebarOpened}: ISidebar) => {
     const theme = useTheme();
     const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
+    const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const container = window !== undefined ? () => window.document.body : undefined;
+
 
     const drawer = (
         <>
@@ -45,15 +49,16 @@ const Sidebar = ({toggleSidebar, isSidebarOpened}: ISidebar) => {
     return (
         <Box component="nav" sx={{flexShrink: {md: 0}, width: matchUpMd ? drawerWidth : 'auto'}}
              aria-label="mailbox folders">
+            {matchDownSm &&
             <Drawer
                 anchor="left"
-                container={() => window.document.body}
+                container={container}
                 open={isSidebarOpened}
                 onClose={toggleSidebar}
                 variant={'temporary'}
                 sx={{
-                    display: {xs: 'block', md: 'none'},
                     '& .MuiDrawer-paper': {
+                        boxSizing: 'border-box',
                         width: drawerWidth,
                         background: theme.palette.background.default,
                         color: theme.palette.text.primary,
@@ -64,14 +69,16 @@ const Sidebar = ({toggleSidebar, isSidebarOpened}: ISidebar) => {
             >
                 {drawer}
             </Drawer>
+            }
+            {!matchDownSm &&
             <Drawer
                 anchor="left"
                 open={isSidebarOpened}
                 onClose={toggleSidebar}
                 variant={'persistent'}
                 sx={{
-                    display: {xs: 'none', md: 'block'},
                     '& .MuiDrawer-paper': {
+                        boxSizing: 'border-box',
                         width: drawerWidth,
                         background: theme.palette.background.default,
                         color: theme.palette.text.primary,
@@ -82,6 +89,7 @@ const Sidebar = ({toggleSidebar, isSidebarOpened}: ISidebar) => {
             >
                 {drawer}
             </Drawer>
+            }
         </Box>
     );
 }
