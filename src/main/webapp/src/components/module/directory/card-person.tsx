@@ -184,8 +184,8 @@ const cardPerson = React.forwardRef<HTMLDivElement, ISearchResultPersonHit>((pro
         <Paper elevation={8} sx={{p: 2, borderTop: `5px solid ${theme.palette.primary.main}`}} ref={ref}>
             <Stack direction={{xs: "column", sm: "row"}} justifyContent="space-between" spacing={{xs: 2, sm: 0}}>
                 <Box>
-                    {props._type ? (
-                        <Badge badgeContent={t(props._type)} color='secondary'>
+                    {props._index ? (
+                        <Badge badgeContent={t(props._index)} color='secondary'>
                             <Card sx={{maxWidth: 255, maxHeight: 255}}>
                                 <CardActionArea>
                                     <CardMedia
@@ -243,7 +243,7 @@ const cardPerson = React.forwardRef<HTMLDivElement, ISearchResultPersonHit>((pro
             </Box>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 {!isFullScreen && <PersonExpansion/>}
-                {props._type === 'employees' ? <EmployeeExpansion/> : <StudentExpansion/>}
+                {props._index === 'employees' ? <EmployeeExpansion/> : <StudentExpansion/>}
             </Collapse>
         </Paper>
     );

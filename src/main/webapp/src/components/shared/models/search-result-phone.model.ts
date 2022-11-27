@@ -10,15 +10,16 @@ export interface ISearchResultPhoneDetails {
 }
 
 export interface ISearchResultPhoneHit {
-  _type: string;
-  _score: number;
-  _source: ISearchResultPhoneDetails
+    _index: string;
+    _type: string;
+    _score: number;
+    _source: ISearchResultPhoneDetails
 }
 
 export interface ISearchResultPhoneHits {
-  total: number;
-  max_score: number;
-  hits: Array<ISearchResultPhoneHit>
+    total: { value: number };
+    max_score: number;
+    hits: Array<ISearchResultPhoneHit>
 }
 
 export interface ISearchResultPhone {
@@ -34,16 +35,17 @@ export const defaultDetailsValue: Readonly<ISearchResultPhoneDetails> = {
       workPlace: workPlaceDetails,
     }
 
-export const defaultHitValue: Readonly<ISearchResultPhoneHit> =    {
-      _type: '',
-      _score: 0,
-      _source: defaultDetailsValue
-    }
+export const defaultHitValue: Readonly<ISearchResultPhoneHit> = {
+    _index: '',
+    _type: '',
+    _score: 0,
+    _source: defaultDetailsValue
+}
 
 export const defaultHitsValue: Readonly<ISearchResultPhoneHits> = {
-  total: 0,
-  max_score: 0,
-  hits: [ defaultHitValue],
+    total: {value: 0},
+    max_score: 0,
+    hits: [defaultHitValue],
 };
 
 export const defaultValue: Readonly<ISearchResultPhone> = {

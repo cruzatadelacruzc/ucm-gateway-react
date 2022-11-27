@@ -105,13 +105,13 @@ export default function Directory() {
 
     const DisplayCardList = (props: ISearchResultPerson | ISearchResultPhone | ISearchResultWorkPlace) => {
 
-        if (props.hits.total > 0 && inputEl.current) {
+        if (props.hits.total.value > 0 && inputEl.current) {
             return (
                 <Grid item container spacing={3} justifyContent="center" alignItems="center">
                     <Grid item xs={12}>
                         <Typography variant='subtitle2' display='inline'>
                             {t('result_announce', {
-                                count: props.hits.total,
+                                count: props.hits.total.value,
                                 second: props.took / 1000,
                                 quality: props.hits.max_score,
                             })}
@@ -121,11 +121,11 @@ export default function Directory() {
                         props.hits.hits.map((result, index) => {
                             const lastCardElementRef = props.hits.hits.length === index + 1 ? lastElementRef : undefined;
                             return <Grid key={index} item xs={12}>
-                                {(result._type === INDICES.EMPLOYEES || result._type === INDICES.STUDENTS) &&
+                                {(result._index === INDICES.EMPLOYEES || result._index === INDICES.STUDENTS) &&
                                 <CardPerson {...result} ref={lastCardElementRef}/>}
-                                {result._type === INDICES.WORKPLACES &&
+                                {result._index === INDICES.WORKPLACES &&
                                 <CardWorkPlace {...result} ref={lastCardElementRef}/>}
-                                {result._type === INDICES.PHONES &&
+                                {result._index === INDICES.PHONES &&
                                 <CardPhone {...result} ref={lastCardElementRef}/>}
                             </Grid>
                         })
@@ -133,7 +133,7 @@ export default function Directory() {
                 </Grid>
             )
         }
-        if (props.hits.total === 0 && inputEl.current && inputEl.current.value !== "") {
+        if (props.hits.total.value === 0 && inputEl.current && inputEl.current.value !== "") {
             return (
                 <Grid xs={12} item>
                     <Typography variant='h2' sx={{

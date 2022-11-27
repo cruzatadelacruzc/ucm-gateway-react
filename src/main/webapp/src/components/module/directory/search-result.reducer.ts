@@ -72,7 +72,7 @@ const searchReducer = (state: SearchStateType = initialState, action: SearchActi
                 fromPerson: prevPersons.length,
                 resultPhone: phoneDefaultValue,
                 resultWorkPlace: workplaceDefaultValue,
-                hasMore: action.payload.hits.total > prevPersons.length,
+                hasMore: action.payload.hits.total.value > prevPersons.length,
                 resultPerson: {...action.payload, hits: {...action.payload.hits, hits: prevPersons}},
             };
         case ACTION_TYPES.SEARCH_WORKPLACE: // SUCCESS
@@ -86,7 +86,7 @@ const searchReducer = (state: SearchStateType = initialState, action: SearchActi
                 resultPhone: phoneDefaultValue,
                 resultPerson: personDefaultValue,
                 fromWorkPlace: prevWorkPlaces.length,
-                hasMore: action.payload.hits.total > prevWorkPlaces.length,
+                hasMore: action.payload.hits.total.value > prevWorkPlaces.length,
                 resultWorkPlace: {...action.payload, hits: {...action.payload.hits, hits: prevWorkPlaces}}
             };
         case ACTION_TYPES.SEARCH_PHONE: // SUCCESS
@@ -100,7 +100,7 @@ const searchReducer = (state: SearchStateType = initialState, action: SearchActi
                 fromPhone: prevPhones.length,
                 resultPerson: personDefaultValue,
                 resultWorkPlace: workplaceDefaultValue,
-                hasMore: action.payload.hits.total > prevPhones.length,
+                hasMore: action.payload.hits.total.value > prevPhones.length,
                 resultPhone: {...action.payload, hits: {...action.payload.hits, hits: prevPhones}},
             };
         case ACTION_TYPES.FAILURE: // FAILURE~ERROR

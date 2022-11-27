@@ -28,15 +28,16 @@ export interface ISearchResultPersonDetails {
 }
 
 export interface ISearchResultPersonHit {
-  _type: string;
-  _score: number;
-  _source: ISearchResultPersonDetails
+    _index: string;
+    _type: string;
+    _score: number;
+    _source: ISearchResultPersonDetails
 }
 
 export interface ISearchResultPersonHits {
-  total: number;
-  max_score: number;
-  hits: Array<ISearchResultPersonHit>;
+    total: { value: number };
+    max_score: number;
+    hits: Array<ISearchResultPersonHit>;
 }
 
 export interface ISearchResultPerson {
@@ -71,16 +72,17 @@ export const defaultDetailsValue: Readonly<ISearchResultPersonDetails> = {
       residence: '',
     }
 
-export const defaultHitValue: Readonly<ISearchResultPersonHit> =  {
-      _type: '',
-      _score: 0,
-      _source: defaultDetailsValue
-    }
+export const defaultHitValue: Readonly<ISearchResultPersonHit> = {
+    _index: '',
+    _type: '',
+    _score: 0,
+    _source: defaultDetailsValue
+}
 
 export const defaultHitsValue: Readonly<ISearchResultPersonHits> = {
-  total: 0,
-  max_score: 0,
-  hits: [defaultHitValue],
+    total: {value: 0},
+    max_score: 0,
+    hits: [defaultHitValue],
 };
 
 export const defaultValue: Readonly<ISearchResultPerson> = {

@@ -12,13 +12,14 @@ export interface ISearchResultWorkPlaceDetails {
 }
 
 export interface ISearchResultWorkPlaceHit {
+    _index: string;
     _type: string;
     _score: number;
     _source: ISearchResultWorkPlaceDetails
 }
 
 export interface ISearchResultWorkPlaceHits {
-    total: number;
+    total: { value: number };
     max_score: 0;
     hits: Array<ISearchResultWorkPlaceHit>;
 }
@@ -38,13 +39,14 @@ export const defaultDetailsValue: Readonly<ISearchResultWorkPlaceDetails> = {
 }
 
 export const defaultHitValue: Readonly<ISearchResultWorkPlaceHit> = {
+    _index: '',
     _type: '',
     _score: 0,
     _source: defaultDetailsValue
 }
 
 export const defaultHitsValue: Readonly<ISearchResultWorkPlaceHits> = {
-    total: 0,
+    total: {value: 0},
     max_score: 0,
     hits: [defaultHitValue],
 };
