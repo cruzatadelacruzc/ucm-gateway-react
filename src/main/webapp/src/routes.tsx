@@ -6,6 +6,7 @@ import RequireAuth from "./components/shared/auth/private-route";
 
 const Logout = Loadable(lazy(() => import("./components/module/login/logout")));
 const Dashboard = Loadable(lazy(() => import("./components/module/dashboard")));
+const DashboardPage = Loadable(lazy(() => import("./components/module/dashboard/home")));
 const Nomenclature = Loadable(lazy(() => import("./components/module/dashboard/nomenclature")));
 const Employee = Loadable(lazy(() => import("./components/module/dashboard/person/employee")));
 const Student = Loadable(lazy(() => import("./components/module/dashboard/person/student")));
@@ -33,7 +34,8 @@ export default function AppRoute() {
                <Route path='phone/*' element={<Phone/>}/>
                <Route path='workplace/*' element={<WorkPlace/>}/>
                <Route path='employee/*' element={<Employee/>}/>
-               <Route path='student/*' element={<Student/>}/>
+                <Route path='student/*' element={<Student/>}/>
+                <Route index element={<DashboardPage/>}/>
             </Route>
             <Route path='*' element={<PageNotFound/>}/>
         </Routes>

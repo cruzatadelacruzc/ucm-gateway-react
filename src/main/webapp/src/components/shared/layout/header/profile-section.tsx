@@ -271,7 +271,7 @@ export default function ProfileSection() {
                                                         </ListItemButton>
                                                         :
                                                         <ListItemButton selected={selectedIndex === 3}
-                                                                        state={{from: {pathname: "/dashboard"}}}
+                                                                        state={{from: {pathname: DASHBOARD_ROUTE}}}
                                                                         to={CONFIG.LOGIN_URL} component={Link}>
                                                             <ListItemIcon>
                                                                 <LoginOutlined/>
