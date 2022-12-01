@@ -30,7 +30,7 @@ const Item = styled(Paper)(({theme}) => ({
 const DashboardPage = () => {
     const navigate = useNavigate();
     const goTo = (route: string) => {
-        route && route != '' && navigate(route, {replace: true})
+        route && route !== '' && navigate(route, {replace: true})
     }
     return (
         <>
