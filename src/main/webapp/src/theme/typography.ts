@@ -1,4 +1,3 @@
-import "@fontsource/open-sans"
 import {TypographyOptions} from "@mui/material/styles/createTypography";
 import {Palette} from "@mui/material";
 
