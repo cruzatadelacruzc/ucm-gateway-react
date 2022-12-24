@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FormEvent, lazy, useCallback, useEffect, useState} from 'react';
+import React, {ChangeEvent, FormEvent, useCallback, useEffect, useState} from 'react';
 import Header from './header';
 import {Container, Grid, Tab, Tabs, Typography} from '@mui/material';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
@@ -23,11 +23,10 @@ import {hasAnyAuthority} from "../../shared/auth/private-route";
 import Button from "@mui/material/Button";
 import {Business as BusinessIcon, Engineering as EngineeringIcon, School as SchoolIcon} from "@mui/icons-material";
 import {Link} from "react-router-dom";
-
-const CardWorkPlace = lazy( () => import("./card-workplace"));
-const DisplaySkeleton = lazy( () => import("./skeleton"));
-const CardPerson = lazy( () => import("./card-person"));
-const CardPhone = lazy( () => import("./card-phone"));
+import CardWorkPlace from "./card-workplace";
+import DisplaySkeleton from "./skeleton";
+import CardPerson from "./card-person";
+import CardPhone from "./card-phone";
 
 export default function Directory() {
     const {t} = useTranslation('directory');
