@@ -1,8 +1,9 @@
-import React from "react";
+import React, {lazy} from "react";
 import {Route, Routes} from 'react-router-dom';
-import PhoneDetails from "./phone-details";
-import PhoneManage from "./phone-create-update";
 import Phones from "./phones";
+
+const PhoneManage = lazy( () => import('./phone-create-update'));
+const PhoneDetails = lazy( () => import('./phone-details'));
 
 export default function PhoneRouter() {
     return (

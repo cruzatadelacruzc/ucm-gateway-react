@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {lazy} from 'react';
 import {Route, Routes} from 'react-router-dom';
 import WorkPlaces from "./workplace";
-import WorkPlaceManage from "./workplace-create-update";
-import WorkplaceDetails from "./workplace-details";
 
+const WorkPlaceManage = lazy( () => import('./workplace-create-update'));
+const WorkplaceDetails = lazy( () => import('./workplace-details'));
 
 export default function WorkPlaceRouter() {
     return (

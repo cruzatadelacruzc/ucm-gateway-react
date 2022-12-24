@@ -1,8 +1,9 @@
-import React from "react";
+import React, {lazy} from "react";
 import {Route, Routes} from 'react-router-dom';
-import StudentDetails from "./student-details";
-import StudentManage from "./student-create-update";
 import Students from "./students";
+
+const StudentManage = lazy( () => import('./student-create-update'));
+const StudentDetails = lazy( () => import('./student-details'));
 
 export default function StudentRouter() {
     return (

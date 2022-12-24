@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {lazy} from 'react'
 import {Route, Routes} from 'react-router-dom';
 import Employees from "./employee";
-import EmployeeManage from "./employee-create-update";
-import EmployeeDetails from "./employee-details";
+
+const EmployeeManage = lazy( () => import('./employee-create-update'));
+const EmployeeDetails = lazy( () => import('./employee-details'));
 
 export default function EmployeeRouter() {
     return (

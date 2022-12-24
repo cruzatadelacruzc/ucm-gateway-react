@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {lazy} from 'react'
 import {Route, Routes} from 'react-router-dom';
 import Nomenclature from "./nomenclature";
-import NomenclatureManage from "./nomenclature-create-update";
+
+const NomenclatureManage = lazy( () => import("./nomenclature-create-update"));
 
 export default function NomenclatureRouter() {
     return (

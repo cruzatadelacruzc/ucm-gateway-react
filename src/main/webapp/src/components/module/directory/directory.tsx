@@ -1,10 +1,9 @@
-import React, {ChangeEvent, FormEvent, useCallback, useEffect, useState} from 'react';
+import React, {ChangeEvent, FormEvent, lazy, useCallback, useEffect, useState} from 'react';
 import Header from './header';
 import {Container, Grid, Tab, Tabs, Typography} from '@mui/material';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import PersonIcon from '@mui/icons-material/Person';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
-import CardPerson from './card-person';
 import searchReducer, {
     getSearchPerson,
     getSearchPhone,
@@ -19,15 +18,16 @@ import {ISearchResultPerson} from "../../shared/models/search-result-person.mode
 import {ISearchResultWorkPlace} from "../../shared/models/search-result-workplace.model";
 import {ISearchResultPhone} from "../../shared/models/search-result-phone.model";
 import {AUTHORITIES, INDICES} from "../../../config/constants";
-import CardWorkPlace from "./card-workplace";
 import {REDIRECT_URL} from "../../shared/util/url-util";
 import {hasAnyAuthority} from "../../shared/auth/private-route";
-import CardPhone from "./card-phone";
-import DisplaySkeleton from "./skeleton";
 import Button from "@mui/material/Button";
 import {Business as BusinessIcon, Engineering as EngineeringIcon, School as SchoolIcon} from "@mui/icons-material";
 import {Link} from "react-router-dom";
 
+const CardWorkPlace = lazy( () => import("./card-workplace"));
+const DisplaySkeleton = lazy( () => import("./skeleton"));
+const CardPerson = lazy( () => import("./card-person"));
+const CardPhone = lazy( () => import("./card-phone"));
 
 export default function Directory() {
     const {t} = useTranslation('directory');
