@@ -100,26 +100,26 @@ const UCMAvatar = ({setResultAvatar, avatarUrl, deleteAvatar, ...props}: IUCMAva
                 </Paper>
             </label>
             { selectedFile &&
-            <IconButton aria-label="edit" size="large">
-                <EditOutlined onClick={() => {
-                    setCroppedImage(undefined)
-                    setModalOpen(true)
-                }}/>
+            <IconButton aria-label="edit" size="large" onClick={() => {
+                setCroppedImage(undefined)
+                setModalOpen(true)
+            }}>
+                <EditOutlined/>
             </IconButton>
             }
             {
                 (selectedFile || avatarUrl) &&
-                <IconButton aria-label="delete" size="large">
-                    <DeleteOutline onClick={() => {
-                        if (selectedFile || croppedImage) {
-                            setResultAvatar(undefined)
-                            setCroppedImage(undefined)
-                            setSelectedFile(undefined)
-                        }
-                        if (deleteAvatar && avatarUrl && !selectedFile && !croppedImage) {
-                            deleteAvatar()
-                        }
-                    }}/>
+                <IconButton aria-label="delete" size="large" onClick={() => {
+                    if (selectedFile || croppedImage) {
+                        setResultAvatar(undefined)
+                        setCroppedImage(undefined)
+                        setSelectedFile(undefined)
+                    }
+                    if (deleteAvatar && avatarUrl && !selectedFile && !croppedImage) {
+                        deleteAvatar()
+                    }
+                }}>
+                    <DeleteOutline />
                 </IconButton>
             }
             {
