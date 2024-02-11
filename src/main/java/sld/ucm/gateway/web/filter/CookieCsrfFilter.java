@@ -1,49 +1,34 @@
 package sld.ucm.gateway.web.filter;
 
-import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseCookie;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.web.server.csrf.CsrfToken;
-import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
+/*
+ * WebFlux filter for handling CSRF cookies in requests.
+ * See https://github.com/spring-projects/spring-security/issues/5766#issuecomment-564636167
+ */
 public class CookieCsrfFilter implements WebFilter {
-    private static final String CSRF_COOKIE_NAME = "XSRF-TOKEN";
-    private static final Logger log = LoggerFactory.getLogger(CookieCsrfFilter.class);
 
-    public CookieCsrfFilter() {
-    }
-
+    /**
+     * Filter for handling CSRF logic in a reactive environment.
+     *
+     * @param exchange The server web exchange.
+     * @param chain    Web filter chain for continuing with the processing.
+     * @return A {@code Mono<Void>} representing the asynchronous operation of the filter.
+     */
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        return exchange.getRequest().getCookies().get(CSRF_COOKIE_NAME) != null ?
-                chain.filter(exchange) :
-                Mono.just(exchange).publishOn(Schedulers.boundedElastic()).flatMap((it)
-                        -> it.getAttributeOrDefault(CsrfToken.class.getName(), Mono.empty())).doOnNext( (token) -> {
-            ResponseCookie cookie = ResponseCookie.from(
-                    CSRF_COOKIE_NAME,
-                    ((CsrfToken)token).getToken())
-                    .maxAge(-1L)
-                    .httpOnly(false)
-                    .path(this.getRequestContext(exchange.getRequest()))
-                    .secure(Optional.ofNullable(exchange.getRequest().getSslInfo()).isPresent())
-                    .build();
-                    log.debug("Cookie: {}", cookie);
-            exchange.getResponse().getCookies().add(CSRF_COOKIE_NAME, cookie);
-        }).then(Mono.defer(() -> chain.filter(exchange)));
-    }
+       // Get the Mono representing the CSRF token from the exchange.
+       Mono<CsrfToken> csrfTokenMono = exchange.getAttribute(CsrfToken.class.getName());
 
-    private String getRequestContext(ServerHttpRequest request) {
-        String contextPath = request.getPath().contextPath().value();
-        return StringUtils.hasLength(contextPath) ? contextPath : "/";
+       // If csrfTokenMono is not null, execute chain.filter(exchange) after it completes successfully.
+       // If csrfTokenMono is null, simply execute chain.filter(exchange).
+       return csrfTokenMono != null
+            ? csrfTokenMono.then(chain.filter(exchange))
+            : chain.filter(exchange);
     }
-
 
 }
